@@ -47,17 +47,21 @@
 
   .linked-nodes-background-light {
     --nodes-bg: #f3e8d7;
-    --nodes-glow: rgba(255, 157, 0, 0.12);
-    --nodes-soft-glow: rgba(22, 22, 34, 0.06);
+    --nodes-glow: rgba(255, 157, 0, 0.14);
+    --nodes-soft-glow: rgba(22, 22, 34, 0.1);
     --nodes-vignette:
-      linear-gradient(180deg, rgba(243, 232, 215, 0.08), rgba(243, 232, 215, 0.78)),
-      radial-gradient(circle at center, transparent 44%, rgba(243, 232, 215, 0.72));
+      linear-gradient(180deg, rgba(243, 232, 215, 0.02), rgba(243, 232, 215, 0.46)),
+      radial-gradient(circle at center, transparent 52%, rgba(243, 232, 215, 0.42));
   }
 
   .linked-nodes-particles {
     position: absolute;
     inset: 0;
     opacity: 0.72;
+  }
+
+  .linked-nodes-background-light .linked-nodes-particles {
+    opacity: 0.95;
   }
 
   .linked-nodes-vignette {

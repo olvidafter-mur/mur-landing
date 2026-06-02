@@ -13,7 +13,7 @@ const PARTICLE_THEME = {
     background: '#f3e8d7',
     point: '#161622',
     accent: '#ff9d00',
-    link: '#5f5549',
+    link: '#243047',
   },
 }
 
@@ -21,6 +21,7 @@ let particlesEnginePromise
 
 function createParticleOptions(theme) {
   const colors = PARTICLE_THEME[theme] ?? PARTICLE_THEME.dark
+  const isLight = theme === 'light'
 
   return {
     preset: 'links',
@@ -36,14 +37,14 @@ function createParticleOptions(theme) {
     fpsLimit: 45,
     particles: {
       color: {
-        value: [colors.point, colors.accent],
+        value: isLight ? [colors.point, colors.point, colors.accent] : [colors.point, colors.accent],
       },
       links: {
         color: colors.link,
-        distance: 145,
+        distance: isLight ? 155 : 145,
         enable: true,
-        opacity: theme === 'dark' ? 0.22 : 0.16,
-        width: 1,
+        opacity: isLight ? 0.38 : 0.22,
+        width: isLight ? 1.25 : 1,
       },
       move: {
         enable: true,
@@ -63,14 +64,14 @@ function createParticleOptions(theme) {
       },
       opacity: {
         value: {
-          min: 0.18,
-          max: 0.58,
+          min: isLight ? 0.32 : 0.18,
+          max: isLight ? 0.78 : 0.58,
         },
       },
       size: {
         value: {
-          min: 1.2,
-          max: 3.8,
+          min: isLight ? 1.6 : 1.2,
+          max: isLight ? 4.6 : 3.8,
         },
       },
     },
