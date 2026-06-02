@@ -1,11 +1,14 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft,
+  Bell,
+  Clock3,
+  Compass,
   FileText,
   Mail,
   MapPin,
   ShieldCheck,
-  Store,
   Trash2,
   Users,
 } from 'lucide-react'
@@ -13,6 +16,7 @@ import {
 import NetworkBackground from './components/NetworkBackground'
 
 const SUPPORT_EMAIL = 'support@olvidafter.com'
+const LAUNCH_DEADLINE = '2026-06-07T23:59:59-03:00'
 
 const springTransition = {
   type: 'spring',
@@ -51,25 +55,50 @@ const featureItem = {
 
 const features = [
   {
-    id: 'posts',
-    title: 'Posteos geolocalizados',
+    id: 'feed',
+    title: 'Feed cercano',
     description:
-      'Publicaciones visibles para vecinos cercanos, con contexto real del barrio y conversaciones que importan ahora.',
+      'Publica y lee posts visibles para personas cerca tuyo, con categorias para filtrar lo que importa en tu zona.',
+    icon: Compass,
+  },
+  {
+    id: 'mapa',
+    title: 'Mapa de actividad',
+    description:
+      'Explora posts que comparten ubicacion exacta de forma opcional y abre el punto en Maps cuando necesites contexto.',
     icon: MapPin,
   },
   {
-    id: 'comercios',
-    title: 'Promociones locales',
+    id: 'alertas',
+    title: 'Alertas por categoria',
     description:
-      'Comercios del barrio pueden activar ofertas, novedades y beneficios para quienes viven o circulan cerca.',
-    icon: Store,
+      'Activa notificaciones cercanas y elige que categorias pueden avisarte para evitar ruido innecesario.',
+    icon: Bell,
   },
   {
     id: 'seguridad',
-    title: 'Red segura',
+    title: 'Controles de seguridad',
     description:
-      'Una experiencia pensada para comunidades de proximidad, perfiles claros y senales de confianza entre vecinos.',
+      'Reporta posts, bloquea usuarios y elimina tu cuenta y datos desde la app cuando lo necesites.',
     icon: ShieldCheck,
+  },
+]
+
+const productSteps = [
+  {
+    title: 'Descubri lo que pasa cerca',
+    body:
+      'El feed se ordena alrededor de tu ubicacion y muestra actividad reciente de tu zona.',
+  },
+  {
+    title: 'Publica con contexto',
+    body:
+      'Crea un post, elige una categoria y decide si queres compartir el punto exacto.',
+  },
+  {
+    title: 'Conversa sin salir del barrio',
+    body:
+      'Comenta, da like, comparte posts y abre perfiles publicos de personas cercanas.',
   },
 ]
 
@@ -114,6 +143,85 @@ function FeatureCard({ id, title, description, icon: Icon }) {
   )
 }
 
+const getCountdown = () => {
+  const deadline = new Date(LAUNCH_DEADLINE).getTime()
+  const remainingMs = Math.max(0, deadline - Date.now())
+  const totalSeconds = Math.floor(remainingMs / 1000)
+  const days = Math.floor(totalSeconds / 86400)
+  const hours = Math.floor((totalSeconds % 86400) / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+
+  return { totalSeconds, days, hours, minutes, seconds }
+}
+
+const formatNumber = (value) => new Intl.NumberFormat('es-AR').format(value)
+const padTime = (value) => String(value).padStart(2, '0')
+
+function LaunchCountdown() {
+  const [timeLeft, setTimeLeft] = useState(getCountdown)
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setTimeLeft(getCountdown())
+    }, 1000)
+
+    return () => window.clearInterval(timer)
+  }, [])
+
+  const units = [
+    { label: 'dias', value: timeLeft.days },
+    { label: 'horas', value: timeLeft.hours },
+    { label: 'min', value: timeLeft.minutes },
+    { label: 'seg', value: timeLeft.seconds },
+  ]
+
+  return (
+    <section id="countdown" className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
+      <div className="mx-auto max-w-6xl border-y border-white/10 py-8">
+        <div className="grid gap-8 lg:grid-cols-[1fr_1.15fr] lg:items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-surface/70 px-3 py-2 text-sm font-medium text-text-muted backdrop-blur-md">
+              <Clock3 aria-hidden="true" className="h-4 w-4 text-accent" />
+              Disponible proximamente
+            </div>
+            <h2 className="mt-5 text-3xl font-bold text-text-main sm:text-4xl">
+              Estamos descontando hasta la apertura de Mur
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-text-muted">
+              Fecha techo: domingo 7 de junio de 2026, 23:59:59.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-white/10 bg-surface-strong/80 p-5 shadow-soft backdrop-blur-md">
+            <p className="text-sm font-semibold uppercase text-accent">
+              Segundos restantes
+            </p>
+            <div className="mt-3 font-mono text-5xl font-bold leading-none text-text-main sm:text-6xl">
+              {formatNumber(timeLeft.totalSeconds)}
+            </div>
+            <div className="mt-6 grid grid-cols-4 gap-2">
+              {units.map((unit) => (
+                <div
+                  key={unit.label}
+                  className="rounded-lg border border-white/10 bg-[#161622]/70 p-3 text-center"
+                >
+                  <div className="font-mono text-2xl font-bold text-text-main">
+                    {padTime(unit.value)}
+                  </div>
+                  <div className="mt-1 text-xs uppercase text-text-muted">
+                    {unit.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function MarketingShell({ children }) {
   const currentYear = new Date().getFullYear()
 
@@ -129,6 +237,9 @@ function MarketingShell({ children }) {
               <span className="text-lg font-bold text-accent">MUR</span>
             </a>
             <div className="flex items-center gap-4 text-sm text-text-muted">
+              <a className="transition hover:text-text-main" href="#countdown">
+                Lanzamiento
+              </a>
               <a className="transition hover:text-text-main" href="/privacy">
                 Privacy
               </a>
@@ -206,7 +317,7 @@ function LegalShell({ children }) {
 function HomePage() {
   return (
     <>
-      <section className="px-4 pb-16 pt-20 sm:px-6 sm:pb-24 sm:pt-28 lg:px-8">
+      <section className="px-4 pb-12 pt-20 sm:px-6 sm:pb-16 sm:pt-28 lg:px-8">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -217,36 +328,46 @@ function HomePage() {
             className="mx-auto inline-flex items-center gap-2 rounded-lg border border-white/10 bg-surface/70 px-3 py-2 text-sm font-medium text-text-muted backdrop-blur-md"
           >
             <Users aria-hidden="true" className="h-4 w-4 text-accent" />
-            Red social hiperlocal para vecinos y comercios
+            Red social hiperlocal para conversaciones cercanas
           </motion.div>
 
           <motion.h1
             variants={heroItem}
             className="mt-7 text-4xl font-bold leading-[1.08] text-text-main sm:text-5xl lg:text-6xl"
           >
-            Tu barrio, conectado en tiempo real
+            Mur
           </motion.h1>
+          <motion.p
+            variants={heroItem}
+            className="mx-auto mt-4 max-w-2xl text-2xl font-semibold leading-tight text-text-main sm:text-3xl"
+          >
+            Lo que pasa cerca, contado por quienes estan cerca.
+          </motion.p>
           <motion.p
             variants={heroItem}
             className="mx-auto mt-6 max-w-2xl text-base leading-7 text-text-muted sm:text-lg"
           >
-            Mur acerca posteos, alertas y promociones segun tu ubicacion para
-            que cada vecino descubra lo que pasa cerca, y cada comercio llegue
-            a la comunidad correcta.
+            Publica posts visibles en tu zona, explora actividad en el mapa,
+            comenta con personas cercanas y recibe alertas filtradas por las
+            categorias que te importan.
           </motion.p>
         </motion.div>
       </section>
 
-      <section id="features" className="px-4 pb-20 pt-4 sm:px-6 sm:pb-24 lg:px-8">
+      <LaunchCountdown />
+
+      <section id="features" className="px-4 pb-16 pt-4 sm:px-6 sm:pb-20 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
-            <p className="text-sm font-bold uppercase text-accent">Beneficios</p>
+            <p className="text-sm font-bold uppercase text-accent">
+              Que podes hacer
+            </p>
             <h2 className="mt-3 text-3xl font-bold text-text-main sm:text-4xl">
-              Todo lo que hace falta para mover la vida del barrio
+              Una app para descubrir, publicar y cuidar tu zona
             </h2>
             <p className="mt-4 text-base leading-7 text-text-muted">
-              Mur combina cercania, contenido util y visibilidad comercial en
-              una experiencia simple para usar todos los dias.
+              Mur esta pensada para contenido inmediato y local: menos ruido,
+              mas contexto y controles claros para participar con seguridad.
             </p>
           </div>
 
@@ -255,12 +376,44 @@ function HomePage() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.25 }}
-            className="mt-10 grid gap-4 md:grid-cols-3"
+            className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4"
           >
             {features.map((feature) => (
               <FeatureCard key={feature.title} {...feature} />
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      <section className="px-4 pb-20 sm:px-6 sm:pb-24 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="max-w-2xl">
+            <p className="text-sm font-bold uppercase text-accent">
+              Flujo simple
+            </p>
+            <h2 className="mt-3 text-3xl font-bold text-text-main sm:text-4xl">
+              De tu ubicacion al feed en pocos pasos
+            </h2>
+          </div>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {productSteps.map((step, index) => (
+              <article
+                key={step.title}
+                className="rounded-lg border border-white/10 bg-surface-strong/80 p-6 shadow-soft backdrop-blur-md"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-sm font-bold text-accent">
+                  {index + 1}
+                </div>
+                <h3 className="mt-5 text-xl font-semibold text-text-main">
+                  {step.title}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-text-muted">
+                  {step.body}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
     </>
