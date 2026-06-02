@@ -603,7 +603,7 @@ function HomePage({ t, styles }) {
             <img
               src="/logo.png"
               alt={t.home.title}
-              className="h-24 w-24 object-contain sm:h-28 sm:w-28 lg:h-32 lg:w-32"
+              className="h-40 w-40 object-contain sm:h-52 sm:w-52 lg:h-64 lg:w-64"
             />
           </motion.h1>
           <motion.p
