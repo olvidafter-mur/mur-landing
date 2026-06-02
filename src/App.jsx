@@ -87,6 +87,7 @@ const CONTENT = {
       launch: 'Lanzamiento',
       privacy: 'Privacidad',
       deleteAccount: 'Eliminar cuenta',
+      deleteAccountShort: 'Eliminar',
     },
     controls: {
       language: 'Idioma',
@@ -205,6 +206,7 @@ const CONTENT = {
       launch: 'Launch',
       privacy: 'Privacy',
       deleteAccount: 'Delete account',
+      deleteAccountShort: 'Delete',
     },
     controls: {
       language: 'Language',
@@ -363,9 +365,36 @@ const getStoredPreference = (key, allowed, fallback) => {
   return allowed.includes(stored) ? stored : fallback
 }
 
-function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles }) {
+function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles, compact = false }) {
   const nextLanguage = language === 'es' ? 'en' : 'es'
   const nextTheme = theme === 'dark' ? 'light' : 'dark'
+  const ThemeIcon = theme === 'dark' ? Moon : Sun
+
+  if (compact) {
+    return (
+      <div className="flex shrink-0 items-center gap-1.5">
+        <button
+          type="button"
+          aria-label={`${t.controls.language}: ${language.toUpperCase()}`}
+          onClick={() => setLanguage(nextLanguage)}
+          className={`inline-flex min-h-10 items-center gap-1.5 rounded-full border px-3 text-xs font-bold transition ${styles.insetSurface}`}
+        >
+          <Globe2 aria-hidden="true" className={`h-4 w-4 ${styles.muted}`} />
+          {language.toUpperCase()}
+        </button>
+
+        <button
+          type="button"
+          aria-label={`${t.controls.theme}: ${t.controls[theme]}`}
+          onClick={() => setTheme(nextTheme)}
+          className={`inline-flex min-h-10 items-center gap-1.5 rounded-full border px-3 text-xs font-bold transition ${styles.insetSurface}`}
+        >
+          <ThemeIcon aria-hidden="true" className="h-4 w-4" />
+          {t.controls[theme]}
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-wrap items-center justify-end gap-2">
@@ -422,21 +451,27 @@ function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles 
 function NavLinks({ t, styles, includeLaunch = true, narrow = false }) {
   const linkStyle = narrow ? styles.navLinkNarrow : styles.navLink
   const links = [
-    includeLaunch && { href: '#countdown', label: t.nav.launch, icon: Rocket },
-    { href: '/privacy', label: t.nav.privacy, icon: FileText },
-    { href: '/delete-account', label: t.nav.deleteAccount, icon: Trash2 },
+    includeLaunch && { href: '#countdown', label: t.nav.launch, shortLabel: t.nav.launch, icon: Rocket },
+    { href: '/privacy', label: t.nav.privacy, shortLabel: t.nav.privacy, icon: FileText },
+    {
+      href: '/delete-account',
+      label: t.nav.deleteAccount,
+      shortLabel: t.nav.deleteAccountShort,
+      icon: Trash2,
+    },
   ].filter(Boolean)
 
   return (
-    <div className="flex flex-wrap items-center justify-end gap-2 text-sm">
-      {links.map(({ href, label, icon: Icon }) => (
+    <div className="mobile-nav-row flex w-max min-w-full items-center gap-2 text-sm lg:w-auto lg:min-w-0 lg:justify-end">
+      {links.map(({ href, label, shortLabel, icon: Icon }) => (
         <a
           key={href}
-          className={`inline-flex min-h-10 items-center gap-2 rounded-full border px-3.5 py-2 font-semibold leading-none transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${linkStyle}`}
+          className={`inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 font-semibold leading-none transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${linkStyle}`}
           href={href}
         >
           <Icon aria-hidden="true" className="h-4 w-4 shrink-0" />
-          <span>{label}</span>
+          <span className="sm:hidden">{shortLabel}</span>
+          <span className="hidden sm:inline">{label}</span>
         </a>
       ))}
     </div>
@@ -558,21 +593,36 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
 
       <div className="relative z-10">
         <nav className={`sticky top-0 z-50 border-b ${styles.nav}`}>
-          <div className="mx-auto flex min-h-16 max-w-6xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-            <a href="/" className="flex items-center gap-3" aria-label={BRAND.name}>
-              <img src="/logo.png" alt="" className="h-9 w-9 object-contain" />
-              <span className={`text-lg font-bold ${styles.logoText}`}>MUR</span>
-            </a>
-            <div className="flex flex-col gap-3 lg:items-end">
+          <div className="mx-auto max-w-6xl px-3 py-2 sm:px-6 lg:flex lg:min-h-16 lg:items-center lg:justify-between lg:px-8">
+            <div className="flex items-center justify-between gap-3">
+              <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
+                <img src="/logo.png" alt="" className="h-8 w-8 object-contain sm:h-9 sm:w-9" />
+                <span className={`text-lg font-bold ${styles.logoText}`}>MUR</span>
+              </a>
+              <div className="lg:hidden">
+                <PreferenceControls
+                  compact
+                  language={language}
+                  setLanguage={setLanguage}
+                  theme={theme}
+                  setTheme={setTheme}
+                  t={t}
+                  styles={styles}
+                />
+              </div>
+            </div>
+            <div className="mobile-nav-scroll -mx-3 mt-2 overflow-x-auto px-3 pb-1 sm:-mx-6 sm:px-6 lg:mx-0 lg:mt-0 lg:flex lg:items-center lg:gap-3 lg:overflow-visible lg:px-0 lg:pb-0">
               <NavLinks t={t} styles={styles} />
-              <PreferenceControls
-                language={language}
-                setLanguage={setLanguage}
-                theme={theme}
-                setTheme={setTheme}
-                t={t}
-                styles={styles}
-              />
+              <div className="hidden lg:block">
+                <PreferenceControls
+                  language={language}
+                  setLanguage={setLanguage}
+                  theme={theme}
+                  setTheme={setTheme}
+                  t={t}
+                  styles={styles}
+                />
+              </div>
             </div>
           </div>
         </nav>
@@ -603,21 +653,36 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
   return (
     <main className={`min-h-screen ${styles.legalPage}`}>
       <nav className={`border-b ${styles.navNarrow}`}>
-        <div className="mx-auto flex min-h-16 max-w-5xl flex-col gap-3 px-4 py-3 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-          <a href="/" className="flex items-center gap-3" aria-label={BRAND.name}>
-            <img src="/logo.png" alt="" className="h-8 w-8 object-contain" />
-            <span className={`text-base font-bold ${styles.text}`}>MUR</span>
-          </a>
-          <div className="flex flex-col gap-3 md:items-end">
+        <div className="mx-auto max-w-5xl px-3 py-2 sm:px-6 lg:flex lg:min-h-16 lg:items-center lg:justify-between lg:px-8">
+          <div className="flex items-center justify-between gap-3">
+            <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
+              <img src="/logo.png" alt="" className="h-8 w-8 object-contain" />
+              <span className={`text-base font-bold ${styles.text}`}>MUR</span>
+            </a>
+            <div className="lg:hidden">
+              <PreferenceControls
+                compact
+                language={language}
+                setLanguage={setLanguage}
+                theme={theme}
+                setTheme={setTheme}
+                t={t}
+                styles={styles}
+              />
+            </div>
+          </div>
+          <div className="mobile-nav-scroll -mx-3 mt-2 overflow-x-auto px-3 pb-1 sm:-mx-6 sm:px-6 lg:mx-0 lg:mt-0 lg:flex lg:items-center lg:gap-3 lg:overflow-visible lg:px-0 lg:pb-0">
             <NavLinks t={t} styles={styles} includeLaunch={false} narrow />
-            <PreferenceControls
-              language={language}
-              setLanguage={setLanguage}
-              theme={theme}
-              setTheme={setTheme}
-              t={t}
-              styles={styles}
-            />
+            <div className="hidden lg:block">
+              <PreferenceControls
+                language={language}
+                setLanguage={setLanguage}
+                theme={theme}
+                setTheme={setTheme}
+                t={t}
+                styles={styles}
+              />
+            </div>
           </div>
         </div>
       </nav>
