@@ -381,54 +381,57 @@ const formatNumber = (value, locale) => new Intl.NumberFormat(locale).format(val
 const padTime = (value) => String(value).padStart(2, '0')
 
 function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles }) {
+  const nextLanguage = language === 'es' ? 'en' : 'es'
+  const nextTheme = theme === 'dark' ? 'light' : 'dark'
+
   return (
     <div className="flex flex-wrap items-center justify-end gap-2">
-      <div
+      <button
+        type="button"
         aria-label={t.controls.language}
-        className={`inline-flex items-center gap-2 rounded-lg border px-2 py-1 ${styles.insetSurface}`}
+        onClick={() => setLanguage(nextLanguage)}
+        className={`inline-flex items-center rounded-full border p-1 text-xs font-bold transition ${styles.insetSurface}`}
       >
-        <Globe2 aria-hidden="true" className={`h-4 w-4 ${styles.muted}`} />
-        <span className={`hidden text-xs font-semibold sm:inline ${styles.muted}`}>
-          {t.controls.language}
+        <Globe2 aria-hidden="true" className={`ml-2 mr-1 h-4 w-4 ${styles.muted}`} />
+        <span
+          className={`inline-flex min-w-[46px] justify-center rounded-full px-3 py-1.5 transition ${
+            language === 'en' ? styles.activeControl : styles.inactiveControl
+          }`}
+        >
+          EN
         </span>
-        {LANGUAGES.map((option) => (
-          <button
-            key={option}
-            type="button"
-            onClick={() => setLanguage(option)}
-            className={`min-w-[48px] rounded-md px-3 py-1.5 text-center text-xs font-bold transition ${
-              language === option ? styles.activeControl : styles.inactiveControl
-            }`}
-          >
-            {option === 'es' ? t.controls.spanish : t.controls.english}
-          </button>
-        ))}
-      </div>
+        <span
+          className={`inline-flex min-w-[46px] justify-center rounded-full px-3 py-1.5 transition ${
+            language === 'es' ? styles.activeControl : styles.inactiveControl
+          }`}
+        >
+          ES
+        </span>
+      </button>
 
-      <div
+      <button
+        type="button"
         aria-label={t.controls.theme}
-        className={`inline-flex items-center gap-2 rounded-lg border px-2 py-1 ${styles.insetSurface}`}
+        onClick={() => setTheme(nextTheme)}
+        className={`inline-flex items-center rounded-full border p-1 text-xs font-bold transition ${styles.insetSurface}`}
       >
-        <span className={`hidden text-xs font-semibold sm:inline ${styles.muted}`}>
-          {t.controls.theme}
+        <span
+          className={`inline-flex min-w-[86px] items-center justify-center gap-1 rounded-full px-3 py-1.5 transition ${
+            theme === 'dark' ? styles.activeControl : styles.inactiveControl
+          }`}
+        >
+          <Moon aria-hidden="true" className="h-3.5 w-3.5" />
+          {t.controls.dark}
         </span>
-        {THEMES.map((option) => {
-          const Icon = option === 'dark' ? Moon : Sun
-          return (
-            <button
-              key={option}
-              type="button"
-              onClick={() => setTheme(option)}
-              className={`inline-flex min-w-[84px] items-center justify-center gap-1 rounded-md px-3 py-1.5 text-xs font-bold transition ${
-                theme === option ? styles.activeControl : styles.inactiveControl
-              }`}
-            >
-              <Icon aria-hidden="true" className="h-3.5 w-3.5" />
-              {option === 'dark' ? t.controls.dark : t.controls.light}
-            </button>
-          )
-        })}
-      </div>
+        <span
+          className={`inline-flex min-w-[86px] items-center justify-center gap-1 rounded-full px-3 py-1.5 transition ${
+            theme === 'light' ? styles.activeControl : styles.inactiveControl
+          }`}
+        >
+          <Sun aria-hidden="true" className="h-3.5 w-3.5" />
+          {t.controls.light}
+        </span>
+      </button>
     </div>
   )
 }
