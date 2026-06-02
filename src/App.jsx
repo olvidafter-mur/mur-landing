@@ -4,17 +4,16 @@ import { motion } from 'framer-motion'
 import {
   ArrowLeft,
   Bell,
-  Clock3,
   Compass,
   FileText,
   Globe2,
   Mail,
   MapPin,
   Moon,
+  Rocket,
   ShieldCheck,
   Sun,
   Trash2,
-  Users,
 } from 'lucide-react'
 
 import NetworkBackground from './components/NetworkBackground'
@@ -99,9 +98,8 @@ const CONTENT = {
       deleteAccount: 'Eliminar cuenta',
     },
     home: {
-      eyebrow: 'Red social hiperlocal para conversaciones cercanas',
       title: 'Mur',
-      subtitle: 'Lo que pasa cerca, contado por quienes estan cerca.',
+      subtitle: 'De que sirve estar conectado con todo el mundo si no sabes que pasa cerca tuyo?',
       body:
         'Publica posts visibles en tu zona, explora actividad en el mapa, comenta con personas cercanas y recibe alertas filtradas por las categorias que te importan.',
       featuresLabel: 'Que podes hacer',
@@ -112,9 +110,7 @@ const CONTENT = {
       stepsTitle: 'De tu ubicacion al feed en pocos pasos',
     },
     countdown: {
-      badge: 'Proximamente',
-      title: 'Proximamente',
-      deadline: 'Fecha techo: domingo 7 de junio de 2026, 23:59:59.',
+      title: 'Lanzamiento',
       units: ['dias', 'horas', 'minutos', 'segundos'],
     },
     features: [
@@ -220,9 +216,8 @@ const CONTENT = {
       deleteAccount: 'Delete account',
     },
     home: {
-      eyebrow: 'Hyperlocal social network for nearby conversations',
       title: 'Mur',
-      subtitle: 'What is happening nearby, told by people nearby.',
+      subtitle: 'What is the point of being connected to the whole world if you do not know what is happening nearby?',
       body:
         'Publish posts visible in your area, explore activity on the map, comment with nearby people, and receive alerts filtered by the categories you care about.',
       featuresLabel: 'What you can do',
@@ -233,9 +228,7 @@ const CONTENT = {
       stepsTitle: 'From your location to the feed in a few steps',
     },
     countdown: {
-      badge: 'Available soon',
-      title: 'Coming soon',
-      deadline: 'Deadline: Sunday, June 7, 2026, 23:59:59.',
+      title: 'Launch',
       units: ['days', 'hours', 'minutes', 'seconds'],
     },
     features: [
@@ -445,7 +438,7 @@ function LaunchCountdown({ t, styles }) {
     <section id="countdown" className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
       <div className={`mx-auto max-w-5xl rounded-lg border px-5 py-8 text-center ${styles.surface}`}>
         <div className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.28em] text-accent">
-          <Clock3 aria-hidden="true" className="h-4 w-4" />
+          <Rocket aria-hidden="true" className="h-4 w-4" />
           {t.countdown.title}
         </div>
 
@@ -480,9 +473,6 @@ function LaunchCountdown({ t, styles }) {
           />
         </div>
 
-        <p className={`mx-auto mt-7 max-w-2xl text-sm leading-6 ${styles.muted}`}>
-          {t.countdown.deadline}
-        </p>
       </div>
     </section>
   )
@@ -606,23 +596,19 @@ function HomePage({ t, styles }) {
           animate="visible"
           className="mx-auto max-w-4xl text-center"
         >
-          <motion.div
-            variants={heroItem}
-            className={`mx-auto inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium ${styles.softSurface} ${styles.muted}`}
-          >
-            <Users aria-hidden="true" className="h-4 w-4 text-accent" />
-            {t.home.eyebrow}
-          </motion.div>
-
           <motion.h1
             variants={heroItem}
-            className={`mt-7 text-4xl font-bold leading-[1.08] sm:text-5xl lg:text-6xl ${styles.text}`}
+            className="flex justify-center"
           >
-            {t.home.title}
+            <img
+              src="/logo.png"
+              alt={t.home.title}
+              className="h-24 w-24 object-contain sm:h-28 sm:w-28 lg:h-32 lg:w-32"
+            />
           </motion.h1>
           <motion.p
             variants={heroItem}
-            className={`mx-auto mt-4 max-w-2xl text-2xl font-semibold leading-tight sm:text-3xl ${styles.text}`}
+            className={`mx-auto mt-7 max-w-3xl text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl ${styles.text}`}
           >
             {t.home.subtitle}
           </motion.p>
