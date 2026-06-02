@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft,
@@ -453,40 +453,56 @@ function FeatureCard({ id, title, description, icon: Icon, styles }) {
 
 function FlipTimerUnit({ label, value, styles }) {
   const nextValue = padTime(value)
-  const [displayValue, setDisplayValue] = useState(nextValue)
-  const [previousValue, setPreviousValue] = useState(nextValue)
+  const stableValueRef = useRef(nextValue)
+  const [stableValue, setStableValue] = useState(nextValue)
+  const [incomingValue, setIncomingValue] = useState(nextValue)
   const [isFlipping, setIsFlipping] = useState(false)
+  const [flipKey, setFlipKey] = useState(0)
 
   useEffect(() => {
-    if (nextValue === displayValue) return undefined
+    if (nextValue === stableValueRef.current) return undefined
 
-    setPreviousValue(displayValue)
-    setDisplayValue(nextValue)
-    setIsFlipping(true)
+    setIncomingValue(nextValue)
+
+    const frame = window.requestAnimationFrame(() => {
+      setFlipKey((key) => key + 1)
+      setIsFlipping(true)
+    })
 
     const timer = window.setTimeout(() => {
+      stableValueRef.current = nextValue
+      setStableValue(nextValue)
       setIsFlipping(false)
     }, 620)
 
-    return () => window.clearTimeout(timer)
-  }, [displayValue, nextValue])
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.clearTimeout(timer)
+    }
+  }, [nextValue])
 
   return (
     <div className="text-center">
       <div
         className={`flip-timer-card ${isFlipping ? 'is-flipping' : ''} ${styles.insetSurface}`}
+        aria-label={`${nextValue} ${label}`}
       >
-        <div className="flip-timer-half flip-timer-top">
-          <span>{displayValue}</span>
+        <div className="flip-timer-half flip-timer-top" aria-hidden="true">
+          <span>{stableValue}</span>
         </div>
-        <div className="flip-timer-half flip-timer-bottom">
-          <span>{displayValue}</span>
+        <div className="flip-timer-half flip-timer-bottom" aria-hidden="true">
+          <span>{stableValue}</span>
         </div>
         <div className="flip-timer-hinge" />
         {isFlipping ? (
-          <div className="flip-timer-flap">
-            <span>{previousValue}</span>
-          </div>
+          <>
+            <div key={`${flipKey}-bottom`} className="flip-timer-next-bottom" aria-hidden="true">
+              <span>{incomingValue}</span>
+            </div>
+            <div key={`${flipKey}-flap`} className="flip-timer-flap" aria-hidden="true">
+              <span>{incomingValue}</span>
+            </div>
+          </>
         ) : null}
       </div>
       <div className="mt-3 text-xs font-semibold uppercase tracking-[0.22em] text-accent">
