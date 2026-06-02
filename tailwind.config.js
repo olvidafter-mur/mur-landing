@@ -4,10 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
+        brand: {
+          blue: "#161622",
+          "blue-deep": "#111827",
+          orange: "#FF9C01",
+          "orange-deep": "#FF8E01",
+          cream: "#E6D2B5",
+          "cream-light": "#F3E8D7",
+        },
         "bg-primary": "#161622",
         surface: "#1E1E2D",
         "surface-strong": "#232533",
-        "text-main": "#FFFFFF",
+        "text-main": "#F3E8D7",
         "text-muted": "#CDCDE0",
         accent: "#FF9C01",
         "accent-hover": "#FF8E01",

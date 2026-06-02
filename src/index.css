@@ -11,7 +11,7 @@
     margin: 0;
     min-width: 320px;
     background: #161622;
-    color: #ffffff;
+    color: #f3e8d7;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -37,21 +37,21 @@
   }
 
   .linked-nodes-background-dark {
-    --nodes-bg: #111827;
+    --nodes-bg: #161622;
     --nodes-glow: rgba(255, 157, 0, 0.12);
-    --nodes-soft-glow: rgba(205, 205, 224, 0.08);
+    --nodes-soft-glow: rgba(230, 210, 181, 0.1);
     --nodes-vignette:
-      linear-gradient(180deg, rgba(17, 24, 39, 0.04), rgba(17, 24, 39, 0.76)),
-      radial-gradient(circle at center, transparent 42%, rgba(17, 24, 39, 0.7));
+      linear-gradient(180deg, rgba(22, 22, 34, 0.04), rgba(22, 22, 34, 0.78)),
+      radial-gradient(circle at center, transparent 42%, rgba(22, 22, 34, 0.72));
   }
 
   .linked-nodes-background-light {
-    --nodes-bg: #f8fafc;
+    --nodes-bg: #f3e8d7;
     --nodes-glow: rgba(255, 157, 0, 0.12);
-    --nodes-soft-glow: rgba(100, 116, 139, 0.08);
+    --nodes-soft-glow: rgba(22, 22, 34, 0.06);
     --nodes-vignette:
-      linear-gradient(180deg, rgba(248, 250, 252, 0.08), rgba(248, 250, 252, 0.78)),
-      radial-gradient(circle at center, transparent 44%, rgba(248, 250, 252, 0.7));
+      linear-gradient(180deg, rgba(243, 232, 215, 0.08), rgba(243, 232, 215, 0.78)),
+      radial-gradient(circle at center, transparent 44%, rgba(243, 232, 215, 0.72));
   }
 
   .linked-nodes-particles {
@@ -90,20 +90,20 @@
   }
 
   .mur-flip-clock-dark {
-    --fcc-background: #111827;
-    --fcc-digit-color: #f9fafb;
-    --fcc-divider-color: rgba(255, 255, 255, 0.28);
+    --fcc-background: #161622;
+    --fcc-digit-color: #f3e8d7;
+    --fcc-divider-color: rgba(230, 210, 181, 0.28);
     --fcc-separator-color: #ff9d00;
     --fcc-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 1px 0 rgba(243, 232, 215, 0.14),
       inset 0 -18px 28px rgba(0, 0, 0, 0.22),
       0 14px 26px rgba(0, 0, 0, 0.28);
   }
 
   .mur-flip-clock-light {
-    --fcc-background: #f8fafc;
-    --fcc-digit-color: #111827;
-    --fcc-divider-color: rgba(17, 24, 39, 0.22);
+    --fcc-background: #e6d2b5;
+    --fcc-digit-color: #161622;
+    --fcc-divider-color: rgba(22, 22, 34, 0.24);
     --fcc-separator-color: #ff9d00;
     --fcc-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.85),

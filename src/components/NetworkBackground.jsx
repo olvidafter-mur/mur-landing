@@ -4,16 +4,16 @@ import { loadLinksPreset } from '@tsparticles/preset-links'
 
 const PARTICLE_THEME = {
   dark: {
-    background: '#111827',
-    point: '#f8fafc',
+    background: '#161622',
+    point: '#f3e8d7',
     accent: '#ff9d00',
-    link: '#cdcde0',
+    link: '#e6d2b5',
   },
   light: {
-    background: '#f8fafc',
-    point: '#111827',
+    background: '#f3e8d7',
+    point: '#161622',
     accent: '#ff9d00',
-    link: '#475569',
+    link: '#5f5549',
   },
 }
 
