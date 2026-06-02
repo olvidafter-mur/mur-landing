@@ -111,15 +111,6 @@
       0 12px 22px rgba(15, 23, 42, 0.14);
   }
 
-  .mobile-nav-scroll {
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .mobile-nav-scroll::-webkit-scrollbar {
-    display: none;
-  }
-
   .typewriter-text {
     display: grid;
     width: 100%;

@@ -9,11 +9,13 @@ import {
   Globe2,
   Mail,
   MapPin,
+  Menu,
   Moon,
   Rocket,
   ShieldCheck,
   Sun,
   Trash2,
+  X,
 } from 'lucide-react'
 
 import NetworkBackground from './components/NetworkBackground'
@@ -84,10 +86,9 @@ const CONTENT = {
   es: {
     locale: 'es-AR',
     nav: {
-      launch: 'Lanzamiento',
-      privacy: 'Privacidad',
-      deleteAccount: 'Eliminar cuenta',
-      deleteAccountShort: 'Eliminar',
+      menu: 'Menú',
+      privacy: 'Política de privacidad',
+      deleteAccount: 'Eliminar cuenta y datos',
     },
     controls: {
       language: 'Idioma',
@@ -99,8 +100,8 @@ const CONTENT = {
     },
     footer: {
       tagline: 'Comunidad cerca tuyo.',
-      privacy: 'Politica de privacidad',
-      deleteAccount: 'Eliminar cuenta',
+      privacy: 'Política de privacidad',
+      deleteAccount: 'Eliminar cuenta y datos',
     },
     home: {
       title: 'Mur',
@@ -203,10 +204,9 @@ const CONTENT = {
   en: {
     locale: 'en-US',
     nav: {
-      launch: 'Launch',
-      privacy: 'Privacy',
-      deleteAccount: 'Delete account',
-      deleteAccountShort: 'Delete',
+      menu: 'Menu',
+      privacy: 'Privacy policy',
+      deleteAccount: 'Delete account and data',
     },
     controls: {
       language: 'Language',
@@ -219,7 +219,7 @@ const CONTENT = {
     footer: {
       tagline: 'Community close to you.',
       privacy: 'Privacy policy',
-      deleteAccount: 'Delete account',
+      deleteAccount: 'Delete account and data',
     },
     home: {
       title: 'Mur',
@@ -387,10 +387,9 @@ function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles,
           type="button"
           aria-label={`${t.controls.theme}: ${t.controls[theme]}`}
           onClick={() => setTheme(nextTheme)}
-          className={`inline-flex min-h-10 items-center gap-1.5 rounded-full border px-3 text-xs font-bold transition ${styles.insetSurface}`}
+          className={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-xs font-bold transition ${styles.insetSurface}`}
         >
           <ThemeIcon aria-hidden="true" className="h-4 w-4" />
-          {t.controls[theme]}
         </button>
       </div>
     )
@@ -448,32 +447,49 @@ function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles,
   )
 }
 
-function NavLinks({ t, styles, includeLaunch = true, narrow = false }) {
-  const linkStyle = narrow ? styles.navLinkNarrow : styles.navLink
+function HeaderMenu({ t, styles, narrow = false }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const itemStyle = narrow ? styles.navLinkNarrow : styles.navLink
+  const panelStyle = narrow ? styles.legalSoft : styles.surface
   const links = [
-    includeLaunch && { href: '#countdown', label: t.nav.launch, shortLabel: t.nav.launch, icon: Rocket },
-    { href: '/privacy', label: t.nav.privacy, shortLabel: t.nav.privacy, icon: FileText },
-    {
-      href: '/delete-account',
-      label: t.nav.deleteAccount,
-      shortLabel: t.nav.deleteAccountShort,
-      icon: Trash2,
-    },
-  ].filter(Boolean)
+    { href: '/privacy', label: t.nav.privacy, icon: FileText },
+    { href: '/delete-account', label: t.nav.deleteAccount, icon: Trash2 },
+  ]
 
   return (
-    <div className="mobile-nav-row flex w-max min-w-full items-center gap-2 text-sm lg:w-auto lg:min-w-0 lg:justify-end">
-      {links.map(({ href, label, shortLabel, icon: Icon }) => (
-        <a
-          key={href}
-          className={`inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 font-semibold leading-none transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${linkStyle}`}
-          href={href}
-        >
-          <Icon aria-hidden="true" className="h-4 w-4 shrink-0" />
-          <span className="sm:hidden">{shortLabel}</span>
-          <span className="hidden sm:inline">{label}</span>
-        </a>
-      ))}
+    <div className="relative shrink-0">
+      <button
+        type="button"
+        aria-label={t.nav.menu}
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen((current) => !current)}
+        className={`inline-flex min-h-10 items-center gap-2 rounded-full border px-3 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${styles.insetSurface}`}
+      >
+        {isOpen ? (
+          <X aria-hidden="true" className="h-4 w-4" />
+        ) : (
+          <Menu aria-hidden="true" className="h-4 w-4" />
+        )}
+        <span className="hidden sm:inline">{t.nav.menu}</span>
+      </button>
+
+      {isOpen && (
+        <div className={`absolute right-0 top-12 z-50 w-[min(19rem,calc(100vw-1.5rem))] rounded-lg border p-2 ${panelStyle}`}>
+          <div className="grid gap-2">
+            {links.map(({ href, label, icon: Icon }) => (
+              <a
+                key={href}
+                className={`flex min-h-11 items-center gap-3 rounded-lg border px-3.5 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${itemStyle}`}
+                href={href}
+                onClick={() => setIsOpen(false)}
+              >
+                <Icon aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
+                <span>{label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -593,12 +609,12 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
 
       <div className="relative z-10">
         <nav className={`sticky top-0 z-50 border-b ${styles.nav}`}>
-          <div className="mx-auto max-w-6xl px-3 py-2 sm:px-6 lg:flex lg:min-h-16 lg:items-center lg:justify-between lg:px-8">
-            <div className="flex items-center justify-between gap-3">
-              <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
-                <img src="/logo.png" alt="" className="h-8 w-8 object-contain sm:h-9 sm:w-9" />
-                <span className={`text-lg font-bold ${styles.logoText}`}>MUR</span>
-              </a>
+          <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-3 px-3 py-2 sm:px-6 lg:px-8">
+            <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
+              <img src="/logo.png" alt="" className="h-8 w-8 object-contain sm:h-9 sm:w-9" />
+              <span className={`text-lg font-bold ${styles.logoText}`}>MUR</span>
+            </a>
+            <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
               <div className="lg:hidden">
                 <PreferenceControls
                   compact
@@ -610,9 +626,6 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
                   styles={styles}
                 />
               </div>
-            </div>
-            <div className="mobile-nav-scroll -mx-3 mt-2 overflow-x-auto px-3 pb-1 sm:-mx-6 sm:px-6 lg:mx-0 lg:mt-0 lg:flex lg:items-center lg:gap-3 lg:overflow-visible lg:px-0 lg:pb-0">
-              <NavLinks t={t} styles={styles} />
               <div className="hidden lg:block">
                 <PreferenceControls
                   language={language}
@@ -623,6 +636,7 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
                   styles={styles}
                 />
               </div>
+              <HeaderMenu t={t} styles={styles} />
             </div>
           </div>
         </nav>
@@ -653,12 +667,12 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
   return (
     <main className={`min-h-screen ${styles.legalPage}`}>
       <nav className={`border-b ${styles.navNarrow}`}>
-        <div className="mx-auto max-w-5xl px-3 py-2 sm:px-6 lg:flex lg:min-h-16 lg:items-center lg:justify-between lg:px-8">
-          <div className="flex items-center justify-between gap-3">
-            <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
-              <img src="/logo.png" alt="" className="h-8 w-8 object-contain" />
-              <span className={`text-base font-bold ${styles.text}`}>MUR</span>
-            </a>
+        <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-3 px-3 py-2 sm:px-6 lg:px-8">
+          <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
+            <img src="/logo.png" alt="" className="h-8 w-8 object-contain" />
+            <span className={`text-base font-bold ${styles.text}`}>MUR</span>
+          </a>
+          <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
             <div className="lg:hidden">
               <PreferenceControls
                 compact
@@ -670,9 +684,6 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
                 styles={styles}
               />
             </div>
-          </div>
-          <div className="mobile-nav-scroll -mx-3 mt-2 overflow-x-auto px-3 pb-1 sm:-mx-6 sm:px-6 lg:mx-0 lg:mt-0 lg:flex lg:items-center lg:gap-3 lg:overflow-visible lg:px-0 lg:pb-0">
-            <NavLinks t={t} styles={styles} includeLaunch={false} narrow />
             <div className="hidden lg:block">
               <PreferenceControls
                 language={language}
@@ -683,6 +694,7 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
                 styles={styles}
               />
             </div>
+            <HeaderMenu t={t} styles={styles} narrow />
           </div>
         </div>
       </nav>
