@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft,
@@ -42,6 +43,7 @@ const THEME = {
     surface: 'border-white/10 bg-surface-strong/80 shadow-soft backdrop-blur-md',
     softSurface: 'border-white/10 bg-surface/70 backdrop-blur-md',
     insetSurface: 'border-white/10 bg-[#161622]/70',
+    flipClock: 'mur-flip-clock-dark',
     legalBorder: 'border-[#374151]',
     legalMuted: 'text-[#d1d5db]',
     legalSoft: 'border-[#374151] bg-[#111827] text-[#f9fafb]',
@@ -64,6 +66,7 @@ const THEME = {
     surface: 'border-[#e5e7eb] bg-white shadow-[0_18px_60px_rgba(15,23,42,0.08)]',
     softSurface: 'border-[#e5e7eb] bg-white',
     insetSurface: 'border-[#e5e7eb] bg-[#f8fafc]',
+    flipClock: 'mur-flip-clock-light',
     legalBorder: 'border-[#e5e7eb]',
     legalMuted: 'text-[#4b5563]',
     legalSoft: 'border-[#e5e7eb] bg-white text-[#111827]',
@@ -363,20 +366,6 @@ const getStoredPreference = (key, allowed, fallback) => {
   return allowed.includes(stored) ? stored : fallback
 }
 
-const getCountdown = () => {
-  const deadline = new Date(BRAND.launchDeadline).getTime()
-  const remainingMs = Math.max(0, deadline - Date.now())
-  const totalSeconds = Math.floor(remainingMs / 1000)
-  const days = Math.floor(totalSeconds / 86400)
-  const hours = Math.floor((totalSeconds % 86400) / 3600)
-  const minutes = Math.floor((totalSeconds % 3600) / 60)
-  const seconds = totalSeconds % 60
-
-  return { totalSeconds, days, hours, minutes, seconds }
-}
-
-const padTime = (value) => String(value).padStart(2, '0')
-
 function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles }) {
   const nextLanguage = language === 'es' ? 'en' : 'es'
   const nextTheme = theme === 'dark' ? 'light' : 'dark'
@@ -451,83 +440,7 @@ function FeatureCard({ id, title, description, icon: Icon, styles }) {
   )
 }
 
-function FlipTimerUnit({ label, value, styles }) {
-  const nextValue = padTime(value)
-  const stableValueRef = useRef(nextValue)
-  const [stableValue, setStableValue] = useState(nextValue)
-  const [incomingValue, setIncomingValue] = useState(nextValue)
-  const [isFlipping, setIsFlipping] = useState(false)
-  const [flipKey, setFlipKey] = useState(0)
-
-  useEffect(() => {
-    if (nextValue === stableValueRef.current) return undefined
-
-    setIncomingValue(nextValue)
-
-    const frame = window.requestAnimationFrame(() => {
-      setFlipKey((key) => key + 1)
-      setIsFlipping(true)
-    })
-
-    const timer = window.setTimeout(() => {
-      stableValueRef.current = nextValue
-      setStableValue(nextValue)
-      setIsFlipping(false)
-    }, 620)
-
-    return () => {
-      window.cancelAnimationFrame(frame)
-      window.clearTimeout(timer)
-    }
-  }, [nextValue])
-
-  return (
-    <div className="text-center">
-      <div
-        className={`flip-timer-card ${isFlipping ? 'is-flipping' : ''} ${styles.insetSurface}`}
-        aria-label={`${nextValue} ${label}`}
-      >
-        <div className="flip-timer-half flip-timer-top" aria-hidden="true">
-          <span>{stableValue}</span>
-        </div>
-        <div className="flip-timer-half flip-timer-bottom" aria-hidden="true">
-          <span>{stableValue}</span>
-        </div>
-        <div className="flip-timer-hinge" />
-        {isFlipping ? (
-          <>
-            <div key={`${flipKey}-bottom`} className="flip-timer-next-bottom" aria-hidden="true">
-              <span>{incomingValue}</span>
-            </div>
-            <div key={`${flipKey}-flap`} className="flip-timer-flap" aria-hidden="true">
-              <span>{incomingValue}</span>
-            </div>
-          </>
-        ) : null}
-      </div>
-      <div className="mt-3 text-xs font-semibold uppercase tracking-[0.22em] text-accent">
-        {label}
-      </div>
-    </div>
-  )
-}
-
 function LaunchCountdown({ t, styles }) {
-  const [timeLeft, setTimeLeft] = useState(getCountdown)
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setTimeLeft(getCountdown())
-    }, 1000)
-
-    return () => window.clearInterval(timer)
-  }, [])
-
-  const units = t.countdown.units.map((label, index) => ({
-    label,
-    value: [timeLeft.days, timeLeft.hours, timeLeft.minutes, timeLeft.seconds][index],
-  }))
-
   return (
     <section id="countdown" className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
       <div className={`mx-auto max-w-5xl rounded-lg border px-5 py-8 text-center ${styles.surface}`}>
@@ -536,15 +449,35 @@ function LaunchCountdown({ t, styles }) {
           {t.countdown.title}
         </div>
 
-        <div className="mt-8 grid grid-cols-4 gap-2 sm:gap-4">
-          {units.map((unit) => (
-            <FlipTimerUnit
-              key={unit.label}
-              label={unit.label}
-              value={unit.value}
-              styles={styles}
-            />
-          ))}
+        <div className="mt-8 flex justify-center overflow-x-auto px-1 pb-6 pt-1">
+          <FlipClockCountdown
+            to={new Date(BRAND.launchDeadline).getTime()}
+            labels={t.countdown.units}
+            className={`mur-flip-clock ${styles.flipClock}`}
+            duration={0.75}
+            hideOnComplete={false}
+            stopOnHiddenVisibility
+            spacing={{
+              clock: 'clamp(0.35rem, 2vw, 1.1rem)',
+              digitBlock: 'clamp(0.18rem, 0.8vw, 0.38rem)',
+            }}
+            digitBlockStyle={{
+              width: 'clamp(2rem, 7vw, 4.25rem)',
+              height: 'clamp(3.15rem, 10vw, 6.6rem)',
+              borderRadius: '0.5rem',
+              fontSize: 'clamp(1.9rem, 6vw, 4.5rem)',
+            }}
+            labelStyle={{
+              fontSize: '0.72rem',
+              color: 'currentColor',
+            }}
+            dividerStyle={{
+              height: '2px',
+            }}
+            separatorStyle={{
+              size: 'clamp(0.22rem, 0.8vw, 0.36rem)',
+            }}
+          />
         </div>
 
         <p className={`mx-auto mt-7 max-w-2xl text-sm leading-6 ${styles.muted}`}>
