@@ -35,6 +35,8 @@ const THEME = {
     navNarrow: 'border-[#374151] bg-[#111827]',
     navText: 'text-text-muted hover:text-text-main',
     navTextNarrow: 'text-[#d1d5db] hover:text-white',
+    navLink: 'border-white/10 bg-white/[0.03] text-text-muted hover:border-accent/60 hover:bg-accent/10 hover:text-text-main',
+    navLinkNarrow: 'border-[#374151] bg-[#111827] text-[#d1d5db] hover:border-accent/60 hover:bg-accent/10 hover:text-white',
     logoText: 'text-accent',
     text: 'text-text-main',
     muted: 'text-text-muted',
@@ -58,6 +60,8 @@ const THEME = {
     navNarrow: 'border-[#e5e7eb] bg-white',
     navText: 'text-[#4b5563] hover:text-[#111827]',
     navTextNarrow: 'text-[#4b5563] hover:text-[#111827]',
+    navLink: 'border-[#e5e7eb] bg-white/75 text-[#4b5563] shadow-sm hover:border-accent/70 hover:bg-[#fff7e8] hover:text-[#111827]',
+    navLinkNarrow: 'border-[#e5e7eb] bg-white text-[#4b5563] hover:border-accent/70 hover:bg-[#fff7e8] hover:text-[#111827]',
     logoText: 'text-[#111827]',
     text: 'text-[#111827]',
     muted: 'text-[#4b5563]',
@@ -415,6 +419,30 @@ function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles 
   )
 }
 
+function NavLinks({ t, styles, includeLaunch = true, narrow = false }) {
+  const linkStyle = narrow ? styles.navLinkNarrow : styles.navLink
+  const links = [
+    includeLaunch && { href: '#countdown', label: t.nav.launch, icon: Rocket },
+    { href: '/privacy', label: t.nav.privacy, icon: FileText },
+    { href: '/delete-account', label: t.nav.deleteAccount, icon: Trash2 },
+  ].filter(Boolean)
+
+  return (
+    <div className="flex flex-wrap items-center justify-end gap-2 text-sm">
+      {links.map(({ href, label, icon: Icon }) => (
+        <a
+          key={href}
+          className={`inline-flex min-h-10 items-center gap-2 rounded-full border px-3.5 py-2 font-semibold leading-none transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${linkStyle}`}
+          href={href}
+        >
+          <Icon aria-hidden="true" className="h-4 w-4 shrink-0" />
+          <span>{label}</span>
+        </a>
+      ))}
+    </div>
+  )
+}
+
 function FeatureCard({ id, title, description, icon: Icon, styles }) {
   return (
     <motion.article
@@ -536,17 +564,7 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
               <span className={`text-lg font-bold ${styles.logoText}`}>MUR</span>
             </a>
             <div className="flex flex-col gap-3 lg:items-end">
-              <div className={`flex flex-wrap items-center gap-4 text-sm ${styles.navText}`}>
-                <a className="transition" href="#countdown">
-                  {t.nav.launch}
-                </a>
-                <a className="transition" href="/privacy">
-                  {t.nav.privacy}
-                </a>
-                <a className="transition" href="/delete-account">
-                  {t.nav.deleteAccount}
-                </a>
-              </div>
+              <NavLinks t={t} styles={styles} />
               <PreferenceControls
                 language={language}
                 setLanguage={setLanguage}
@@ -591,14 +609,7 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
             <span className={`text-base font-bold ${styles.text}`}>MUR</span>
           </a>
           <div className="flex flex-col gap-3 md:items-end">
-            <div className={`flex items-center gap-4 text-sm ${styles.navTextNarrow}`}>
-              <a className="transition" href="/privacy">
-                {t.nav.privacy}
-              </a>
-              <a className="transition" href="/delete-account">
-                {t.nav.deleteAccount}
-              </a>
-            </div>
+            <NavLinks t={t} styles={styles} includeLaunch={false} narrow />
             <PreferenceControls
               language={language}
               setLanguage={setLanguage}
