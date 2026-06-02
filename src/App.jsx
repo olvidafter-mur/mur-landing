@@ -451,6 +451,51 @@ function FeatureCard({ id, title, description, icon: Icon, styles }) {
   )
 }
 
+function FlipTimerUnit({ label, value, styles }) {
+  const nextValue = padTime(value)
+  const [displayValue, setDisplayValue] = useState(nextValue)
+  const [previousValue, setPreviousValue] = useState(nextValue)
+  const [isFlipping, setIsFlipping] = useState(false)
+
+  useEffect(() => {
+    if (nextValue === displayValue) return undefined
+
+    setPreviousValue(displayValue)
+    setDisplayValue(nextValue)
+    setIsFlipping(true)
+
+    const timer = window.setTimeout(() => {
+      setIsFlipping(false)
+    }, 620)
+
+    return () => window.clearTimeout(timer)
+  }, [displayValue, nextValue])
+
+  return (
+    <div className="text-center">
+      <div
+        className={`flip-timer-card ${isFlipping ? 'is-flipping' : ''} ${styles.insetSurface}`}
+      >
+        <div className="flip-timer-half flip-timer-top">
+          <span>{displayValue}</span>
+        </div>
+        <div className="flip-timer-half flip-timer-bottom">
+          <span>{displayValue}</span>
+        </div>
+        <div className="flip-timer-hinge" />
+        {isFlipping ? (
+          <div className="flip-timer-flap">
+            <span>{previousValue}</span>
+          </div>
+        ) : null}
+      </div>
+      <div className="mt-3 text-xs font-semibold uppercase tracking-[0.22em] text-accent">
+        {label}
+      </div>
+    </div>
+  )
+}
+
 function LaunchCountdown({ t, styles }) {
   const [timeLeft, setTimeLeft] = useState(getCountdown)
 
@@ -477,24 +522,12 @@ function LaunchCountdown({ t, styles }) {
 
         <div className="mt-8 grid grid-cols-4 gap-2 sm:gap-4">
           {units.map((unit) => (
-            <div key={unit.label} className="text-center">
-              <div
-                className={`relative flex items-center justify-center overflow-hidden rounded-lg border px-3 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] ${styles.insetSurface}`}
-                style={{ minHeight: 'clamp(82px, 13vw, 152px)' }}
-              >
-                <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-black/35" />
-                <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/10" />
-                <div
-                  className={`font-mono font-black leading-none tracking-tight ${styles.text}`}
-                  style={{ fontSize: 'clamp(2.25rem, 7vw, 5.25rem)' }}
-                >
-                  {padTime(unit.value)}
-                </div>
-              </div>
-              <div className="mt-3 text-xs font-semibold uppercase tracking-[0.22em] text-accent">
-                {unit.label}
-              </div>
-            </div>
+            <FlipTimerUnit
+              key={unit.label}
+              label={unit.label}
+              value={unit.value}
+              styles={styles}
+            />
           ))}
         </div>
 
