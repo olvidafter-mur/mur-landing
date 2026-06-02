@@ -433,6 +433,50 @@ function FeatureCard({ id, title, description, icon: Icon, styles }) {
   )
 }
 
+function TypewriterText({ text }) {
+  const [visibleLength, setVisibleLength] = useState(0)
+
+  useEffect(() => {
+    const shouldReduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+
+    if (shouldReduceMotion) {
+      setVisibleLength(text.length)
+      return undefined
+    }
+
+    let currentLength = 0
+    let timer
+
+    setVisibleLength(0)
+
+    const typeNextCharacter = () => {
+      currentLength += 1
+      setVisibleLength(currentLength)
+
+      if (currentLength >= text.length) return
+
+      const currentCharacter = text[currentLength - 1]
+      const delay = /[?.!]/.test(currentCharacter) ? 170 : currentCharacter === ' ' ? 28 : 42
+
+      timer = window.setTimeout(typeNextCharacter, delay)
+    }
+
+    timer = window.setTimeout(typeNextCharacter, 320)
+
+    return () => window.clearTimeout(timer)
+  }, [text])
+
+  return (
+    <span className="typewriter-text" aria-hidden="true">
+      <span className="typewriter-measure">{text}</span>
+      <span className="typewriter-line">
+        {text.slice(0, visibleLength)}
+        <span className="typewriter-caret" />
+      </span>
+    </span>
+  )
+}
+
 function LaunchCountdown({ t, styles }) {
   return (
     <section id="countdown" className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
@@ -472,7 +516,6 @@ function LaunchCountdown({ t, styles }) {
             }}
           />
         </div>
-
       </div>
     </section>
   )
@@ -610,7 +653,8 @@ function HomePage({ t, styles }) {
             variants={heroItem}
             className={`mx-auto mt-7 max-w-3xl text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl ${styles.text}`}
           >
-            {t.home.subtitle}
+            <span className="sr-only">{t.home.subtitle}</span>
+            <TypewriterText text={t.home.subtitle} />
           </motion.p>
           <motion.p
             variants={heroItem}
