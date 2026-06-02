@@ -114,7 +114,7 @@ function FeatureCard({ id, title, description, icon: Icon }) {
   )
 }
 
-function Shell({ children }) {
+function MarketingShell({ children }) {
   const currentYear = new Date().getFullYear()
 
   return (
@@ -155,6 +155,50 @@ function Shell({ children }) {
           </div>
         </footer>
       </div>
+    </main>
+  )
+}
+
+function LegalShell({ children }) {
+  const currentYear = new Date().getFullYear()
+
+  return (
+    <main className="min-h-screen bg-[#f8fafc] text-[#111827]">
+      <nav className="border-b border-[#e5e7eb] bg-white">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <a href="/" className="flex items-center gap-3" aria-label="Mur">
+            <img src="/logo.png" alt="" className="h-8 w-8 object-contain" />
+            <span className="text-base font-bold text-[#111827]">MUR</span>
+          </a>
+          <div className="flex items-center gap-4 text-sm text-[#4b5563]">
+            <a className="transition hover:text-[#111827]" href="/privacy">
+              Privacy
+            </a>
+            <a
+              className="transition hover:text-[#111827]"
+              href="/delete-account"
+            >
+              Delete account
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {children}
+
+      <footer className="border-t border-[#e5e7eb] bg-white px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-5xl flex-col gap-3 text-sm text-[#6b7280] sm:flex-row sm:items-center sm:justify-between">
+          <span>© {currentYear} Mur.</span>
+          <div className="flex gap-4">
+            <a className="transition hover:text-[#111827]" href="/privacy">
+              Privacy policy
+            </a>
+            <a className="transition hover:text-[#111827]" href="/delete-account">
+              Delete account
+            </a>
+          </div>
+        </div>
+      </footer>
     </main>
   )
 }
@@ -225,42 +269,42 @@ function HomePage() {
 
 function LegalPage() {
   return (
-    <section className="px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+    <section className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
       <div className="mx-auto max-w-3xl">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-accent transition hover:text-text-main"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#374151] transition hover:text-[#111827]"
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
           Volver
         </a>
-        <div className="mt-8">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 text-accent">
+        <div className="mt-8 border-b border-[#e5e7eb] pb-8">
+          <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#e5e7eb] bg-white text-[#111827]">
             <FileText aria-hidden="true" className="h-5 w-5" />
           </div>
-          <p className="mt-6 text-sm font-bold uppercase text-accent">
+          <p className="mt-6 text-sm font-semibold uppercase tracking-wide text-[#6b7280]">
             Vigente desde el 2 de junio de 2026
           </p>
-          <h1 className="mt-3 text-4xl font-bold text-text-main">
+          <h1 className="mt-3 text-4xl font-bold tracking-tight text-[#111827]">
             Privacy Policy
           </h1>
-          <p className="mt-5 text-base leading-7 text-text-muted">
+          <p className="mt-5 text-base leading-7 text-[#374151]">
             Mur es una app de comunidad local. Esta politica explica que datos
             de la app recopilamos, por que los usamos y como los usuarios
             pueden eliminar su cuenta y datos asociados.
           </p>
         </div>
 
-        <div className="mt-10 space-y-4">
+        <div className="divide-y divide-[#e5e7eb]">
           {privacySections.map((section) => (
             <article
               key={section.title}
-              className="rounded-lg border border-white/10 bg-surface-strong/80 p-6 backdrop-blur-md"
+              className="py-8"
             >
-              <h2 className="text-xl font-semibold text-text-main">
+              <h2 className="text-xl font-semibold text-[#111827]">
                 {section.title}
               </h2>
-              <p className="mt-3 text-sm leading-6 text-text-muted">
+              <p className="mt-3 text-sm leading-6 text-[#374151]">
                 {section.body}
               </p>
             </article>
@@ -275,55 +319,55 @@ function DeleteAccountPage() {
   const mailto = `mailto:${SUPPORT_EMAIL}?subject=Mur account deletion request`
 
   return (
-    <section className="px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+    <section className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
       <div className="mx-auto max-w-3xl">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-accent transition hover:text-text-main"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#374151] transition hover:text-[#111827]"
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
           Volver
         </a>
-        <div className="mt-8">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 text-accent">
+        <div className="mt-8 border-b border-[#e5e7eb] pb-8">
+          <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#e5e7eb] bg-white text-[#111827]">
             <Trash2 aria-hidden="true" className="h-5 w-5" />
           </div>
-          <p className="mt-6 text-sm font-bold uppercase text-accent">
+          <p className="mt-6 text-sm font-semibold uppercase tracking-wide text-[#6b7280]">
             Account and data deletion
           </p>
-          <h1 className="mt-3 text-4xl font-bold text-text-main">
+          <h1 className="mt-3 text-4xl font-bold tracking-tight text-[#111827]">
             Delete your Mur account
           </h1>
-          <p className="mt-5 text-base leading-7 text-text-muted">
+          <p className="mt-5 text-base leading-7 text-[#374151]">
             Para eliminar tu cuenta desde la app, abri Mur y entra a:
             Profile &gt; Account &gt; Delete account.
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4">
-          <article className="rounded-lg border border-white/10 bg-surface-strong/80 p-6 backdrop-blur-md">
-            <h2 className="text-xl font-semibold text-text-main">
+        <div className="divide-y divide-[#e5e7eb]">
+          <article className="py-8">
+            <h2 className="text-xl font-semibold text-[#111827]">
               Que se elimina
             </h2>
-            <p className="mt-3 text-sm leading-6 text-text-muted">
+            <p className="mt-3 text-sm leading-6 text-[#374151]">
               La eliminacion borra tu perfil, posts, comentarios, likes, tokens
               de notificaciones, ubicacion cercana usada para alertas, reportes
               y registros de bloqueo asociados a tu cuenta.
             </p>
           </article>
 
-          <article className="rounded-lg border border-white/10 bg-surface-strong/80 p-6 backdrop-blur-md">
-            <h2 className="text-xl font-semibold text-text-main">
+          <article className="py-8">
+            <h2 className="text-xl font-semibold text-[#111827]">
               Si ya no tenes acceso a la app
             </h2>
-            <p className="mt-3 text-sm leading-6 text-text-muted">
+            <p className="mt-3 text-sm leading-6 text-[#374151]">
               Escribinos desde el email asociado a tu cuenta y pedinos la
               eliminacion de cuenta y datos. Usamos ese email para verificar la
               titularidad antes de procesar la solicitud.
             </p>
             <a
               href={mailto}
-              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-3 text-sm font-bold text-surface transition hover:brightness-110"
+              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#111827] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1f2937]"
             >
               <Mail aria-hidden="true" className="h-4 w-4" />
               {SUPPORT_EMAIL}
@@ -340,12 +384,19 @@ function App() {
   const isPrivacy = path === '/privacy' || path === '/privacy-policy'
   const isDeleteAccount = path === '/delete-account'
 
+  if (isPrivacy || isDeleteAccount) {
+    return (
+      <LegalShell>
+        {isPrivacy ? <LegalPage /> : null}
+        {isDeleteAccount ? <DeleteAccountPage /> : null}
+      </LegalShell>
+    )
+  }
+
   return (
-    <Shell>
-      {isPrivacy ? <LegalPage /> : null}
-      {isDeleteAccount ? <DeleteAccountPage /> : null}
-      {!isPrivacy && !isDeleteAccount ? <HomePage /> : null}
-    </Shell>
+    <MarketingShell>
+      <HomePage />
+    </MarketingShell>
   )
 }
 
