@@ -109,11 +109,10 @@ const CONTENT = {
       stepsTitle: 'De tu ubicacion al feed en pocos pasos',
     },
     countdown: {
-      badge: 'Disponible proximamente',
-      title: 'Estamos descontando hasta la apertura de Mur',
+      badge: 'Proximamente',
+      title: 'Proximamente',
       deadline: 'Fecha techo: domingo 7 de junio de 2026, 23:59:59.',
-      seconds: 'Segundos restantes',
-      units: ['dias', 'horas', 'min', 'seg'],
+      units: ['dias', 'horas', 'minutos', 'segundos'],
     },
     features: [
       {
@@ -232,10 +231,9 @@ const CONTENT = {
     },
     countdown: {
       badge: 'Available soon',
-      title: 'We are counting down to Mur opening',
+      title: 'Coming soon',
       deadline: 'Deadline: Sunday, June 7, 2026, 23:59:59.',
-      seconds: 'Seconds remaining',
-      units: ['days', 'hours', 'min', 'sec'],
+      units: ['days', 'hours', 'minutes', 'seconds'],
     },
     features: [
       {
@@ -377,7 +375,6 @@ const getCountdown = () => {
   return { totalSeconds, days, hours, minutes, seconds }
 }
 
-const formatNumber = (value, locale) => new Intl.NumberFormat(locale).format(value)
 const padTime = (value) => String(value).padStart(2, '0')
 
 function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles }) {
@@ -472,45 +469,38 @@ function LaunchCountdown({ t, styles }) {
 
   return (
     <section id="countdown" className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
-      <div className={`mx-auto max-w-6xl border-y py-8 ${styles.border}`}>
-        <div className="grid gap-8 lg:grid-cols-[1fr_1.15fr] lg:items-center">
-          <div>
-            <div className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium ${styles.softSurface} ${styles.muted}`}>
-              <Clock3 aria-hidden="true" className="h-4 w-4 text-accent" />
-              {t.countdown.badge}
-            </div>
-            <h2 className={`mt-5 text-3xl font-bold sm:text-4xl ${styles.text}`}>
-              {t.countdown.title}
-            </h2>
-            <p className={`mt-4 max-w-2xl text-base leading-7 ${styles.muted}`}>
-              {t.countdown.deadline}
-            </p>
-          </div>
-
-          <div className={`rounded-lg border p-5 ${styles.surface}`}>
-            <p className="text-sm font-semibold uppercase text-accent">
-              {t.countdown.seconds}
-            </p>
-            <div className={`mt-3 font-mono text-5xl font-bold leading-none sm:text-6xl ${styles.text}`}>
-              {formatNumber(timeLeft.totalSeconds, t.locale)}
-            </div>
-            <div className="mt-6 grid grid-cols-4 gap-2">
-              {units.map((unit) => (
-                <div
-                  key={unit.label}
-                  className={`rounded-lg border p-3 text-center ${styles.insetSurface}`}
-                >
-                  <div className={`font-mono text-2xl font-bold ${styles.text}`}>
-                    {padTime(unit.value)}
-                  </div>
-                  <div className={`mt-1 text-xs uppercase ${styles.muted}`}>
-                    {unit.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      <div className={`mx-auto max-w-5xl rounded-lg border px-5 py-8 text-center ${styles.surface}`}>
+        <div className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.28em] text-accent">
+          <Clock3 aria-hidden="true" className="h-4 w-4" />
+          {t.countdown.title}
         </div>
+
+        <div className="mt-8 grid grid-cols-4 gap-2 sm:gap-4">
+          {units.map((unit) => (
+            <div key={unit.label} className="text-center">
+              <div
+                className={`relative flex items-center justify-center overflow-hidden rounded-lg border px-3 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] ${styles.insetSurface}`}
+                style={{ minHeight: 'clamp(82px, 13vw, 152px)' }}
+              >
+                <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-black/35" />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/10" />
+                <div
+                  className={`font-mono font-black leading-none tracking-tight ${styles.text}`}
+                  style={{ fontSize: 'clamp(2.25rem, 7vw, 5.25rem)' }}
+                >
+                  {padTime(unit.value)}
+                </div>
+              </div>
+              <div className="mt-3 text-xs font-semibold uppercase tracking-[0.22em] text-accent">
+                {unit.label}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p className={`mx-auto mt-7 max-w-2xl text-sm leading-6 ${styles.muted}`}>
+          {t.countdown.deadline}
+        </p>
       </div>
     </section>
   )
