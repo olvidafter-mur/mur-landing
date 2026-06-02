@@ -99,7 +99,7 @@ const CONTENT = {
     },
     home: {
       title: 'Mur',
-      subtitle: 'De que sirve estar conectado con todo el mundo si no sabes que pasa cerca tuyo?',
+      subtitle: 'El mundo está conectado. Tu barrio también debería estarlo.',
       body:
         'Publica posts visibles en tu zona, explora actividad en el mapa, comenta con personas cercanas y recibe alertas filtradas por las categorias que te importan.',
       featuresLabel: 'Que podes hacer',
@@ -217,7 +217,7 @@ const CONTENT = {
     },
     home: {
       title: 'Mur',
-      subtitle: 'What is the point of being connected to the whole world if you do not know what is happening nearby?',
+      subtitle: 'The world is connected. Your neighborhood should be too.',
       body:
         'Publish posts visible in your area, explore activity on the map, comment with nearby people, and receive alerts filtered by the categories you care about.',
       featuresLabel: 'What you can do',
