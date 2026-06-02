@@ -24,147 +24,46 @@
 }
 
 @layer components {
-  .neighborhood-map-background {
+  .linked-nodes-background {
     position: fixed;
     inset: 0;
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
-    color: var(--map-accent);
     background:
-      radial-gradient(circle at 18% 22%, var(--map-glow-strong), transparent 30%),
-      radial-gradient(circle at 82% 24%, var(--map-glow-soft), transparent 32%),
-      radial-gradient(circle at 60% 78%, var(--map-glow-soft), transparent 34%),
-      var(--map-bg);
+      radial-gradient(circle at 18% 18%, var(--nodes-glow), transparent 30%),
+      radial-gradient(circle at 78% 28%, var(--nodes-soft-glow), transparent 34%),
+      var(--nodes-bg);
   }
 
-  .neighborhood-map-background-dark {
-    --map-bg: #111827;
-    --map-street: rgba(205, 205, 224, 0.18);
-    --map-block: rgba(255, 255, 255, 0.035);
-    --map-route: rgba(255, 157, 0, 0.62);
-    --map-accent: #ff9d00;
-    --map-glow-strong: rgba(255, 157, 0, 0.16);
-    --map-glow-soft: rgba(205, 205, 224, 0.08);
-    --map-vignette:
-      linear-gradient(180deg, rgba(17, 24, 39, 0.1), rgba(17, 24, 39, 0.78)),
-      radial-gradient(circle at center, transparent 34%, rgba(17, 24, 39, 0.72));
+  .linked-nodes-background-dark {
+    --nodes-bg: #111827;
+    --nodes-glow: rgba(255, 157, 0, 0.12);
+    --nodes-soft-glow: rgba(205, 205, 224, 0.08);
+    --nodes-vignette:
+      linear-gradient(180deg, rgba(17, 24, 39, 0.04), rgba(17, 24, 39, 0.76)),
+      radial-gradient(circle at center, transparent 42%, rgba(17, 24, 39, 0.7));
   }
 
-  .neighborhood-map-background-light {
-    --map-bg: #f8fafc;
-    --map-street: rgba(71, 85, 105, 0.2);
-    --map-block: rgba(15, 23, 42, 0.035);
-    --map-route: rgba(217, 119, 6, 0.46);
-    --map-accent: #ff9d00;
-    --map-glow-strong: rgba(255, 157, 0, 0.14);
-    --map-glow-soft: rgba(100, 116, 139, 0.1);
-    --map-vignette:
-      linear-gradient(180deg, rgba(248, 250, 252, 0.16), rgba(248, 250, 252, 0.86)),
-      radial-gradient(circle at center, transparent 38%, rgba(248, 250, 252, 0.78));
+  .linked-nodes-background-light {
+    --nodes-bg: #f8fafc;
+    --nodes-glow: rgba(255, 157, 0, 0.12);
+    --nodes-soft-glow: rgba(100, 116, 139, 0.08);
+    --nodes-vignette:
+      linear-gradient(180deg, rgba(248, 250, 252, 0.08), rgba(248, 250, 252, 0.78)),
+      radial-gradient(circle at center, transparent 44%, rgba(248, 250, 252, 0.7));
   }
 
-  .neighborhood-map-particles {
+  .linked-nodes-particles {
     position: absolute;
     inset: 0;
-    opacity: 0.62;
+    opacity: 0.72;
   }
 
-  .neighborhood-map-svg {
+  .linked-nodes-vignette {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    min-width: 920px;
-    opacity: 0.92;
-    transform: scale(1.06);
-  }
-
-  .neighborhood-map-blocks rect {
-    fill: var(--map-block);
-    stroke: var(--map-street);
-    stroke-width: 1;
-  }
-
-  .neighborhood-map-streets path {
-    fill: none;
-    stroke: var(--map-street);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .neighborhood-map-routes line {
-    stroke: var(--map-route);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-dasharray: 10 18;
-    animation: neighborhood-route-flow 6.5s linear infinite;
-  }
-
-  .neighborhood-map-post {
-    animation: neighborhood-post-float 5.2s ease-in-out infinite;
-    animation-delay: var(--post-delay);
-    transform-box: fill-box;
-    transform-origin: center;
-  }
-
-  .neighborhood-map-post-glow {
-    fill: url(#postGlow);
-    opacity: 0.34;
-  }
-
-  .neighborhood-map-post-pulse {
-    fill: none;
-    stroke: var(--map-accent);
-    stroke-width: 2;
-    opacity: 0;
-    animation: neighborhood-post-pulse 3.4s ease-out infinite;
-    animation-delay: var(--post-delay);
-  }
-
-  .neighborhood-map-post-core {
-    fill: var(--map-accent);
-    filter: drop-shadow(0 0 14px rgba(255, 157, 0, 0.58));
-  }
-
-  .neighborhood-map-vignette {
-    position: absolute;
-    inset: 0;
-    background: var(--map-vignette);
-  }
-
-  @keyframes neighborhood-route-flow {
-    to {
-      stroke-dashoffset: -168;
-    }
-  }
-
-  @keyframes neighborhood-post-pulse {
-    0% {
-      opacity: 0.54;
-      transform: scale(0.5);
-    }
-
-    72% {
-      opacity: 0;
-      transform: scale(2.6);
-    }
-
-    100% {
-      opacity: 0;
-      transform: scale(2.6);
-    }
-  }
-
-  @keyframes neighborhood-post-float {
-    0%,
-    100% {
-      translate: 0 0;
-    }
-
-    50% {
-      translate: 0 -8px;
-    }
+    background: var(--nodes-vignette);
   }
 
   .mur-flip-clock {
@@ -213,10 +112,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .neighborhood-map-routes line,
-    .neighborhood-map-post,
-    .neighborhood-map-post-pulse {
-      animation: none;
+    .linked-nodes-particles {
+      display: none;
     }
   }
 }

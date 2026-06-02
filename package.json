@@ -12,7 +12,7 @@
   "dependencies": {
     "@leenguyen/react-flip-clock-countdown": "^1.7.2",
     "@tsparticles/engine": "^4.1.2",
-    "@tsparticles/slim": "^4.1.2",
+    "@tsparticles/preset-links": "^4.1.2",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.16.0",
     "react": "^19.2.6",
