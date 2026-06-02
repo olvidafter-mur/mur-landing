@@ -493,7 +493,7 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
 
   return (
     <main className={`relative min-h-screen overflow-hidden ${styles.marketingPage}`}>
-      {theme === 'dark' ? <NetworkBackground /> : null}
+      <NetworkBackground theme={theme} />
 
       <div className="relative z-10">
         <nav className={`sticky top-0 z-50 border-b ${styles.nav}`}>
