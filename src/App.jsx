@@ -88,6 +88,7 @@ const CONTENT = {
     nav: {
       menu: 'Menú',
       privacy: 'Política de privacidad',
+      terms: 'Términos del servicio',
       deleteAccount: 'Eliminar cuenta y datos',
     },
     controls: {
@@ -101,6 +102,7 @@ const CONTENT = {
     footer: {
       tagline: 'Comunidad cerca tuyo.',
       privacy: 'Política de privacidad',
+      terms: 'Términos',
       deleteAccount: 'Eliminar cuenta y datos',
     },
     home: {
@@ -187,6 +189,45 @@ const CONTENT = {
         },
       ],
     },
+    terms: {
+      back: 'Volver',
+      effective: 'Vigente desde el 4 de junio de 2026',
+      title: 'Términos del servicio',
+      intro:
+        'Estos términos regulan el uso de Mur, una app de comunidad local para publicar, descubrir y comentar contenido cercano. Al usar Mur, aceptas participar de forma responsable y respetar estas reglas.',
+      sections: [
+        {
+          title: 'Uso de la app',
+          body:
+            'Mur está pensada para personas de 18 años o más. Debes usar la app de forma legal, segura y respetuosa, sin publicar contenido falso, abusivo, discriminatorio, violento, sexualmente explícito, ilegal o que vulnere derechos de terceros.',
+        },
+        {
+          title: 'Contenido publicado',
+          body:
+            'Eres responsable por el contenido que publicas, incluyendo textos, imágenes, audio, encuestas y ubicaciones compartidas. Al publicar, nos autorizas a mostrar ese contenido dentro de Mur para operar la app y sus funciones.',
+        },
+        {
+          title: 'Ubicación y actividad cercana',
+          body:
+            'Mur usa ubicación para mostrar contenido cercano y permitir publicaciones locales. Compartir la ubicación exacta en un post es opcional. No uses la ubicación o actividad de otros usuarios para acosar, seguir o dañar a ninguna persona.',
+        },
+        {
+          title: 'Moderación y seguridad',
+          body:
+            'Podemos revisar, ocultar o eliminar contenido, limitar funciones o suspender cuentas cuando detectemos abuso, riesgos de seguridad, incumplimientos legales o violaciones de estos términos.',
+        },
+        {
+          title: 'Cuenta y eliminación',
+          body:
+            'Puedes cerrar sesión o eliminar tu cuenta desde la app. La eliminación de cuenta borra los datos asociados según se describe en la política de privacidad y en la página pública de eliminación de cuenta.',
+        },
+        {
+          title: 'Cambios del servicio',
+          body:
+            'Mur puede cambiar, pausar o dejar de ofrecer funciones para mejorar el servicio, cumplir requisitos legales o proteger a la comunidad. Si los términos cambian de forma relevante, actualizaremos esta página.',
+        },
+      ],
+    },
     deleteAccount: {
       badge: 'Cuenta y eliminacion de datos',
       title: 'Elimina tu cuenta de Mur',
@@ -206,6 +247,7 @@ const CONTENT = {
     nav: {
       menu: 'Menu',
       privacy: 'Privacy policy',
+      terms: 'Terms of service',
       deleteAccount: 'Delete account and data',
     },
     controls: {
@@ -219,6 +261,7 @@ const CONTENT = {
     footer: {
       tagline: 'Community close to you.',
       privacy: 'Privacy policy',
+      terms: 'Terms',
       deleteAccount: 'Delete account and data',
     },
     home: {
@@ -302,6 +345,45 @@ const CONTENT = {
           title: 'Account deletion',
           body:
             'Users can delete their account from the app by opening Profile, then Account, and tapping Delete account. They can also request deletion from the public account deletion page.',
+        },
+      ],
+    },
+    terms: {
+      back: 'Back',
+      effective: 'Effective June 4, 2026',
+      title: 'Terms of Service',
+      intro:
+        'These terms govern your use of Mur, a local community app for publishing, discovering, and commenting on nearby content. By using Mur, you agree to participate responsibly and follow these rules.',
+      sections: [
+        {
+          title: 'Use of the app',
+          body:
+            'Mur is intended for people who are 18 or older. You must use the app legally, safely, and respectfully, without publishing false, abusive, discriminatory, violent, sexually explicit, illegal, or rights-infringing content.',
+        },
+        {
+          title: 'Published content',
+          body:
+            'You are responsible for the content you publish, including text, images, audio, polls, and shared locations. By publishing content, you authorize us to display it inside Mur to operate the app and its features.',
+        },
+        {
+          title: 'Location and nearby activity',
+          body:
+            'Mur uses location to show nearby content and support local posts. Sharing an exact location on a post is optional. Do not use another user’s location or activity to harass, track, or harm anyone.',
+        },
+        {
+          title: 'Moderation and safety',
+          body:
+            'We may review, hide, or remove content, limit features, or suspend accounts when we detect abuse, safety risks, legal issues, or violations of these terms.',
+        },
+        {
+          title: 'Account and deletion',
+          body:
+            'You can sign out or delete your account from inside the app. Account deletion removes associated data as described in the privacy policy and public account deletion page.',
+        },
+        {
+          title: 'Service changes',
+          body:
+            'Mur may change, pause, or discontinue features to improve the service, comply with legal requirements, or protect the community. If these terms materially change, we will update this page.',
         },
       ],
     },
@@ -453,6 +535,7 @@ function HeaderMenu({ t, styles, narrow = false }) {
   const panelStyle = narrow ? styles.legalSoft : styles.surface
   const links = [
     { href: '/privacy', label: t.nav.privacy, icon: FileText },
+    { href: '/terms', label: t.nav.terms, icon: ShieldCheck },
     { href: '/delete-account', label: t.nav.deleteAccount, icon: Trash2 },
   ]
 
@@ -650,6 +733,9 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
               <a className={`transition ${styles.navText}`} href="/privacy">
                 {t.footer.privacy}
               </a>
+              <a className={`transition ${styles.navText}`} href="/terms">
+                {t.footer.terms}
+              </a>
               <a className={`transition ${styles.navText}`} href="/delete-account">
                 {t.footer.deleteAccount}
               </a>
@@ -707,6 +793,9 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
           <div className="flex gap-4">
             <a className={`transition ${styles.navTextNarrow}`} href="/privacy">
               {t.footer.privacy}
+            </a>
+            <a className={`transition ${styles.navTextNarrow}`} href="/terms">
+              {t.footer.terms}
             </a>
             <a className={`transition ${styles.navTextNarrow}`} href="/delete-account">
               {t.footer.deleteAccount}
@@ -825,7 +914,7 @@ function HomePage({ t, styles }) {
   )
 }
 
-function LegalPage({ t, styles }) {
+function LegalPage({ content, styles }) {
   return (
     <section className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
       <div className="mx-auto max-w-3xl">
@@ -834,25 +923,25 @@ function LegalPage({ t, styles }) {
           className={`inline-flex items-center gap-2 text-sm font-semibold transition ${styles.navTextNarrow}`}
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-          {t.legal.back}
+          {content.back}
         </a>
         <div className={`mt-8 border-b pb-8 ${styles.legalBorder}`}>
           <div className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border ${styles.legalSoft}`}>
             <FileText aria-hidden="true" className="h-5 w-5" />
           </div>
           <p className={`mt-6 text-sm font-semibold uppercase tracking-wide ${styles.legalMuted}`}>
-            {t.legal.effective}
+            {content.effective}
           </p>
           <h1 className={`mt-3 text-4xl font-bold tracking-tight ${styles.text}`}>
-            {t.legal.title}
+            {content.title}
           </h1>
           <p className={`mt-5 text-base leading-7 ${styles.legalMuted}`}>
-            {t.legal.intro}
+            {content.intro}
           </p>
         </div>
 
         <div className={`divide-y ${styles.legalDivide}`}>
-          {t.legal.sections.map((section) => (
+          {content.sections.map((section) => (
             <article key={section.title} className="py-8">
               <h2 className={`text-xl font-semibold ${styles.text}`}>
                 {section.title}
@@ -938,6 +1027,7 @@ function App() {
   )
   const path = window.location.pathname
   const isPrivacy = path === '/privacy' || path === '/privacy-policy'
+  const isTerms = path === '/terms' || path === '/terms-of-service'
   const isDeleteAccount = path === '/delete-account'
   const t = CONTENT[language]
   const styles = THEME[theme]
@@ -953,7 +1043,7 @@ function App() {
     document.body.style.backgroundColor = theme === 'dark' ? '#161622' : '#f3e8d7'
   }, [theme])
 
-  if (isPrivacy || isDeleteAccount) {
+  if (isPrivacy || isTerms || isDeleteAccount) {
     return (
       <LegalShell
         language={language}
@@ -963,7 +1053,8 @@ function App() {
         t={t}
         styles={styles}
       >
-        {isPrivacy ? <LegalPage t={t} styles={styles} /> : null}
+        {isPrivacy ? <LegalPage content={t.legal} styles={styles} /> : null}
+        {isTerms ? <LegalPage content={t.terms} styles={styles} /> : null}
         {isDeleteAccount ? <DeleteAccountPage t={t} styles={styles} /> : null}
       </LegalShell>
     )
