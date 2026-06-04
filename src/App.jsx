@@ -27,6 +27,8 @@ const BRAND = {
   launchDeadline: '2026-06-07T23:59:59-03:00',
 }
 
+const SUPABASE_AUTH_VERIFY_URL = 'https://frvmbtricktaofyflhvv.supabase.co/auth/v1/verify'
+
 const LANGUAGES = ['es', 'en']
 const THEMES = ['dark', 'light']
 
@@ -1047,19 +1049,19 @@ function ResetPasswordBridgePage({ t, styles }) {
   const searchParams = new URLSearchParams(window.location.search)
   const tokenHash = searchParams.get('token_hash') ?? ''
   const type = searchParams.get('type') ?? 'recovery'
-  const appUrl = tokenHash
-    ? `myapp://reset-password?token_hash=${encodeURIComponent(tokenHash)}&type=${encodeURIComponent(type)}`
+  const verifyUrl = tokenHash
+    ? `${SUPABASE_AUTH_VERIFY_URL}?token=${encodeURIComponent(tokenHash)}&type=${encodeURIComponent(type)}&redirect_to=${encodeURIComponent('myapp://reset-password')}`
     : ''
 
   useEffect(() => {
-    if (!appUrl) return undefined
+    if (!verifyUrl) return undefined
 
     const timer = window.setTimeout(() => {
-      window.location.href = appUrl
+      window.location.href = verifyUrl
     }, 400)
 
     return () => window.clearTimeout(timer)
-  }, [appUrl])
+  }, [verifyUrl])
 
   return (
     <section className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
@@ -1083,13 +1085,13 @@ function ResetPasswordBridgePage({ t, styles }) {
             {t.resetPassword.title}
           </h1>
           <p className={`mx-auto mt-5 max-w-xl text-base leading-7 ${styles.legalMuted}`}>
-            {appUrl ? t.resetPassword.intro : t.resetPassword.invalid}
+            {verifyUrl ? t.resetPassword.intro : t.resetPassword.invalid}
           </p>
 
-          {appUrl ? (
+          {verifyUrl ? (
             <>
               <a
-                href={appUrl}
+                href={verifyUrl}
                 className={`mt-7 inline-flex min-h-12 items-center justify-center rounded-lg px-6 text-sm font-bold transition ${styles.primaryButton}`}
               >
                 {t.resetPassword.button}
