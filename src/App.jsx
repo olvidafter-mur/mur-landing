@@ -7,6 +7,7 @@ import {
   Compass,
   FileText,
   Globe2,
+  KeyRound,
   Mail,
   MapPin,
   Menu,
@@ -241,6 +242,18 @@ const CONTENT = {
         'Escribinos desde el email asociado a tu cuenta y pedinos la eliminacion de cuenta y datos. Usamos ese email para verificar la titularidad antes de procesar la solicitud.',
       mailSubject: 'Solicitud de eliminacion de cuenta Mur',
     },
+    resetPassword: {
+      back: 'Volver',
+      badge: 'Seguridad de la cuenta',
+      title: 'Abrir Mur para cambiar tu contrasena',
+      intro:
+        'Estamos abriendo la app para que puedas elegir una nueva contrasena de forma segura.',
+      button: 'Abrir Mur',
+      fallback:
+        'Si la app no se abre automaticamente, toca el boton. Este enlace solo es valido por un tiempo limitado.',
+      invalid:
+        'El enlace de recuperacion no es valido o ya no contiene la informacion necesaria. Vuelve a solicitar un nuevo email desde la app.',
+    },
   },
   en: {
     locale: 'en-US',
@@ -399,6 +412,18 @@ const CONTENT = {
       noAccessBody:
         'Email us from the address associated with your account and request account and data deletion. We use that email to verify ownership before processing the request.',
       mailSubject: 'Mur account deletion request',
+    },
+    resetPassword: {
+      back: 'Back',
+      badge: 'Account security',
+      title: 'Open Mur to change your password',
+      intro:
+        'We are opening the app so you can choose a new password securely.',
+      button: 'Open Mur',
+      fallback:
+        'If the app does not open automatically, tap the button. This link is only valid for a limited time.',
+      invalid:
+        'This recovery link is invalid or no longer contains the required information. Please request a new email from the app.',
     },
   },
 }
@@ -1018,6 +1043,68 @@ function DeleteAccountPage({ t, styles }) {
   )
 }
 
+function ResetPasswordBridgePage({ t, styles }) {
+  const searchParams = new URLSearchParams(window.location.search)
+  const tokenHash = searchParams.get('token_hash') ?? ''
+  const type = searchParams.get('type') ?? 'recovery'
+  const appUrl = tokenHash
+    ? `myapp://reset-password?token_hash=${encodeURIComponent(tokenHash)}&type=${encodeURIComponent(type)}`
+    : ''
+
+  useEffect(() => {
+    if (!appUrl) return undefined
+
+    const timer = window.setTimeout(() => {
+      window.location.href = appUrl
+    }, 400)
+
+    return () => window.clearTimeout(timer)
+  }, [appUrl])
+
+  return (
+    <section className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+      <div className="mx-auto max-w-3xl">
+        <a
+          href="/"
+          className={`inline-flex items-center gap-2 text-sm font-semibold transition ${styles.navTextNarrow}`}
+        >
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+          {t.resetPassword.back}
+        </a>
+
+        <div className={`mt-8 rounded-lg border p-8 text-center ${styles.surface}`}>
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 text-accent">
+            <KeyRound aria-hidden="true" className="h-6 w-6" />
+          </div>
+          <p className={`mt-6 text-sm font-semibold uppercase tracking-wide ${styles.legalMuted}`}>
+            {t.resetPassword.badge}
+          </p>
+          <h1 className={`mx-auto mt-3 max-w-xl text-3xl font-bold tracking-tight ${styles.text}`}>
+            {t.resetPassword.title}
+          </h1>
+          <p className={`mx-auto mt-5 max-w-xl text-base leading-7 ${styles.legalMuted}`}>
+            {appUrl ? t.resetPassword.intro : t.resetPassword.invalid}
+          </p>
+
+          {appUrl ? (
+            <>
+              <a
+                href={appUrl}
+                className={`mt-7 inline-flex min-h-12 items-center justify-center rounded-lg px-6 text-sm font-bold transition ${styles.primaryButton}`}
+              >
+                {t.resetPassword.button}
+              </a>
+              <p className={`mx-auto mt-5 max-w-lg text-sm leading-6 ${styles.legalMuted}`}>
+                {t.resetPassword.fallback}
+              </p>
+            </>
+          ) : null}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function App() {
   const [language, setLanguage] = useState(() =>
     getStoredPreference('mur-language', LANGUAGES, 'es'),
@@ -1029,6 +1116,7 @@ function App() {
   const isPrivacy = path === '/privacy' || path === '/privacy-policy'
   const isTerms = path === '/terms' || path === '/terms-of-service'
   const isDeleteAccount = path === '/delete-account'
+  const isResetPassword = path === '/reset-password'
   const t = CONTENT[language]
   const styles = THEME[theme]
 
@@ -1043,7 +1131,7 @@ function App() {
     document.body.style.backgroundColor = theme === 'dark' ? '#161622' : '#f3e8d7'
   }, [theme])
 
-  if (isPrivacy || isTerms || isDeleteAccount) {
+  if (isPrivacy || isTerms || isDeleteAccount || isResetPassword) {
     return (
       <LegalShell
         language={language}
@@ -1056,6 +1144,7 @@ function App() {
         {isPrivacy ? <LegalPage content={t.legal} styles={styles} /> : null}
         {isTerms ? <LegalPage content={t.terms} styles={styles} /> : null}
         {isDeleteAccount ? <DeleteAccountPage t={t} styles={styles} /> : null}
+        {isResetPassword ? <ResetPasswordBridgePage t={t} styles={styles} /> : null}
       </LegalShell>
     )
   }
