@@ -6,7 +6,7 @@ import {
   Compass,
   FileText,
   Globe2,
-  Instagram,
+  AtSign,
   KeyRound,
   Mail,
   MapPin,
@@ -558,7 +558,7 @@ function HeaderMenu({ t, styles, narrow = false }) {
     { href: '/privacy', label: t.nav.privacy, icon: FileText },
     { href: '/terms', label: t.nav.terms, icon: ShieldCheck },
     { href: '/delete-account', label: t.nav.deleteAccount, icon: Trash2 },
-    { href: BRAND.instagramUrl, label: BRAND.instagramHandle, icon: Instagram, external: true },
+    { href: BRAND.instagramUrl, label: BRAND.instagramHandle, icon: AtSign, external: true },
   ]
 
   return (
@@ -850,7 +850,7 @@ function HomePage({ t, styles }) {
               target="_blank"
               rel="noreferrer"
             >
-              <Instagram aria-hidden="true" className="h-4 w-4 text-accent" />
+              <AtSign aria-hidden="true" className="h-4 w-4 text-accent" />
               {BRAND.instagramHandle}
             </a>
             <a
