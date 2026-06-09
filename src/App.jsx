@@ -108,6 +108,8 @@ const CONTENT = {
     home: {
       title: 'Mur',
       comingSoon: 'Muy pronto',
+      mascotAlt: 'OLVI, la mascota de Mur, saludando',
+      mascotLabel: 'OLVI ya esta preparando Mur',
       subtitle: 'El mundo está conectado. Tu barrio también debería estarlo.',
       body:
         'Publica posts visibles en tu zona, explora actividad en el mapa, comenta con personas cercanas y recibe alertas filtradas por las categorias que te importan.',
@@ -278,6 +280,8 @@ const CONTENT = {
     home: {
       title: 'Mur',
       comingSoon: 'Coming soon',
+      mascotAlt: 'OLVI, Mur mascot, waving',
+      mascotLabel: 'OLVI is getting Mur ready',
       subtitle: 'The world is connected. Your neighborhood should be too.',
       body:
         'Publish posts visible in your area, explore activity on the map, comment with nearby people, and receive alerts filtered by the categories you care about.',
@@ -808,18 +812,30 @@ function HomePage({ t, styles }) {
         <motion.div
           initial="hidden"
           animate="visible"
-          className="mx-auto max-w-4xl text-center"
+          className="relative mx-auto max-w-5xl text-center"
         >
-          <motion.h1
+          <motion.div
             variants={heroItem}
-            className="flex justify-center"
+            className="flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-8"
           >
-            <img
-              src="/logo.png"
-              alt={t.home.title}
-              className="h-40 w-40 object-contain sm:h-52 sm:w-52 lg:h-64 lg:w-64"
-            />
-          </motion.h1>
+            <h1 className="flex justify-center">
+              <img
+                src="/logo.png"
+                alt={t.home.title}
+                className="h-36 w-36 object-contain sm:h-48 sm:w-48 lg:h-60 lg:w-60"
+              />
+            </h1>
+            <div className="flex max-w-xs flex-col items-center">
+              <img
+                src="/olvi.png"
+                alt={t.home.mascotAlt}
+                className="h-44 w-44 object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.28)] sm:h-52 sm:w-52 lg:h-60 lg:w-60"
+              />
+              <span className={`mt-1 rounded-full border px-3 py-1 text-xs font-bold ${styles.softSurface}`}>
+                {t.home.mascotLabel}
+              </span>
+            </div>
+          </motion.div>
           <motion.p
             variants={heroItem}
             className={`mx-auto mt-7 max-w-3xl text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl ${styles.text}`}
