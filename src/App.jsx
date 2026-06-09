@@ -6,6 +6,7 @@ import {
   Compass,
   FileText,
   Globe2,
+  Instagram,
   KeyRound,
   Mail,
   MapPin,
@@ -21,7 +22,9 @@ import NetworkBackground from './components/NetworkBackground'
 
 const BRAND = {
   name: 'Mur',
-  supportEmail: 'support@olvidafter.com',
+  supportEmail: 'olvidaftech.mur@gmail.com',
+  instagramHandle: '@mur.app',
+  instagramUrl: 'https://www.instagram.com/mur.app/',
 }
 
 const LANGUAGES = ['es', 'en']
@@ -100,12 +103,15 @@ const CONTENT = {
       privacy: 'Política de privacidad',
       terms: 'Términos',
       deleteAccount: 'Eliminar cuenta y datos',
+      email: 'Email',
     },
     home: {
       title: 'Mur',
+      comingSoon: 'Muy pronto',
       subtitle: 'El mundo está conectado. Tu barrio también debería estarlo.',
       body:
         'Publica posts visibles en tu zona, explora actividad en el mapa, comenta con personas cercanas y recibe alertas filtradas por las categorias que te importan.',
+      socialLabel: 'Seguinos para novedades',
       featuresLabel: 'Que podes hacer',
       featuresTitle: 'Una app para descubrir, publicar y cuidar tu zona',
       featuresBody:
@@ -267,12 +273,15 @@ const CONTENT = {
       privacy: 'Privacy policy',
       terms: 'Terms',
       deleteAccount: 'Delete account and data',
+      email: 'Email',
     },
     home: {
       title: 'Mur',
+      comingSoon: 'Coming soon',
       subtitle: 'The world is connected. Your neighborhood should be too.',
       body:
         'Publish posts visible in your area, explore activity on the map, comment with nearby people, and receive alerts filtered by the categories you care about.',
+      socialLabel: 'Follow us for updates',
       featuresLabel: 'What you can do',
       featuresTitle: 'An app to discover, publish, and protect your area',
       featuresBody:
@@ -549,6 +558,7 @@ function HeaderMenu({ t, styles, narrow = false }) {
     { href: '/privacy', label: t.nav.privacy, icon: FileText },
     { href: '/terms', label: t.nav.terms, icon: ShieldCheck },
     { href: '/delete-account', label: t.nav.deleteAccount, icon: Trash2 },
+    { href: BRAND.instagramUrl, label: BRAND.instagramHandle, icon: Instagram, external: true },
   ]
 
   return (
@@ -571,11 +581,13 @@ function HeaderMenu({ t, styles, narrow = false }) {
       {isOpen && (
         <div className={`absolute right-0 top-12 z-50 w-[min(19rem,calc(100vw-1.5rem))] rounded-lg border p-2 ${panelStyle}`}>
           <div className="grid gap-2">
-            {links.map(({ href, label, icon: Icon }) => (
+            {links.map(({ href, label, icon: Icon, external }) => (
               <a
                 key={href}
                 className={`flex min-h-11 items-center gap-3 rounded-lg border px-3.5 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${itemStyle}`}
                 href={href}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noreferrer' : undefined}
                 onClick={() => setIsOpen(false)}
               >
                 <Icon aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
@@ -653,6 +665,7 @@ function TypewriterText({ text }) {
 
 function MarketingShell({ children, language, setLanguage, theme, setTheme, t, styles }) {
   const currentYear = new Date().getFullYear()
+  const mailto = `mailto:${BRAND.supportEmail}`
 
   return (
     <main className={`relative min-h-screen overflow-hidden ${styles.marketingPage}`}>
@@ -697,7 +710,13 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
         <footer className="px-4 py-8 sm:px-6 lg:px-8">
           <div className={`mx-auto flex max-w-6xl flex-col gap-3 text-sm ${styles.muted} sm:flex-row sm:items-center sm:justify-between`}>
             <span>© {currentYear} {BRAND.name}. {t.footer.tagline}</span>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
+              <a className={`transition ${styles.navText}`} href={BRAND.instagramUrl} target="_blank" rel="noreferrer">
+                {BRAND.instagramHandle}
+              </a>
+              <a className={`transition ${styles.navText}`} href={mailto}>
+                {t.footer.email}
+              </a>
               <a className={`transition ${styles.navText}`} href="/privacy">
                 {t.footer.privacy}
               </a>
@@ -717,6 +736,7 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
 
 function LegalShell({ children, language, setLanguage, theme, setTheme, t, styles }) {
   const currentYear = new Date().getFullYear()
+  const mailto = `mailto:${BRAND.supportEmail}`
 
   return (
     <main className={`min-h-screen ${styles.legalPage}`}>
@@ -758,7 +778,13 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
       <footer className={`border-t px-4 py-8 sm:px-6 lg:px-8 ${styles.navNarrow}`}>
         <div className={`mx-auto flex max-w-5xl flex-col gap-3 text-sm ${styles.legalMuted} sm:flex-row sm:items-center sm:justify-between`}>
           <span>© {currentYear} {BRAND.name}.</span>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
+            <a className={`transition ${styles.navTextNarrow}`} href={BRAND.instagramUrl} target="_blank" rel="noreferrer">
+              {BRAND.instagramHandle}
+            </a>
+            <a className={`transition ${styles.navTextNarrow}`} href={mailto}>
+              {t.footer.email}
+            </a>
             <a className={`transition ${styles.navTextNarrow}`} href="/privacy">
               {t.footer.privacy}
             </a>
@@ -801,12 +827,40 @@ function HomePage({ t, styles }) {
             <span className="sr-only">{t.home.subtitle}</span>
             <TypewriterText text={t.home.subtitle} />
           </motion.p>
+          <motion.div
+            variants={heroItem}
+            className="mt-6 inline-flex items-center rounded-full border border-accent/70 bg-accent/10 px-4 py-2 text-sm font-bold uppercase tracking-[0.22em] text-accent"
+          >
+            {t.home.comingSoon}
+          </motion.div>
           <motion.p
             variants={heroItem}
             className={`mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg ${styles.muted}`}
           >
             {t.home.body}
           </motion.p>
+          <motion.div
+            variants={heroItem}
+            className="mt-7 flex flex-wrap items-center justify-center gap-3"
+            aria-label={t.home.socialLabel}
+          >
+            <a
+              className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-bold transition ${styles.navLink}`}
+              href={BRAND.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Instagram aria-hidden="true" className="h-4 w-4 text-accent" />
+              {BRAND.instagramHandle}
+            </a>
+            <a
+              className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-bold transition ${styles.navLink}`}
+              href={`mailto:${BRAND.supportEmail}`}
+            >
+              <Mail aria-hidden="true" className="h-4 w-4 text-accent" />
+              {BRAND.supportEmail}
+            </a>
+          </motion.div>
         </motion.div>
       </section>
 
