@@ -812,30 +812,18 @@ function HomePage({ t, styles }) {
         <motion.div
           initial="hidden"
           animate="visible"
-          className="relative mx-auto max-w-5xl text-center"
+          className="mx-auto max-w-4xl text-center"
         >
-          <motion.div
+          <motion.h1
             variants={heroItem}
-            className="flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-8"
+            className="flex justify-center"
           >
-            <h1 className="flex justify-center">
-              <img
-                src="/logo.png"
-                alt={t.home.title}
-                className="h-36 w-36 object-contain sm:h-48 sm:w-48 lg:h-60 lg:w-60"
-              />
-            </h1>
-            <div className="flex max-w-xs flex-col items-center">
-              <img
-                src="/olvi.png"
-                alt={t.home.mascotAlt}
-                className="h-44 w-44 object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.28)] sm:h-52 sm:w-52 lg:h-60 lg:w-60"
-              />
-              <span className={`mt-1 rounded-full border px-3 py-1 text-xs font-bold ${styles.softSurface}`}>
-                {t.home.mascotLabel}
-              </span>
-            </div>
-          </motion.div>
+            <img
+              src="/logo.png"
+              alt={t.home.title}
+              className="h-40 w-40 object-contain sm:h-52 sm:w-52 lg:h-64 lg:w-64"
+            />
+          </motion.h1>
           <motion.p
             variants={heroItem}
             className={`mx-auto mt-7 max-w-3xl text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl ${styles.text}`}
@@ -876,6 +864,19 @@ function HomePage({ t, styles }) {
               <Mail aria-hidden="true" className="h-4 w-4 text-accent" />
               {BRAND.supportEmail}
             </a>
+          </motion.div>
+          <motion.div
+            variants={heroItem}
+            className={`mx-auto mt-10 flex max-w-md items-center gap-4 rounded-lg border p-3 text-left ${styles.softSurface}`}
+          >
+            <img
+              src="/olvi.png"
+              alt={t.home.mascotAlt}
+              className="h-24 w-24 shrink-0 object-contain drop-shadow-[0_14px_28px_rgba(0,0,0,0.24)] sm:h-28 sm:w-28"
+            />
+            <p className={`text-sm font-bold leading-6 ${styles.text}`}>
+              {t.home.mascotLabel}
+            </p>
           </motion.div>
         </motion.div>
       </section>
