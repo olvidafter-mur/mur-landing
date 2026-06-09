@@ -70,51 +70,6 @@
     background: var(--nodes-vignette);
   }
 
-  .mur-flip-clock {
-    justify-content: center;
-    min-width: max-content;
-    color: inherit;
-    --fcc-flip-duration: 0.75s;
-    --fcc-digit-block-radius: 0.5rem;
-    --fcc-label-font-size: 0.72rem;
-    --fcc-divider-height: 2px;
-  }
-
-  .mur-flip-clock .fcc__digit_block {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-weight: 900;
-    letter-spacing: 0;
-  }
-
-  .mur-flip-clock .fcc__label {
-    margin-top: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-
-  .mur-flip-clock-dark {
-    --fcc-background: #161622;
-    --fcc-digit-color: #f3e8d7;
-    --fcc-divider-color: rgba(230, 210, 181, 0.28);
-    --fcc-separator-color: #ff9d00;
-    --fcc-shadow:
-      inset 0 1px 0 rgba(243, 232, 215, 0.14),
-      inset 0 -18px 28px rgba(0, 0, 0, 0.22),
-      0 14px 26px rgba(0, 0, 0, 0.28);
-  }
-
-  .mur-flip-clock-light {
-    --fcc-background: #e6d2b5;
-    --fcc-digit-color: #161622;
-    --fcc-divider-color: rgba(22, 22, 34, 0.24);
-    --fcc-separator-color: #ff9d00;
-    --fcc-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.85),
-      inset 0 -16px 24px rgba(15, 23, 42, 0.08),
-      0 12px 22px rgba(15, 23, 42, 0.14);
-  }
-
   .typewriter-text {
     display: grid;
     width: 100%;

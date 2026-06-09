@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft,
@@ -12,7 +11,6 @@ import {
   MapPin,
   Menu,
   Moon,
-  Rocket,
   ShieldCheck,
   Sun,
   Trash2,
@@ -24,7 +22,6 @@ import NetworkBackground from './components/NetworkBackground'
 const BRAND = {
   name: 'Mur',
   supportEmail: 'support@olvidafter.com',
-  launchDeadline: '2026-06-07T23:59:59-03:00',
 }
 
 const LANGUAGES = ['es', 'en']
@@ -47,7 +44,6 @@ const THEME = {
     surface: 'border-brand-cream/15 bg-surface-strong/85 shadow-soft backdrop-blur-md',
     softSurface: 'border-brand-cream/15 bg-surface/75 backdrop-blur-md',
     insetSurface: 'border-brand-cream/15 bg-brand-blue/70',
-    flipClock: 'mur-flip-clock-dark',
     legalBorder: 'border-brand-cream/15',
     legalMuted: 'text-brand-cream/85',
     legalSoft: 'border-brand-cream/15 bg-brand-cream/[0.06] text-brand-cream-light',
@@ -72,7 +68,6 @@ const THEME = {
     surface: 'border-brand-blue/10 bg-white/70 shadow-[0_18px_60px_rgba(22,22,34,0.08)] backdrop-blur-sm',
     softSurface: 'border-brand-blue/10 bg-white/65',
     insetSurface: 'border-brand-blue/10 bg-white/55',
-    flipClock: 'mur-flip-clock-light',
     legalBorder: 'border-brand-blue/10',
     legalMuted: 'text-brand-blue/75',
     legalSoft: 'border-brand-blue/10 bg-white/65 text-brand-blue-deep',
@@ -117,10 +112,6 @@ const CONTENT = {
         'Mur esta pensada para contenido inmediato y local: menos ruido, mas contexto y controles claros para participar con seguridad.',
       stepsLabel: 'Flujo simple',
       stepsTitle: 'De tu ubicacion al feed en pocos pasos',
-    },
-    countdown: {
-      title: 'Lanzamiento',
-      units: ['dias', 'horas', 'minutos', 'segundos'],
     },
     features: [
       {
@@ -288,10 +279,6 @@ const CONTENT = {
         'Mur is built for immediate local content: less noise, more context, and clear controls to participate safely.',
       stepsLabel: 'Simple flow',
       stepsTitle: 'From your location to the feed in a few steps',
-    },
-    countdown: {
-      title: 'Launch',
-      units: ['days', 'hours', 'minutes', 'seconds'],
     },
     features: [
       {
@@ -664,50 +651,6 @@ function TypewriterText({ text }) {
   )
 }
 
-function LaunchCountdown({ t, styles }) {
-  return (
-    <section id="countdown" className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
-      <div className={`mx-auto max-w-5xl rounded-lg border px-5 py-8 text-center ${styles.surface}`}>
-        <div className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.28em] text-accent">
-          <Rocket aria-hidden="true" className="h-4 w-4" />
-          {t.countdown.title}
-        </div>
-
-        <div className="mt-8 flex justify-center overflow-x-auto px-1 pb-6 pt-1">
-          <FlipClockCountdown
-            to={new Date(BRAND.launchDeadline).getTime()}
-            labels={t.countdown.units}
-            className={`mur-flip-clock ${styles.flipClock}`}
-            duration={0.75}
-            hideOnComplete={false}
-            stopOnHiddenVisibility
-            spacing={{
-              clock: 'clamp(0.35rem, 2vw, 1.1rem)',
-              digitBlock: 'clamp(0.18rem, 0.8vw, 0.38rem)',
-            }}
-            digitBlockStyle={{
-              width: 'clamp(2rem, 7vw, 4.25rem)',
-              height: 'clamp(3.15rem, 10vw, 6.6rem)',
-              borderRadius: '0.5rem',
-              fontSize: 'clamp(1.9rem, 6vw, 4.5rem)',
-            }}
-            labelStyle={{
-              fontSize: '0.72rem',
-              color: 'currentColor',
-            }}
-            dividerStyle={{
-              height: '2px',
-            }}
-            separatorStyle={{
-              size: 'clamp(0.22rem, 0.8vw, 0.36rem)',
-            }}
-          />
-        </div>
-      </div>
-    </section>
-  )
-}
-
 function MarketingShell({ children, language, setLanguage, theme, setTheme, t, styles }) {
   const currentYear = new Date().getFullYear()
 
@@ -866,8 +809,6 @@ function HomePage({ t, styles }) {
           </motion.p>
         </motion.div>
       </section>
-
-      <LaunchCountdown t={t} styles={styles} />
 
       <section id="features" className="px-4 pb-16 pt-4 sm:px-6 sm:pb-20 lg:px-8">
         <div className="mx-auto max-w-6xl">
