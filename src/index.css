@@ -28,7 +28,7 @@
 }
 
 @layer components {
-  .neighborhood-background {
+  .local-background {
     position: fixed;
     inset: 0;
     z-index: 0;
@@ -36,28 +36,28 @@
     pointer-events: none;
   }
 
-  .neighborhood-background::before,
-  .neighborhood-background::after {
+  .local-background::before,
+  .local-background::after {
     position: absolute;
     content: "";
     inset: 0;
   }
 
-  .neighborhood-background-light {
+  .local-background-light {
     background:
       linear-gradient(115deg, rgba(221, 237, 234, 0.75), transparent 34%),
       linear-gradient(245deg, rgba(248, 229, 200, 0.78), transparent 38%),
       #fbf6ec;
   }
 
-  .neighborhood-background-dark {
+  .local-background-dark {
     background:
       radial-gradient(circle at 20% 16%, rgba(255, 156, 1, 0.18), transparent 28%),
       radial-gradient(circle at 82% 24%, rgba(230, 210, 181, 0.1), transparent 32%),
       linear-gradient(180deg, #161622 0%, #111827 100%);
   }
 
-  .neighborhood-background::before {
+  .local-background::before {
     background:
       linear-gradient(90deg, currentColor 1px, transparent 1px),
       linear-gradient(0deg, currentColor 1px, transparent 1px);
@@ -66,22 +66,22 @@
     transform: rotate(-7deg) scale(1.15);
   }
 
-  .neighborhood-background-light::before {
+  .local-background-light::before {
     color: #25211b;
   }
 
-  .neighborhood-background-dark::before {
+  .local-background-dark::before {
     color: #e6d2b5;
     opacity: 0.06;
   }
 
-  .neighborhood-background::after {
+  .local-background::after {
     background:
       linear-gradient(180deg, rgba(251, 246, 236, 0.12), rgba(251, 246, 236, 0.74)),
       radial-gradient(circle at center, transparent 48%, rgba(251, 246, 236, 0.5));
   }
 
-  .neighborhood-background-dark::after {
+  .local-background-dark::after {
     background:
       linear-gradient(180deg, rgba(22, 22, 34, 0.04), rgba(22, 22, 34, 0.74)),
       radial-gradient(circle at center, transparent 46%, rgba(17, 24, 39, 0.78));

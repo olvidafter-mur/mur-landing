@@ -49,7 +49,6 @@ const useCaseIcons = [MapPin, Bell, Compass, ShieldCheck]
 const navAnchors = [
   { href: '#how-it-works', key: 'howItWorks' },
   { href: '#safety', key: 'safety' },
-  { href: '#business', key: 'business' },
   { href: '#waitlist', key: 'waitlist' },
 ]
 
@@ -239,59 +238,21 @@ function HeaderMenu({ t, styles, narrow = false }) {
   )
 }
 
-function WaitlistActions({ t, styles, zone, compact = false }) {
-  const detail = useMemo(() => ({ zone: zone.trim() || undefined }), [zone])
-
-  const submitWaitlist = (event) => {
-    event.preventDefault()
-    trackEvent('waitlist_submission', detail)
-    window.location.href = BRAND.waitlistUrl
+function WaitlistAction({ t, styles }) {
+  const handleClick = () => {
+    trackEvent('waitlist_submission')
   }
 
-  const trackResidentClick = () => trackEvent('main_cta_click', detail)
-  const trackBusinessClick = () => trackEvent('business_cta_click', detail)
-
   return (
-    <form
-      className={`flex ${compact ? 'flex-col sm:flex-row' : 'flex-col sm:flex-row'} gap-3`}
-      onSubmit={submitWaitlist}
+    <a
+      href={BRAND.waitlistUrl}
+      target="_blank"
+      rel="noreferrer"
+      onClick={handleClick}
+      className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${styles.primaryButton}`}
     >
-      <button
-        type="submit"
-        onClick={trackResidentClick}
-        className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${styles.primaryButton}`}
-      >
-        {compact ? t.home.residentCta : t.home.primaryCta}
-      </button>
-      <a
-        href={BRAND.waitlistUrl}
-        target="_blank"
-        rel="noreferrer"
-        onClick={trackBusinessClick}
-        className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border px-5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.secondaryButton}`}
-      >
-        {compact ? t.home.businessCta : t.home.secondaryCta}
-      </a>
-    </form>
-  )
-}
-
-function ZoneField({ t, styles, zone, setZone, id = 'zone' }) {
-  return (
-    <div>
-      <label htmlFor={id} className={`block text-sm font-bold ${styles.text}`}>
-        {t.home.zoneLabel}
-      </label>
-      <input
-        id={id}
-        value={zone}
-        onChange={(event) => setZone(event.target.value)}
-        onBlur={() => trackEvent('zone_selection', { zone: zone.trim() || undefined })}
-        placeholder={t.home.zonePlaceholder}
-        className={`mt-2 min-h-12 w-full rounded-lg border px-4 text-base outline-none transition placeholder:text-current/40 focus:border-brand-amber focus:ring-2 focus:ring-brand-amber/25 ${styles.insetSurface}`}
-      />
-      <p className={`mt-2 text-xs leading-5 ${styles.muted}`}>{t.home.zoneHint}</p>
-    </div>
+      {t.home.primaryCta}
+    </a>
   )
 }
 
@@ -360,7 +321,7 @@ function AppPreview({ t, styles }) {
   )
 }
 
-function HeroSection({ t, styles, zone, setZone }) {
+function HeroSection({ t, styles }) {
   return (
     <section className="relative px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:px-8">
       <motion.div
@@ -406,11 +367,8 @@ function HeroSection({ t, styles, zone, setZone }) {
             </p>
           </motion.div>
 
-          <motion.div variants={fadeUp} className="mt-7 max-w-xl">
-            <ZoneField t={t} styles={styles} zone={zone} setZone={setZone} id="hero-zone" />
-            <div className="mt-5">
-              <WaitlistActions t={t} styles={styles} zone={zone} />
-            </div>
+          <motion.div variants={fadeUp} className="mt-7">
+            <WaitlistAction t={t} styles={styles} />
           </motion.div>
         </div>
 
@@ -568,10 +526,10 @@ function SafetyBusinessSection({ t, styles }) {
             href={BRAND.waitlistUrl}
             target="_blank"
             rel="noreferrer"
-            onClick={() => trackEvent('business_cta_click', { placement: 'business_section' })}
+            onClick={() => trackEvent('main_cta_click', { placement: 'business_section' })}
             className={`mt-8 inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${styles.primaryButton}`}
           >
-            {t.home.businessCta}
+            {t.home.primaryCta}
           </a>
         </article>
       </div>
@@ -579,7 +537,7 @@ function SafetyBusinessSection({ t, styles }) {
   )
 }
 
-function WaitlistSection({ t, styles, zone, setZone }) {
+function WaitlistSection({ t, styles }) {
   return (
     <section id="waitlist" className="scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
       <div className={`mx-auto grid max-w-6xl gap-8 rounded-lg border p-6 sm:p-8 lg:grid-cols-[0.95fr_1.05fr] ${styles.surface}`}>
@@ -591,11 +549,8 @@ function WaitlistSection({ t, styles, zone, setZone }) {
             styles={styles}
           />
         </div>
-        <div className={`rounded-lg border p-5 ${styles.softSurface}`}>
-          <ZoneField t={t} styles={styles} zone={zone} setZone={setZone} id="waitlist-zone" />
-          <div className="mt-5">
-            <WaitlistActions t={t} styles={styles} zone={zone} compact />
-          </div>
+        <div className={`flex items-center rounded-lg border p-5 ${styles.softSurface}`}>
+          <WaitlistAction t={t} styles={styles} />
         </div>
       </div>
     </section>
@@ -631,16 +586,14 @@ function FaqSection({ t, styles }) {
 }
 
 function HomePage({ t, styles }) {
-  const [zone, setZone] = useState('')
-
   return (
     <>
-      <HeroSection t={t} styles={styles} zone={zone} setZone={setZone} />
+      <HeroSection t={t} styles={styles} />
       <UseCasesSection t={t} styles={styles} />
       <ProductSection t={t} styles={styles} />
       <HowItWorksSection t={t} styles={styles} />
       <SafetyBusinessSection t={t} styles={styles} />
-      <WaitlistSection t={t} styles={styles} zone={zone} setZone={setZone} />
+      <WaitlistSection t={t} styles={styles} />
       <FaqSection t={t} styles={styles} />
     </>
   )
@@ -654,7 +607,7 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
     <main className={`relative min-h-screen overflow-hidden ${styles.marketingPage}`}>
       <div
         aria-hidden="true"
-        className={`neighborhood-background neighborhood-background-${theme}`}
+        className={`local-background local-background-${theme}`}
       />
 
       <div className="relative z-10">
@@ -737,7 +690,7 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
     <main className={`min-h-screen ${styles.legalPage}`}>
       <div
         aria-hidden="true"
-        className={`neighborhood-background neighborhood-background-${theme}`}
+        className={`local-background local-background-${theme}`}
       />
 
       <div className="relative z-10">

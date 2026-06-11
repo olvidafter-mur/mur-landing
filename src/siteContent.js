@@ -100,7 +100,7 @@ const privacySectionsEs = [
   {
     title: 'Uso de ubicación',
     body:
-      'La ubicación se usa para mostrar publicaciones cercanas, publicar contenido en tu zona y enviar alertas cercanas opcionales. Compartir la ubicación exacta de una publicación es opcional.',
+      'La ubicación se usa para mostrar publicaciones cercanas, publicar contenido con contexto y enviar alertas cercanas opcionales. Compartir la ubicación exacta de una publicación es opcional.',
   },
   {
     title: 'Seguridad y moderación',
@@ -123,7 +123,7 @@ const privacySectionsEn = [
   {
     title: 'Location use',
     body:
-      'Location is used to show nearby posts, publish content in your area, and send optional nearby alerts. Sharing an exact post location is optional.',
+      'Location is used to show nearby posts, publish with context, and send optional nearby alerts. Sharing an exact post location is optional.',
   },
   {
     title: 'Safety and moderation',
@@ -199,7 +199,7 @@ export const CONTENT = {
     meta: {
       title: 'MUR | Lo que pasa cerca importa',
       description:
-        'MUR es una app hiperlocal para enterarte, publicar y ayudar en tu zona con alertas, comercios y novedades cercanas.',
+        'MUR es una app hiperlocal para enterarte, publicar y ayudar con alertas, comercios y novedades cercanas.',
     },
     nav: {
       menu: 'Menú',
@@ -225,23 +225,19 @@ export const CONTENT = {
       email: 'Email',
     },
     home: {
-      heroBadge: 'Lanzamiento por zonas',
+      heroBadge: 'Muy pronto',
       title: 'Lo que pasa cerca importa.',
       body:
-        'Mascotas perdidas, alertas, accidentes, promos de comercios y novedades del barrio, todo cerca tuyo y con contexto.',
+        'Mascotas perdidas, alertas, accidentes, promos de comercios y novedades cercanas, todo cerca tuyo y con contexto.',
       primaryCta: 'Sumarme a la lista',
-      secondaryCta: 'Soy comercio',
-      zoneLabel: 'Tu zona o barrio',
-      zonePlaceholder: 'Ej: barrio, plaza, distrito o referencia',
-      zoneHint: 'Usamos tu zona para priorizar aperturas y avisarte cuando MUR llegue cerca tuyo.',
       mascotAlt: 'OLVI, la mascota de MUR',
-      mascotLabel: 'OLVI está preparando una app para que tu barrio se entienda mejor.',
+      mascotLabel: 'OLVI está preparando una app para que lo cercano se entienda mejor.',
       previewEyebrow: 'Vista de producto',
       previewTitle: 'Un feed local que no se siente como ruido.',
       previewBody:
         'Publicaciones cercanas, mapa, filtros por categoría y comentarios para resolver cosas concretas entre vecinos.',
       useCasesLabel: 'Usos cotidianos',
-      useCasesTitle: 'Hecha para lo que sí pasa en una zona real',
+      useCasesTitle: 'Hecha para lo que sí pasa cerca',
       productLabel: 'Cómo se ve',
       productTitle: 'Publicá con contexto, sin regalar más ubicación de la necesaria',
       productBody:
@@ -253,13 +249,11 @@ export const CONTENT = {
       businessLabel: 'Para comercios',
       businessTitle: 'Promos y novedades para vecinos reales',
       businessBody:
-        'MUR puede ayudar a un comercio a aparecer donde importa: cerca de personas que caminan, compran y recomiendan en la zona.',
-      businessCta: 'Quiero promocionar mi comercio',
+        'MUR puede ayudar a un comercio a aparecer donde importa: cerca de personas que caminan, compran y recomiendan.',
       waitlistLabel: 'Lista de espera',
       waitlistTitle: 'Sumate a la primera comunidad MUR',
       waitlistBody:
-        'Dejanos tu zona y completá el formulario. Vamos a abrir por áreas para que la experiencia arranque con actividad útil desde el primer día.',
-      residentCta: 'Quiero probar MUR',
+        'Completá el formulario de espera. Vamos a abrir gradualmente para que la experiencia arranque con actividad útil desde el primer día.',
       faqLabel: 'Preguntas frecuentes',
       faqTitle: 'Lo básico, claro',
       fictionalNote: 'Ejemplos ficticios para mostrar el uso del producto.',
@@ -268,7 +262,7 @@ export const CONTENT = {
       {
         title: 'Mascotas perdidas',
         body:
-          'Avisos cercanos con foto, zona aproximada y comentarios para coordinar ayuda rápido.',
+          'Avisos cercanos con foto, referencia aproximada y comentarios para coordinar ayuda rápido.',
       },
       {
         title: 'Tránsito y accidentes',
@@ -276,7 +270,7 @@ export const CONTENT = {
           'Alertas útiles para circular con cuidado, evitar una calle o avisar a quien viene cerca.',
       },
       {
-        title: 'Comercios de la zona',
+        title: 'Comercios cercanos',
         body:
           'Promos del día, horarios especiales y novedades vistas por gente que está cerca.',
       },
@@ -294,25 +288,25 @@ export const CONTENT = {
       },
       {
         category: 'Alerta',
-        title: 'Choque en la zona, circular con cuidado',
+        title: 'Choque cerca, circular con cuidado',
         meta: 'A 700 m · comentarios activos',
       },
       {
         category: 'Comercio',
-        title: 'Panadería del barrio con promo hoy',
+        title: 'Panadería cercana con promo hoy',
         meta: 'A 1,1 km · comercio verificado',
       },
     ],
     previewStats: ['Feed cerca tuyo', 'Mapa activo', 'Filtros por categoría'],
     productPoints: [
       'Feed cercano con publicaciones recientes.',
-      'Mapa con actividad de la zona.',
+      'Mapa con actividad cercana.',
       'Filtros para mascotas, alertas, comercios y novedades.',
       'Comentarios y likes para coordinar sin salir de la app.',
     ],
     steps: [
       {
-        title: 'Elegí tu zona',
+        title: 'Entrá a MUR',
         body:
           'MUR ordena la experiencia alrededor de donde vivís, trabajás o te movés todos los días.',
       },
@@ -349,7 +343,7 @@ export const CONTENT = {
       {
         question: '¿Qué puedo publicar?',
         answer:
-          'Alertas, mascotas perdidas, objetos encontrados, novedades, consultas, promos de comercios y otras publicaciones útiles para tu zona.',
+          'Alertas, mascotas perdidas, objetos encontrados, novedades, consultas, promos de comercios y otras publicaciones útiles.',
       },
       {
         question: '¿La ubicación exacta es obligatoria?',
@@ -419,7 +413,7 @@ export const CONTENT = {
     meta: {
       title: 'MUR | What happens nearby matters',
       description:
-        'MUR is a hyperlocal app for nearby alerts, posts, shops, and neighborhood updates.',
+        'MUR is a hyperlocal app for nearby alerts, posts, shops, and local updates.',
     },
     nav: {
       menu: 'Menu',
@@ -445,23 +439,19 @@ export const CONTENT = {
       email: 'Email',
     },
     home: {
-      heroBadge: 'Launching by area',
+      heroBadge: 'Coming soon',
       title: 'What happens nearby matters.',
       body:
-        'Lost pets, alerts, accidents, local shop promos, and neighborhood updates, all close to you and with useful context.',
+        'Lost pets, alerts, accidents, local shop promos, and nearby updates, all close to you and with useful context.',
       primaryCta: 'Join the waitlist',
-      secondaryCta: 'I run a shop',
-      zoneLabel: 'Your area or neighborhood',
-      zonePlaceholder: 'E.g. neighborhood, plaza, district, or landmark',
-      zoneHint: 'We use your area to prioritize openings and notify you when MUR is available near you.',
       mascotAlt: 'OLVI, the MUR mascot',
-      mascotLabel: 'OLVI is preparing an app that helps neighborhoods understand themselves better.',
+      mascotLabel: 'OLVI is preparing an app that helps nearby life feel easier to understand.',
       previewEyebrow: 'Product preview',
       previewTitle: 'A local feed that does not feel like noise.',
       previewBody:
         'Nearby posts, map activity, category filters, and comments for practical coordination between neighbors.',
       useCasesLabel: 'Everyday uses',
-      useCasesTitle: 'Built for what actually happens in a real area',
+      useCasesTitle: 'Built for what actually happens nearby',
       productLabel: 'How it looks',
       productTitle: 'Post with context without sharing more location than needed',
       productBody:
@@ -473,13 +463,11 @@ export const CONTENT = {
       businessLabel: 'For local shops',
       businessTitle: 'Promos and updates for real nearby neighbors',
       businessBody:
-        'MUR can help a shop appear where it matters: near people who walk, buy, and recommend in the area.',
-      businessCta: 'Promote my shop',
+        'MUR can help a shop appear where it matters: near people who walk, buy, and recommend.',
       waitlistLabel: 'Waitlist',
       waitlistTitle: 'Join the first MUR community',
       waitlistBody:
-        'Tell us your area and complete the form. We will open by area so the first experience starts with useful local activity.',
-      residentCta: 'I want to try MUR',
+        'Complete the waitlist form. We will open gradually so the first experience starts with useful local activity.',
       faqLabel: 'FAQ',
       faqTitle: 'The basics, clearly',
       fictionalNote: 'Fictional examples shown to explain the product.',
@@ -488,7 +476,7 @@ export const CONTENT = {
       {
         title: 'Lost pets',
         body:
-          'Nearby posts with photos, approximate area, and comments to coordinate help quickly.',
+          'Nearby posts with photos, approximate references, and comments to coordinate help quickly.',
       },
       {
         title: 'Traffic and accidents',
@@ -503,7 +491,7 @@ export const CONTENT = {
       {
         title: 'Neighbor help',
         body:
-          'Found items, quick questions, and concrete requests with neighborhood context.',
+          'Found items, quick questions, and concrete requests with nearby context.',
       },
     ],
     samplePosts: [
@@ -526,13 +514,13 @@ export const CONTENT = {
     previewStats: ['Nearby feed', 'Active map', 'Category filters'],
     productPoints: [
       'Nearby feed with recent posts.',
-      'Map with activity in the area.',
+      'Map with nearby activity.',
       'Filters for pets, alerts, shops, and updates.',
       'Comments and likes to coordinate inside the app.',
     ],
     steps: [
       {
-        title: 'Choose your area',
+        title: 'Open MUR',
         body:
           'MUR organizes the experience around where you live, work, or move every day.',
       },
@@ -569,7 +557,7 @@ export const CONTENT = {
       {
         question: 'What can I post?',
         answer:
-          'Alerts, lost pets, found items, updates, questions, shop promos, and other useful posts for your area.',
+          'Alerts, lost pets, found items, updates, questions, shop promos, and other useful posts.',
       },
       {
         question: 'Is exact location required?',
