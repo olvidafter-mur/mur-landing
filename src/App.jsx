@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft,
+  AtSign,
   Bell,
   Compass,
   FileText,
   Globe2,
-  AtSign,
   KeyRound,
   Mail,
   MapPin,
@@ -18,415 +18,7 @@ import {
   X,
 } from 'lucide-react'
 
-import NetworkBackground from './components/NetworkBackground'
-
-const BRAND = {
-  name: 'Mur',
-  supportEmail: 'olvidaftech.mur@gmail.com',
-  instagramHandle: '@mur.app',
-  instagramUrl: 'https://www.instagram.com/mur.app/',
-}
-
-const LANGUAGES = ['es', 'en']
-const THEMES = ['dark', 'light']
-
-const THEME = {
-  dark: {
-    marketingPage: 'bg-brand-blue text-brand-cream-light',
-    legalPage: 'bg-brand-blue-deep text-brand-cream-light',
-    nav: 'border-brand-cream/15 bg-brand-blue/80 backdrop-blur-xl',
-    navNarrow: 'border-brand-cream/15 bg-brand-blue-deep',
-    navText: 'text-brand-cream/80 hover:text-brand-cream-light',
-    navTextNarrow: 'text-brand-cream/80 hover:text-brand-cream-light',
-    navLink: 'border-brand-cream/15 bg-brand-cream/[0.06] text-brand-cream-light hover:border-accent/70 hover:bg-brand-cream/10 hover:text-white',
-    navLinkNarrow: 'border-brand-cream/15 bg-brand-cream/[0.06] text-brand-cream-light hover:border-accent/70 hover:bg-brand-cream/10 hover:text-white',
-    logoText: 'text-brand-orange',
-    text: 'text-brand-cream-light',
-    muted: 'text-brand-cream/85',
-    border: 'border-brand-cream/15',
-    surface: 'border-brand-cream/15 bg-surface-strong/85 shadow-soft backdrop-blur-md',
-    softSurface: 'border-brand-cream/15 bg-surface/75 backdrop-blur-md',
-    insetSurface: 'border-brand-cream/15 bg-brand-blue/70',
-    legalBorder: 'border-brand-cream/15',
-    legalMuted: 'text-brand-cream/85',
-    legalSoft: 'border-brand-cream/15 bg-brand-cream/[0.06] text-brand-cream-light',
-    primaryButton: 'bg-brand-cream text-brand-blue hover:bg-brand-cream-light',
-    activeControl: 'border-accent bg-accent text-brand-blue',
-    inactiveControl: 'border-brand-cream/15 bg-transparent text-brand-cream/80 hover:text-brand-cream-light',
-    legalDivide: 'divide-brand-cream/15',
-  },
-  light: {
-    marketingPage: 'bg-brand-cream-light text-brand-blue-deep',
-    legalPage: 'bg-brand-cream-light text-brand-blue-deep',
-    nav: 'border-brand-blue/10 bg-brand-cream-light/90 backdrop-blur-xl',
-    navNarrow: 'border-brand-blue/10 bg-brand-cream-light',
-    navText: 'text-brand-blue/75 hover:text-brand-blue-deep',
-    navTextNarrow: 'text-brand-blue/75 hover:text-brand-blue-deep',
-    navLink: 'border-brand-blue/10 bg-white/60 text-brand-blue/80 shadow-sm hover:border-accent/70 hover:bg-brand-cream hover:text-brand-blue-deep',
-    navLinkNarrow: 'border-brand-blue/10 bg-white/60 text-brand-blue/80 hover:border-accent/70 hover:bg-brand-cream hover:text-brand-blue-deep',
-    logoText: 'text-brand-blue-deep',
-    text: 'text-brand-blue-deep',
-    muted: 'text-brand-blue/75',
-    border: 'border-brand-blue/10',
-    surface: 'border-brand-blue/10 bg-white/70 shadow-[0_18px_60px_rgba(22,22,34,0.08)] backdrop-blur-sm',
-    softSurface: 'border-brand-blue/10 bg-white/65',
-    insetSurface: 'border-brand-blue/10 bg-white/55',
-    legalBorder: 'border-brand-blue/10',
-    legalMuted: 'text-brand-blue/75',
-    legalSoft: 'border-brand-blue/10 bg-white/65 text-brand-blue-deep',
-    primaryButton: 'bg-brand-blue text-brand-cream-light hover:bg-brand-blue-deep',
-    activeControl: 'border-brand-blue bg-brand-blue text-brand-cream-light',
-    inactiveControl: 'border-brand-blue/10 bg-transparent text-brand-blue/70 hover:text-brand-blue-deep',
-    legalDivide: 'divide-brand-blue/10',
-  },
-}
-
-const CONTENT = {
-  es: {
-    locale: 'es-AR',
-    nav: {
-      menu: 'Menú',
-      privacy: 'Política de privacidad',
-      terms: 'Términos del servicio',
-      deleteAccount: 'Eliminar cuenta y datos',
-    },
-    controls: {
-      language: 'Idioma',
-      theme: 'Tema',
-      spanish: 'ES',
-      english: 'EN',
-      light: 'Claro',
-      dark: 'Oscuro',
-    },
-    footer: {
-      tagline: 'Comunidad cerca tuyo.',
-      privacy: 'Política de privacidad',
-      terms: 'Términos',
-      deleteAccount: 'Eliminar cuenta y datos',
-      email: 'Email',
-    },
-    home: {
-      title: 'Mur',
-      comingSoon: 'Muy pronto',
-      mascotAlt: 'OLVI, la mascota de Mur, saludando',
-      mascotLabel: 'OLVI ya esta preparando Mur',
-      subtitle: 'El mundo está conectado. Tu barrio también debería estarlo.',
-      body:
-        'Publica posts visibles en tu zona, explora actividad en el mapa, comenta con personas cercanas y recibe alertas filtradas por las categorias que te importan.',
-      socialLabel: 'Seguinos para novedades',
-      featuresLabel: 'Que podes hacer',
-      featuresTitle: 'Una app para descubrir, publicar y cuidar tu zona',
-      featuresBody:
-        'Mur esta pensada para contenido inmediato y local: menos ruido, mas contexto y controles claros para participar con seguridad.',
-      stepsLabel: 'Flujo simple',
-      stepsTitle: 'De tu ubicacion al feed en pocos pasos',
-    },
-    features: [
-      {
-        title: 'Feed cercano',
-        description:
-          'Publica y lee posts visibles para personas cerca tuyo, con categorias para filtrar lo que importa en tu zona.',
-      },
-      {
-        title: 'Mapa de actividad',
-        description:
-          'Explora posts que comparten ubicacion exacta de forma opcional y abre el punto en Maps cuando necesites contexto.',
-      },
-      {
-        title: 'Alertas por categoria',
-        description:
-          'Activa notificaciones cercanas y elige que categorias pueden avisarte para evitar ruido innecesario.',
-      },
-      {
-        title: 'Controles de seguridad',
-        description:
-          'Reporta posts, bloquea usuarios y elimina tu cuenta y datos desde la app cuando lo necesites.',
-      },
-    ],
-    steps: [
-      {
-        title: 'Descubri lo que pasa cerca',
-        body:
-          'El feed se ordena alrededor de tu ubicacion y muestra actividad reciente de tu zona.',
-      },
-      {
-        title: 'Publica con contexto',
-        body:
-          'Crea un post, elige una categoria y decide si queres compartir el punto exacto.',
-      },
-      {
-        title: 'Conversa sin salir del barrio',
-        body:
-          'Comenta, da like, comparte posts y abre perfiles publicos de personas cercanas.',
-      },
-    ],
-    legal: {
-      back: 'Volver',
-      effective: 'Vigente desde el 2 de junio de 2026',
-      title: 'Politica de privacidad',
-      intro:
-        'Mur es una app de comunidad local. Esta politica explica que datos de la app recopilamos, por que los usamos y como los usuarios pueden eliminar su cuenta y datos asociados.',
-      sections: [
-        {
-          title: 'Datos que recopilamos',
-          body:
-            'Mur puede recopilar email, nombre de usuario, perfil publico, posts, comentarios, likes, reportes, bloqueos, preferencias, tokens de notificaciones y ubicacion usada para mostrar contenido cercano.',
-        },
-        {
-          title: 'Uso de ubicacion',
-          body:
-            'La ubicacion se usa para mostrar posts cercanos, publicar contenido en tu zona y enviar alertas cercanas opcionales. Compartir la ubicacion exacta de un post es opcional.',
-        },
-        {
-          title: 'Seguridad y moderacion',
-          body:
-            'Los reportes y bloqueos ayudan a revisar contenido inseguro, reducir abuso y mejorar la seguridad de la comunidad.',
-        },
-        {
-          title: 'Eliminacion de cuenta',
-          body:
-            'Los usuarios pueden eliminar su cuenta desde la app entrando a Perfil, luego Cuenta, y tocando Eliminar cuenta. Tambien pueden solicitar eliminacion desde la pagina publica de eliminacion de cuenta.',
-        },
-      ],
-    },
-    terms: {
-      back: 'Volver',
-      effective: 'Vigente desde el 4 de junio de 2026',
-      title: 'Términos del servicio',
-      intro:
-        'Estos términos regulan el uso de Mur, una app de comunidad local para publicar, descubrir y comentar contenido cercano. Al usar Mur, aceptas participar de forma responsable y respetar estas reglas.',
-      sections: [
-        {
-          title: 'Uso de la app',
-          body:
-            'Mur está pensada para personas de 18 años o más. Debes usar la app de forma legal, segura y respetuosa, sin publicar contenido falso, abusivo, discriminatorio, violento, sexualmente explícito, ilegal o que vulnere derechos de terceros.',
-        },
-        {
-          title: 'Contenido publicado',
-          body:
-            'Eres responsable por el contenido que publicas, incluyendo textos, imágenes, audio, encuestas y ubicaciones compartidas. Al publicar, nos autorizas a mostrar ese contenido dentro de Mur para operar la app y sus funciones.',
-        },
-        {
-          title: 'Ubicación y actividad cercana',
-          body:
-            'Mur usa ubicación para mostrar contenido cercano y permitir publicaciones locales. Compartir la ubicación exacta en un post es opcional. No uses la ubicación o actividad de otros usuarios para acosar, seguir o dañar a ninguna persona.',
-        },
-        {
-          title: 'Moderación y seguridad',
-          body:
-            'Podemos revisar, ocultar o eliminar contenido, limitar funciones o suspender cuentas cuando detectemos abuso, riesgos de seguridad, incumplimientos legales o violaciones de estos términos.',
-        },
-        {
-          title: 'Cuenta y eliminación',
-          body:
-            'Puedes cerrar sesión o eliminar tu cuenta desde la app. La eliminación de cuenta borra los datos asociados según se describe en la política de privacidad y en la página pública de eliminación de cuenta.',
-        },
-        {
-          title: 'Cambios del servicio',
-          body:
-            'Mur puede cambiar, pausar o dejar de ofrecer funciones para mejorar el servicio, cumplir requisitos legales o proteger a la comunidad. Si los términos cambian de forma relevante, actualizaremos esta página.',
-        },
-      ],
-    },
-    deleteAccount: {
-      badge: 'Cuenta y eliminacion de datos',
-      title: 'Elimina tu cuenta de Mur',
-      intro:
-        'Para eliminar tu cuenta desde la app, abri Mur, entra a Perfil, luego Cuenta, y toca Eliminar cuenta.',
-      deletedTitle: 'Que se elimina',
-      deletedBody:
-        'La eliminacion borra tu perfil, posts, comentarios, likes, tokens de notificaciones, ubicacion cercana usada para alertas, reportes y registros de bloqueo asociados a tu cuenta.',
-      noAccessTitle: 'Si ya no tenes acceso a la app',
-      noAccessBody:
-        'Escribinos desde el email asociado a tu cuenta y pedinos la eliminacion de cuenta y datos. Usamos ese email para verificar la titularidad antes de procesar la solicitud.',
-      mailSubject: 'Solicitud de eliminacion de cuenta Mur',
-    },
-    resetPassword: {
-      back: 'Volver',
-      badge: 'Seguridad de la cuenta',
-      title: 'Abrir Mur para cambiar tu contrasena',
-      intro:
-        'Estamos abriendo la app para que puedas elegir una nueva contrasena de forma segura.',
-      button: 'Abrir Mur',
-      fallback:
-        'Si la app no se abre automaticamente, toca el boton. Este enlace solo es valido por un tiempo limitado.',
-      invalid:
-        'El enlace de recuperacion no es valido o ya no contiene la informacion necesaria. Vuelve a solicitar un nuevo email desde la app.',
-    },
-  },
-  en: {
-    locale: 'en-US',
-    nav: {
-      menu: 'Menu',
-      privacy: 'Privacy policy',
-      terms: 'Terms of service',
-      deleteAccount: 'Delete account and data',
-    },
-    controls: {
-      language: 'Language',
-      theme: 'Theme',
-      spanish: 'ES',
-      english: 'EN',
-      light: 'Light',
-      dark: 'Dark',
-    },
-    footer: {
-      tagline: 'Community close to you.',
-      privacy: 'Privacy policy',
-      terms: 'Terms',
-      deleteAccount: 'Delete account and data',
-      email: 'Email',
-    },
-    home: {
-      title: 'Mur',
-      comingSoon: 'Coming soon',
-      mascotAlt: 'OLVI, Mur mascot, waving',
-      mascotLabel: 'OLVI is getting Mur ready',
-      subtitle: 'The world is connected. Your neighborhood should be too.',
-      body:
-        'Publish posts visible in your area, explore activity on the map, comment with nearby people, and receive alerts filtered by the categories you care about.',
-      socialLabel: 'Follow us for updates',
-      featuresLabel: 'What you can do',
-      featuresTitle: 'An app to discover, publish, and protect your area',
-      featuresBody:
-        'Mur is built for immediate local content: less noise, more context, and clear controls to participate safely.',
-      stepsLabel: 'Simple flow',
-      stepsTitle: 'From your location to the feed in a few steps',
-    },
-    features: [
-      {
-        title: 'Nearby feed',
-        description:
-          'Publish and read posts visible to people near you, with categories to filter what matters in your area.',
-      },
-      {
-        title: 'Activity map',
-        description:
-          'Explore posts that optionally share an exact location and open the point in Maps when you need context.',
-      },
-      {
-        title: 'Category alerts',
-        description:
-          'Turn on nearby notifications and choose which categories can alert you so you avoid unnecessary noise.',
-      },
-      {
-        title: 'Safety controls',
-        description:
-          'Report posts, block users, and delete your account and data from inside the app when you need to.',
-      },
-    ],
-    steps: [
-      {
-        title: 'Discover what is nearby',
-        body:
-          'The feed is organized around your location and shows recent activity in your area.',
-      },
-      {
-        title: 'Publish with context',
-        body:
-          'Create a post, choose a category, and decide whether to share the exact point.',
-      },
-      {
-        title: 'Talk without leaving the neighborhood',
-        body:
-          'Comment, like, share posts, and open public profiles from people nearby.',
-      },
-    ],
-    legal: {
-      back: 'Back',
-      effective: 'Effective June 2, 2026',
-      title: 'Privacy Policy',
-      intro:
-        'Mur is a local community app. This policy explains what app data we collect, why we use it, and how users can delete their account and associated data.',
-      sections: [
-        {
-          title: 'Data we collect',
-          body:
-            'Mur may collect your email, username, public profile, posts, comments, likes, reports, blocks, preferences, notification tokens, and location used to show nearby content.',
-        },
-        {
-          title: 'How location is used',
-          body:
-            'Location is used to show nearby posts, publish content in your area, and send optional nearby alerts. Sharing an exact post location is optional.',
-        },
-        {
-          title: 'Safety and moderation',
-          body:
-            'Reports and blocks help us review unsafe content, reduce abuse, and improve community safety.',
-        },
-        {
-          title: 'Account deletion',
-          body:
-            'Users can delete their account from the app by opening Profile, then Account, and tapping Delete account. They can also request deletion from the public account deletion page.',
-        },
-      ],
-    },
-    terms: {
-      back: 'Back',
-      effective: 'Effective June 4, 2026',
-      title: 'Terms of Service',
-      intro:
-        'These terms govern your use of Mur, a local community app for publishing, discovering, and commenting on nearby content. By using Mur, you agree to participate responsibly and follow these rules.',
-      sections: [
-        {
-          title: 'Use of the app',
-          body:
-            'Mur is intended for people who are 18 or older. You must use the app legally, safely, and respectfully, without publishing false, abusive, discriminatory, violent, sexually explicit, illegal, or rights-infringing content.',
-        },
-        {
-          title: 'Published content',
-          body:
-            'You are responsible for the content you publish, including text, images, audio, polls, and shared locations. By publishing content, you authorize us to display it inside Mur to operate the app and its features.',
-        },
-        {
-          title: 'Location and nearby activity',
-          body:
-            'Mur uses location to show nearby content and support local posts. Sharing an exact location on a post is optional. Do not use another user’s location or activity to harass, track, or harm anyone.',
-        },
-        {
-          title: 'Moderation and safety',
-          body:
-            'We may review, hide, or remove content, limit features, or suspend accounts when we detect abuse, safety risks, legal issues, or violations of these terms.',
-        },
-        {
-          title: 'Account and deletion',
-          body:
-            'You can sign out or delete your account from inside the app. Account deletion removes associated data as described in the privacy policy and public account deletion page.',
-        },
-        {
-          title: 'Service changes',
-          body:
-            'Mur may change, pause, or discontinue features to improve the service, comply with legal requirements, or protect the community. If these terms materially change, we will update this page.',
-        },
-      ],
-    },
-    deleteAccount: {
-      badge: 'Account and data deletion',
-      title: 'Delete your Mur account',
-      intro:
-        'To delete your account from the app, open Mur, go to Profile, then Account, and tap Delete account.',
-      deletedTitle: 'What gets deleted',
-      deletedBody:
-        'Deletion removes your profile, posts, comments, likes, notification tokens, nearby location data used for alerts, reports, and block records associated with your account.',
-      noAccessTitle: 'If you no longer have access to the app',
-      noAccessBody:
-        'Email us from the address associated with your account and request account and data deletion. We use that email to verify ownership before processing the request.',
-      mailSubject: 'Mur account deletion request',
-    },
-    resetPassword: {
-      back: 'Back',
-      badge: 'Account security',
-      title: 'Open Mur to change your password',
-      intro:
-        'We are opening the app so you can choose a new password securely.',
-      button: 'Open Mur',
-      fallback:
-        'If the app does not open automatically, tap the button. This link is only valid for a limited time.',
-      invalid:
-        'This recovery link is invalid or no longer contains the required information. Please request a new email from the app.',
-    },
-  },
-}
+import { BRAND, CONTENT, LANGUAGES, THEME, THEMES } from './siteContent'
 
 const springTransition = {
   type: 'spring',
@@ -434,8 +26,8 @@ const springTransition = {
   damping: 18,
 }
 
-const heroItem = {
-  hidden: { opacity: 0, y: 24 },
+const fadeUp = {
+  hidden: { opacity: 0, y: 22 },
   visible: {
     opacity: 1,
     y: 0,
@@ -443,33 +35,72 @@ const heroItem = {
   },
 }
 
-const featureGrid = {
+const stagger = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.14,
-      delayChildren: 0.08,
+      staggerChildren: 0.08,
+      delayChildren: 0.04,
     },
   },
 }
 
-const featureItem = {
-  hidden: { opacity: 0, y: 28, scale: 0.96 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: springTransition,
-  },
-}
-
-const featureIcons = [Compass, MapPin, Bell, ShieldCheck]
+const useCaseIcons = [MapPin, Bell, Compass, ShieldCheck]
+const navAnchors = [
+  { href: '#how-it-works', key: 'howItWorks' },
+  { href: '#safety', key: 'safety' },
+  { href: '#business', key: 'business' },
+  { href: '#waitlist', key: 'waitlist' },
+]
 
 const getStoredPreference = (key, allowed, fallback) => {
   if (typeof window === 'undefined') return fallback
 
   const stored = window.localStorage.getItem(key)
   return allowed.includes(stored) ? stored : fallback
+}
+
+const setMetaTag = (selector, attr, value) => {
+  let element = document.head.querySelector(selector)
+
+  if (!element) {
+    element = document.createElement('meta')
+    const match = selector.match(/\[(name|property)="(.+)"\]/)
+
+    if (match) {
+      element.setAttribute(match[1], match[2])
+    }
+
+    document.head.appendChild(element)
+  }
+
+  element.setAttribute(attr, value)
+}
+
+const trackEvent = (name, detail = {}) => {
+  if (typeof window === 'undefined') return
+
+  const payload = { event: `mur_${name}`, ...detail }
+  window.dataLayer?.push(payload)
+  window.dispatchEvent(new CustomEvent('mur:analytics', { detail: payload }))
+}
+
+function SectionIntro({ eyebrow, title, body, styles, centered = false }) {
+  return (
+    <div className={centered ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl'}>
+      <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
+        {eyebrow}
+      </p>
+      <h2 className={`mt-3 text-3xl font-bold leading-tight sm:text-4xl ${styles.text}`}>
+        {title}
+      </h2>
+      {body ? (
+        <p className={`mt-4 text-base leading-7 ${styles.muted}`}>
+          {body}
+        </p>
+      ) : null}
+    </div>
+  )
 }
 
 function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles, compact = false }) {
@@ -484,7 +115,7 @@ function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles,
           type="button"
           aria-label={`${t.controls.language}: ${language.toUpperCase()}`}
           onClick={() => setLanguage(nextLanguage)}
-          className={`inline-flex min-h-10 items-center gap-1.5 rounded-full border px-3 text-xs font-bold transition ${styles.insetSurface}`}
+          className={`inline-flex min-h-11 items-center gap-1.5 rounded-lg border px-3 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
         >
           <Globe2 aria-hidden="true" className={`h-4 w-4 ${styles.muted}`} />
           {language.toUpperCase()}
@@ -494,7 +125,7 @@ function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles,
           type="button"
           aria-label={`${t.controls.theme}: ${t.controls[theme]}`}
           onClick={() => setTheme(nextTheme)}
-          className={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-xs font-bold transition ${styles.insetSurface}`}
+          className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
         >
           <ThemeIcon aria-hidden="true" className="h-4 w-4" />
         </button>
@@ -508,18 +139,18 @@ function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles,
         type="button"
         aria-label={t.controls.language}
         onClick={() => setLanguage(nextLanguage)}
-        className={`inline-flex items-center rounded-full border p-1 text-xs font-bold transition ${styles.insetSurface}`}
+        className={`inline-flex items-center rounded-lg border p-1 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
       >
         <Globe2 aria-hidden="true" className={`ml-2 mr-1 h-4 w-4 ${styles.muted}`} />
         <span
-          className={`inline-flex min-w-[46px] justify-center rounded-full px-3 py-1.5 transition ${
+          className={`inline-flex min-w-[42px] justify-center rounded-md border px-3 py-1.5 transition ${
             language === 'en' ? styles.activeControl : styles.inactiveControl
           }`}
         >
           EN
         </span>
         <span
-          className={`inline-flex min-w-[46px] justify-center rounded-full px-3 py-1.5 transition ${
+          className={`inline-flex min-w-[42px] justify-center rounded-md border px-3 py-1.5 transition ${
             language === 'es' ? styles.activeControl : styles.inactiveControl
           }`}
         >
@@ -531,23 +162,23 @@ function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles,
         type="button"
         aria-label={t.controls.theme}
         onClick={() => setTheme(nextTheme)}
-        className={`inline-flex items-center rounded-full border p-1 text-xs font-bold transition ${styles.insetSurface}`}
+        className={`inline-flex items-center rounded-lg border p-1 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
       >
         <span
-          className={`inline-flex min-w-[86px] items-center justify-center gap-1 rounded-full px-3 py-1.5 transition ${
-            theme === 'dark' ? styles.activeControl : styles.inactiveControl
-          }`}
-        >
-          <Moon aria-hidden="true" className="h-3.5 w-3.5" />
-          {t.controls.dark}
-        </span>
-        <span
-          className={`inline-flex min-w-[86px] items-center justify-center gap-1 rounded-full px-3 py-1.5 transition ${
+          className={`inline-flex min-w-[82px] items-center justify-center gap-1 rounded-md border px-3 py-1.5 transition ${
             theme === 'light' ? styles.activeControl : styles.inactiveControl
           }`}
         >
           <Sun aria-hidden="true" className="h-3.5 w-3.5" />
           {t.controls.light}
+        </span>
+        <span
+          className={`inline-flex min-w-[82px] items-center justify-center gap-1 rounded-md border px-3 py-1.5 transition ${
+            theme === 'dark' ? styles.activeControl : styles.inactiveControl
+          }`}
+        >
+          <Moon aria-hidden="true" className="h-3.5 w-3.5" />
+          {t.controls.dark}
         </span>
       </button>
     </div>
@@ -559,6 +190,9 @@ function HeaderMenu({ t, styles, narrow = false }) {
   const itemStyle = narrow ? styles.navLinkNarrow : styles.navLink
   const panelStyle = narrow ? styles.legalSoft : styles.surface
   const links = [
+    ...(!narrow
+      ? navAnchors.map(({ href, key }) => ({ href, label: t.nav[key] }))
+      : []),
     { href: '/privacy', label: t.nav.privacy, icon: FileText },
     { href: '/terms', label: t.nav.terms, icon: ShieldCheck },
     { href: '/delete-account', label: t.nav.deleteAccount, icon: Trash2 },
@@ -572,7 +206,7 @@ function HeaderMenu({ t, styles, narrow = false }) {
         aria-label={t.nav.menu}
         aria-expanded={isOpen}
         onClick={() => setIsOpen((current) => !current)}
-        className={`inline-flex min-h-10 items-center gap-2 rounded-full border px-3 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${styles.insetSurface}`}
+        className={`inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
       >
         {isOpen ? (
           <X aria-hidden="true" className="h-4 w-4" />
@@ -583,18 +217,18 @@ function HeaderMenu({ t, styles, narrow = false }) {
       </button>
 
       {isOpen && (
-        <div className={`absolute right-0 top-12 z-50 w-[min(19rem,calc(100vw-1.5rem))] rounded-lg border p-2 ${panelStyle}`}>
+        <div className={`absolute right-0 top-12 z-50 w-[min(20rem,calc(100vw-1.5rem))] rounded-lg border p-2 ${panelStyle}`}>
           <div className="grid gap-2">
-            {links.map(({ href, label, icon: Icon, external }) => (
+            {links.map(({ href, label, icon: Icon = Compass, external }) => (
               <a
                 key={href}
-                className={`flex min-h-11 items-center gap-3 rounded-lg border px-3.5 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${itemStyle}`}
+                className={`flex min-h-11 items-center gap-3 rounded-lg border px-3.5 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${itemStyle}`}
                 href={href}
                 target={external ? '_blank' : undefined}
                 rel={external ? 'noreferrer' : undefined}
                 onClick={() => setIsOpen(false)}
               >
-                <Icon aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
+                <Icon aria-hidden="true" className="h-4 w-4 shrink-0 text-brand-amber" />
                 <span>{label}</span>
               </a>
             ))}
@@ -605,65 +239,410 @@ function HeaderMenu({ t, styles, narrow = false }) {
   )
 }
 
-function FeatureCard({ id, title, description, icon: Icon, styles }) {
+function WaitlistActions({ t, styles, zone, compact = false }) {
+  const detail = useMemo(() => ({ zone: zone.trim() || undefined }), [zone])
+
+  const submitWaitlist = (event) => {
+    event.preventDefault()
+    trackEvent('waitlist_submission', detail)
+    window.location.href = BRAND.waitlistUrl
+  }
+
+  const trackResidentClick = () => trackEvent('main_cta_click', detail)
+  const trackBusinessClick = () => trackEvent('business_cta_click', detail)
+
   return (
-    <motion.article
-      id={id}
-      variants={featureItem}
-      whileHover={{ scale: 1.02, y: -4 }}
-      transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-      className={`scroll-mt-24 rounded-lg border p-6 ${styles.surface}`}
+    <form
+      className={`flex ${compact ? 'flex-col sm:flex-row' : 'flex-col sm:flex-row'} gap-3`}
+      onSubmit={submitWaitlist}
     >
-      <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent">
-        <Icon aria-hidden="true" className="h-5 w-5" />
-      </div>
-      <h3 className={`mt-6 text-xl font-semibold ${styles.text}`}>{title}</h3>
-      <p className={`mt-3 text-sm leading-6 ${styles.muted}`}>{description}</p>
-    </motion.article>
+      <button
+        type="submit"
+        onClick={trackResidentClick}
+        className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${styles.primaryButton}`}
+      >
+        {compact ? t.home.residentCta : t.home.primaryCta}
+      </button>
+      <a
+        href={BRAND.waitlistUrl}
+        target="_blank"
+        rel="noreferrer"
+        onClick={trackBusinessClick}
+        className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border px-5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.secondaryButton}`}
+      >
+        {compact ? t.home.businessCta : t.home.secondaryCta}
+      </a>
+    </form>
   )
 }
 
-function TypewriterText({ text }) {
-  const [visibleLength, setVisibleLength] = useState(0)
+function ZoneField({ t, styles, zone, setZone, id = 'zone' }) {
+  return (
+    <div>
+      <label htmlFor={id} className={`block text-sm font-bold ${styles.text}`}>
+        {t.home.zoneLabel}
+      </label>
+      <input
+        id={id}
+        value={zone}
+        onChange={(event) => setZone(event.target.value)}
+        onBlur={() => trackEvent('zone_selection', { zone: zone.trim() || undefined })}
+        placeholder={t.home.zonePlaceholder}
+        className={`mt-2 min-h-12 w-full rounded-lg border px-4 text-base outline-none transition placeholder:text-current/40 focus:border-brand-amber focus:ring-2 focus:ring-brand-amber/25 ${styles.insetSurface}`}
+      />
+      <p className={`mt-2 text-xs leading-5 ${styles.muted}`}>{t.home.zoneHint}</p>
+    </div>
+  )
+}
 
-  useEffect(() => {
-    const shouldReduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+function AppPreview({ t, styles }) {
+  return (
+    <div className="mx-auto w-full max-w-[26rem]">
+      <div className={`rounded-[2rem] border p-3 shadow-phone ${styles.surface}`}>
+        <div className="rounded-[1.45rem] border border-brand-ink/10 bg-brand-paper p-4 text-brand-ink">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-teal">
+                {t.home.previewEyebrow}
+              </p>
+              <p className="mt-1 text-lg font-bold">MUR</p>
+            </div>
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-amber text-brand-ink">
+              <MapPin aria-hidden="true" className="h-5 w-5" />
+            </div>
+          </div>
 
-    if (shouldReduceMotion) {
-      setVisibleLength(text.length)
-      return undefined
-    }
+          <div className="mt-4 grid grid-cols-3 gap-2">
+            {t.previewStats.map((stat) => (
+              <div key={stat} className="rounded-lg bg-white px-2 py-2 text-center text-[0.68rem] font-bold leading-tight shadow-sm">
+                {stat}
+              </div>
+            ))}
+          </div>
 
-    let currentLength = 0
-    let timer
+          <div className="relative mt-4 overflow-hidden rounded-xl border border-brand-ink/10 bg-brand-river p-3">
+            <div className="map-grid" aria-hidden="true" />
+            <div className="relative grid h-36 grid-cols-3 grid-rows-3 gap-2">
+              <span className="map-dot left-[18%] top-[28%] bg-brand-amber" />
+              <span className="map-dot left-[63%] top-[18%] bg-brand-teal" />
+              <span className="map-dot left-[48%] top-[66%] bg-brand-green" />
+            </div>
+          </div>
 
-    setVisibleLength(0)
+          <div className="mt-4 space-y-3">
+            {t.samplePosts.map((post, index) => (
+              <article key={post.title} className="rounded-xl border border-brand-ink/10 bg-white p-3 shadow-sm">
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`rounded-md px-2 py-1 text-[0.68rem] font-bold uppercase tracking-wide ${
+                    index === 0
+                      ? 'bg-brand-sun text-brand-amber-deep'
+                      : index === 1
+                        ? 'bg-brand-river text-brand-teal'
+                        : 'bg-brand-leaf text-brand-green'
+                  }`}
+                  >
+                    {post.category}
+                  </span>
+                  <span className="text-[0.68rem] font-semibold text-brand-ink/50">12 min</span>
+                </div>
+                <h3 className="mt-2 text-sm font-bold leading-5">{post.title}</h3>
+                <p className="mt-1 text-xs text-brand-ink/60">{post.meta}</p>
+              </article>
+            ))}
+          </div>
 
-    const typeNextCharacter = () => {
-      currentLength += 1
-      setVisibleLength(currentLength)
+          <p className="mt-3 text-center text-[0.68rem] font-medium text-brand-ink/50">
+            {t.home.fictionalNote}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
 
-      if (currentLength >= text.length) return
+function HeroSection({ t, styles, zone, setZone }) {
+  return (
+    <section className="relative px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:px-8">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={stagger}
+        className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.02fr_0.88fr]"
+      >
+        <div>
+          <motion.div
+            variants={fadeUp}
+            className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] ${styles.warmSurface}`}
+          >
+            <span className="h-2 w-2 rounded-full bg-brand-amber" aria-hidden="true" />
+            {t.home.heroBadge}
+          </motion.div>
 
-      const currentCharacter = text[currentLength - 1]
-      const delay = /[?.!]/.test(currentCharacter) ? 170 : currentCharacter === ' ' ? 28 : 42
+          <motion.h1
+            variants={fadeUp}
+            className={`mt-6 max-w-3xl text-5xl font-black leading-[0.98] sm:text-6xl lg:text-7xl ${styles.text}`}
+          >
+            {t.home.title}
+          </motion.h1>
 
-      timer = window.setTimeout(typeNextCharacter, delay)
-    }
+          <motion.p
+            variants={fadeUp}
+            className={`mt-6 max-w-2xl text-lg leading-8 sm:text-xl ${styles.muted}`}
+          >
+            {t.home.body}
+          </motion.p>
 
-    timer = window.setTimeout(typeNextCharacter, 320)
+          <motion.div
+            variants={fadeUp}
+            className={`mt-5 flex items-center gap-3 rounded-lg border p-3 lg:hidden ${styles.greenSurface}`}
+          >
+            <img
+              src="/olvi.png"
+              alt={t.home.mascotAlt}
+              className="h-14 w-14 shrink-0 object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,0.16)]"
+            />
+            <p className={`text-sm font-bold leading-5 ${styles.text}`}>
+              {t.home.mascotLabel}
+            </p>
+          </motion.div>
 
-    return () => window.clearTimeout(timer)
-  }, [text])
+          <motion.div variants={fadeUp} className="mt-7 max-w-xl">
+            <ZoneField t={t} styles={styles} zone={zone} setZone={setZone} id="hero-zone" />
+            <div className="mt-5">
+              <WaitlistActions t={t} styles={styles} zone={zone} />
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div variants={fadeUp} className="relative hidden lg:block">
+          <div className={`mb-5 flex items-center gap-4 rounded-lg border p-4 ${styles.greenSurface}`}>
+            <img
+              src="/olvi.png"
+              alt={t.home.mascotAlt}
+              className="h-20 w-20 shrink-0 object-contain drop-shadow-[0_14px_24px_rgba(0,0,0,0.18)]"
+            />
+            <p className={`text-sm font-bold leading-6 ${styles.text}`}>
+              {t.home.mascotLabel}
+            </p>
+          </div>
+          <AppPreview t={t} styles={styles} />
+        </motion.div>
+      </motion.div>
+    </section>
+  )
+}
+
+function UseCasesSection({ t, styles }) {
+  return (
+    <section className="px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl">
+        <SectionIntro
+          eyebrow={t.home.useCasesLabel}
+          title={t.home.useCasesTitle}
+          styles={styles}
+        />
+
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+        >
+          {t.useCases.map((item, index) => {
+            const Icon = useCaseIcons[index]
+
+            return (
+              <motion.article
+                key={item.title}
+                variants={fadeUp}
+                className={`rounded-lg border p-5 ${styles.surface}`}
+              >
+                <div className={`flex h-11 w-11 items-center justify-center rounded-lg border ${
+                  index % 2 === 0 ? styles.tealSurface : styles.warmSurface
+                }`}
+                >
+                  <Icon aria-hidden="true" className="h-5 w-5 text-brand-amber" />
+                </div>
+                <h3 className={`mt-5 text-xl font-bold ${styles.text}`}>{item.title}</h3>
+                <p className={`mt-3 text-sm leading-6 ${styles.muted}`}>{item.body}</p>
+              </motion.article>
+            )
+          })}
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+function ProductSection({ t, styles }) {
+  return (
+    <section className="px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.9fr_1fr]">
+        <AppPreview t={t} styles={styles} />
+
+        <div>
+          <SectionIntro
+            eyebrow={t.home.productLabel}
+            title={t.home.productTitle}
+            body={t.home.productBody}
+            styles={styles}
+          />
+          <div className="mt-8 grid gap-3">
+            {t.productPoints.map((point) => (
+              <div key={point} className={`flex gap-3 rounded-lg border p-4 ${styles.softSurface}`}>
+                <ShieldCheck aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-teal" />
+                <p className={`text-sm font-semibold leading-6 ${styles.text}`}>{point}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function HowItWorksSection({ t, styles }) {
+  return (
+    <section id="how-it-works" className="scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl">
+        <SectionIntro
+          eyebrow={t.home.stepsLabel}
+          title={t.home.stepsTitle}
+          styles={styles}
+          centered
+        />
+
+        <div className="mt-10 grid gap-4 md:grid-cols-3">
+          {t.steps.map((step, index) => (
+            <article key={step.title} className={`rounded-lg border p-6 ${styles.surface}`}>
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-amber text-sm font-black text-brand-ink">
+                {index + 1}
+              </div>
+              <h3 className={`mt-5 text-xl font-bold ${styles.text}`}>{step.title}</h3>
+              <p className={`mt-3 text-sm leading-6 ${styles.muted}`}>{step.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SafetyBusinessSection({ t, styles }) {
+  return (
+    <section className="px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-2">
+        <article id="safety" className={`scroll-mt-24 rounded-lg border p-6 sm:p-8 ${styles.tealSurface}`}>
+          <SectionIntro
+            eyebrow={t.home.safetyLabel}
+            title={t.home.safetyTitle}
+            styles={styles}
+          />
+          <div className="mt-8 grid gap-3">
+            {t.safety.map((item) => (
+              <div key={item} className={`flex gap-3 rounded-lg border p-4 ${styles.insetSurface}`}>
+                <ShieldCheck aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-teal" />
+                <p className={`text-sm font-semibold leading-6 ${styles.text}`}>{item}</p>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article id="business" className={`scroll-mt-24 rounded-lg border p-6 sm:p-8 ${styles.warmSurface}`}>
+          <SectionIntro
+            eyebrow={t.home.businessLabel}
+            title={t.home.businessTitle}
+            body={t.home.businessBody}
+            styles={styles}
+          />
+          <div className="mt-8 grid gap-3">
+            {t.businessBenefits.map((item) => (
+              <div key={item} className={`flex gap-3 rounded-lg border p-4 ${styles.insetSurface}`}>
+                <Bell aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-amber" />
+                <p className={`text-sm font-semibold leading-6 ${styles.text}`}>{item}</p>
+              </div>
+            ))}
+          </div>
+          <a
+            href={BRAND.waitlistUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => trackEvent('business_cta_click', { placement: 'business_section' })}
+            className={`mt-8 inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${styles.primaryButton}`}
+          >
+            {t.home.businessCta}
+          </a>
+        </article>
+      </div>
+    </section>
+  )
+}
+
+function WaitlistSection({ t, styles, zone, setZone }) {
+  return (
+    <section id="waitlist" className="scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
+      <div className={`mx-auto grid max-w-6xl gap-8 rounded-lg border p-6 sm:p-8 lg:grid-cols-[0.95fr_1.05fr] ${styles.surface}`}>
+        <div>
+          <SectionIntro
+            eyebrow={t.home.waitlistLabel}
+            title={t.home.waitlistTitle}
+            body={t.home.waitlistBody}
+            styles={styles}
+          />
+        </div>
+        <div className={`rounded-lg border p-5 ${styles.softSurface}`}>
+          <ZoneField t={t} styles={styles} zone={zone} setZone={setZone} id="waitlist-zone" />
+          <div className="mt-5">
+            <WaitlistActions t={t} styles={styles} zone={zone} compact />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function FaqSection({ t, styles }) {
+  return (
+    <section className="px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-4xl">
+        <SectionIntro
+          eyebrow={t.home.faqLabel}
+          title={t.home.faqTitle}
+          styles={styles}
+          centered
+        />
+        <div className="mt-10 grid gap-3">
+          {t.faq.map((item) => (
+            <details key={item.question} className={`group rounded-lg border p-5 ${styles.surface}`}>
+              <summary className={`flex cursor-pointer list-none items-center justify-between gap-4 text-base font-bold ${styles.text}`}>
+                {item.question}
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-amber/15 text-brand-amber transition group-open:rotate-45">
+                  +
+                </span>
+              </summary>
+              <p className={`mt-4 text-sm leading-6 ${styles.muted}`}>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function HomePage({ t, styles }) {
+  const [zone, setZone] = useState('')
 
   return (
-    <span className="typewriter-text" aria-hidden="true">
-      <span className="typewriter-measure">{text}</span>
-      <span className="typewriter-line">
-        {text.slice(0, visibleLength)}
-        <span className="typewriter-caret" />
-      </span>
-    </span>
+    <>
+      <HeroSection t={t} styles={styles} zone={zone} setZone={setZone} />
+      <UseCasesSection t={t} styles={styles} />
+      <ProductSection t={t} styles={styles} />
+      <HowItWorksSection t={t} styles={styles} />
+      <SafetyBusinessSection t={t} styles={styles} />
+      <WaitlistSection t={t} styles={styles} zone={zone} setZone={setZone} />
+      <FaqSection t={t} styles={styles} />
+    </>
   )
 }
 
@@ -673,15 +652,27 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
 
   return (
     <main className={`relative min-h-screen overflow-hidden ${styles.marketingPage}`}>
-      <NetworkBackground theme={theme} />
+      <div
+        aria-hidden="true"
+        className={`neighborhood-background neighborhood-background-${theme}`}
+      />
 
       <div className="relative z-10">
         <nav className={`sticky top-0 z-50 border-b ${styles.nav}`}>
           <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-3 px-3 py-2 sm:px-6 lg:px-8">
-            <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
+            <a href="/" className="flex min-h-11 shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
               <img src="/logo.png" alt="" className="h-8 w-8 object-contain sm:h-9 sm:w-9" />
-              <span className={`text-lg font-bold ${styles.logoText}`}>MUR</span>
+              <span className={`text-lg font-black ${styles.logoText}`}>MUR</span>
             </a>
+
+            <div className="hidden items-center gap-5 text-sm font-bold lg:flex">
+              {navAnchors.map(({ href, key }) => (
+                <a key={href} href={href} className={`transition ${styles.navText}`}>
+                  {t.nav[key]}
+                </a>
+              ))}
+            </div>
+
             <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
               <div className="lg:hidden">
                 <PreferenceControls
@@ -712,7 +703,7 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
         {children}
 
         <footer className="px-4 py-8 sm:px-6 lg:px-8">
-          <div className={`mx-auto flex max-w-6xl flex-col gap-3 text-sm ${styles.muted} sm:flex-row sm:items-center sm:justify-between`}>
+          <div className={`mx-auto flex max-w-6xl flex-col gap-3 border-t pt-8 text-sm ${styles.border} ${styles.muted} sm:flex-row sm:items-center sm:justify-between`}>
             <span>© {currentYear} {BRAND.name}. {t.footer.tagline}</span>
             <div className="flex flex-wrap gap-4">
               <a className={`transition ${styles.navText}`} href={BRAND.instagramUrl} target="_blank" rel="noreferrer">
@@ -744,232 +735,94 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
 
   return (
     <main className={`min-h-screen ${styles.legalPage}`}>
-      <nav className={`border-b ${styles.navNarrow}`}>
-        <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-3 px-3 py-2 sm:px-6 lg:px-8">
-          <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
-            <img src="/logo.png" alt="" className="h-8 w-8 object-contain" />
-            <span className={`text-base font-bold ${styles.text}`}>MUR</span>
-          </a>
-          <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
-            <div className="lg:hidden">
-              <PreferenceControls
-                compact
-                language={language}
-                setLanguage={setLanguage}
-                theme={theme}
-                setTheme={setTheme}
-                t={t}
-                styles={styles}
-              />
-            </div>
-            <div className="hidden lg:block">
-              <PreferenceControls
-                language={language}
-                setLanguage={setLanguage}
-                theme={theme}
-                setTheme={setTheme}
-                t={t}
-                styles={styles}
-              />
-            </div>
-            <HeaderMenu t={t} styles={styles} narrow />
-          </div>
-        </div>
-      </nav>
+      <div
+        aria-hidden="true"
+        className={`neighborhood-background neighborhood-background-${theme}`}
+      />
 
-      {children}
-
-      <footer className={`border-t px-4 py-8 sm:px-6 lg:px-8 ${styles.navNarrow}`}>
-        <div className={`mx-auto flex max-w-5xl flex-col gap-3 text-sm ${styles.legalMuted} sm:flex-row sm:items-center sm:justify-between`}>
-          <span>© {currentYear} {BRAND.name}.</span>
-          <div className="flex flex-wrap gap-4">
-            <a className={`transition ${styles.navTextNarrow}`} href={BRAND.instagramUrl} target="_blank" rel="noreferrer">
-              {BRAND.instagramHandle}
+      <div className="relative z-10">
+        <nav className={`border-b ${styles.navNarrow}`}>
+          <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-3 px-3 py-2 sm:px-6 lg:px-8">
+            <a href="/" className="flex min-h-11 shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
+              <img src="/logo.png" alt="" className="h-8 w-8 object-contain" />
+              <span className={`text-base font-black ${styles.text}`}>MUR</span>
             </a>
-            <a className={`transition ${styles.navTextNarrow}`} href={mailto}>
-              {t.footer.email}
-            </a>
-            <a className={`transition ${styles.navTextNarrow}`} href="/privacy">
-              {t.footer.privacy}
-            </a>
-            <a className={`transition ${styles.navTextNarrow}`} href="/terms">
-              {t.footer.terms}
-            </a>
-            <a className={`transition ${styles.navTextNarrow}`} href="/delete-account">
-              {t.footer.deleteAccount}
-            </a>
+            <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+              <div className="lg:hidden">
+                <PreferenceControls
+                  compact
+                  language={language}
+                  setLanguage={setLanguage}
+                  theme={theme}
+                  setTheme={setTheme}
+                  t={t}
+                  styles={styles}
+                />
+              </div>
+              <div className="hidden lg:block">
+                <PreferenceControls
+                  language={language}
+                  setLanguage={setLanguage}
+                  theme={theme}
+                  setTheme={setTheme}
+                  t={t}
+                  styles={styles}
+                />
+              </div>
+              <HeaderMenu t={t} styles={styles} narrow />
+            </div>
           </div>
-        </div>
-      </footer>
+        </nav>
+
+        {children}
+
+        <footer className={`border-t px-4 py-8 sm:px-6 lg:px-8 ${styles.navNarrow}`}>
+          <div className={`mx-auto flex max-w-5xl flex-col gap-3 text-sm ${styles.legalMuted} sm:flex-row sm:items-center sm:justify-between`}>
+            <span>© {currentYear} {BRAND.name}.</span>
+            <div className="flex flex-wrap gap-4">
+              <a className={`transition ${styles.navTextNarrow}`} href={BRAND.instagramUrl} target="_blank" rel="noreferrer">
+                {BRAND.instagramHandle}
+              </a>
+              <a className={`transition ${styles.navTextNarrow}`} href={mailto}>
+                {t.footer.email}
+              </a>
+              <a className={`transition ${styles.navTextNarrow}`} href="/privacy">
+                {t.footer.privacy}
+              </a>
+              <a className={`transition ${styles.navTextNarrow}`} href="/terms">
+                {t.footer.terms}
+              </a>
+              <a className={`transition ${styles.navTextNarrow}`} href="/delete-account">
+                {t.footer.deleteAccount}
+              </a>
+            </div>
+          </div>
+        </footer>
+      </div>
     </main>
-  )
-}
-
-function HomePage({ t, styles }) {
-  return (
-    <>
-      <section className="px-4 pb-12 pt-20 sm:px-6 sm:pb-16 sm:pt-28 lg:px-8">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          className="mx-auto max-w-4xl text-center"
-        >
-          <motion.h1
-            variants={heroItem}
-            className="flex justify-center"
-          >
-            <img
-              src="/logo.png"
-              alt={t.home.title}
-              className="h-40 w-40 object-contain sm:h-52 sm:w-52 lg:h-64 lg:w-64"
-            />
-          </motion.h1>
-          <motion.p
-            variants={heroItem}
-            className={`mx-auto mt-7 max-w-3xl text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl ${styles.text}`}
-          >
-            <span className="sr-only">{t.home.subtitle}</span>
-            <TypewriterText text={t.home.subtitle} />
-          </motion.p>
-          <motion.div
-            variants={heroItem}
-            className="mt-6 inline-flex items-center rounded-full border border-accent/70 bg-accent/10 px-4 py-2 text-sm font-bold uppercase tracking-[0.22em] text-accent"
-          >
-            {t.home.comingSoon}
-          </motion.div>
-          <motion.p
-            variants={heroItem}
-            className={`mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg ${styles.muted}`}
-          >
-            {t.home.body}
-          </motion.p>
-          <motion.div
-            variants={heroItem}
-            className="mt-7 flex flex-wrap items-center justify-center gap-3"
-            aria-label={t.home.socialLabel}
-          >
-            <a
-              className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-bold transition ${styles.navLink}`}
-              href={BRAND.instagramUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <AtSign aria-hidden="true" className="h-4 w-4 text-accent" />
-              {BRAND.instagramHandle}
-            </a>
-            <a
-              className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-bold transition ${styles.navLink}`}
-              href={`mailto:${BRAND.supportEmail}`}
-            >
-              <Mail aria-hidden="true" className="h-4 w-4 text-accent" />
-              {BRAND.supportEmail}
-            </a>
-          </motion.div>
-          <motion.div
-            variants={heroItem}
-            className={`mx-auto mt-10 flex max-w-md items-center gap-4 rounded-lg border p-3 text-left ${styles.softSurface}`}
-          >
-            <img
-              src="/olvi.png"
-              alt={t.home.mascotAlt}
-              className="h-24 w-24 shrink-0 object-contain drop-shadow-[0_14px_28px_rgba(0,0,0,0.24)] sm:h-28 sm:w-28"
-            />
-            <p className={`text-sm font-bold leading-6 ${styles.text}`}>
-              {t.home.mascotLabel}
-            </p>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      <section id="features" className="px-4 pb-16 pt-4 sm:px-6 sm:pb-20 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="max-w-2xl">
-            <p className="text-sm font-bold uppercase text-accent">
-              {t.home.featuresLabel}
-            </p>
-            <h2 className={`mt-3 text-3xl font-bold sm:text-4xl ${styles.text}`}>
-              {t.home.featuresTitle}
-            </h2>
-            <p className={`mt-4 text-base leading-7 ${styles.muted}`}>
-              {t.home.featuresBody}
-            </p>
-          </div>
-
-          <motion.div
-            variants={featureGrid}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.25 }}
-            className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4"
-          >
-            {t.features.map((feature, index) => (
-              <FeatureCard
-                key={feature.title}
-                id={`feature-${index}`}
-                icon={featureIcons[index]}
-                title={feature.title}
-                description={feature.description}
-                styles={styles}
-              />
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="px-4 pb-20 sm:px-6 sm:pb-24 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="max-w-2xl">
-            <p className="text-sm font-bold uppercase text-accent">
-              {t.home.stepsLabel}
-            </p>
-            <h2 className={`mt-3 text-3xl font-bold sm:text-4xl ${styles.text}`}>
-              {t.home.stepsTitle}
-            </h2>
-          </div>
-
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {t.steps.map((step, index) => (
-              <article
-                key={step.title}
-                className={`rounded-lg border p-6 ${styles.surface}`}
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-sm font-bold text-accent">
-                  {index + 1}
-                </div>
-                <h3 className={`mt-5 text-xl font-semibold ${styles.text}`}>
-                  {step.title}
-                </h3>
-                <p className={`mt-3 text-sm leading-6 ${styles.muted}`}>
-                  {step.body}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
   )
 }
 
 function LegalPage({ content, styles }) {
   return (
     <section className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-      <div className="mx-auto max-w-3xl">
+      <div className={`mx-auto max-w-3xl rounded-lg border p-6 sm:p-8 ${styles.surface}`}>
         <a
           href="/"
-          className={`inline-flex items-center gap-2 text-sm font-semibold transition ${styles.navTextNarrow}`}
+          className={`inline-flex items-center gap-2 text-sm font-bold transition ${styles.navTextNarrow}`}
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
           {content.back}
         </a>
+
         <div className={`mt-8 border-b pb-8 ${styles.legalBorder}`}>
-          <div className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border ${styles.legalSoft}`}>
-            <FileText aria-hidden="true" className="h-5 w-5" />
+          <div className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border ${styles.legalSoft}`}>
+            <FileText aria-hidden="true" className="h-5 w-5 text-brand-amber" />
           </div>
-          <p className={`mt-6 text-sm font-semibold uppercase tracking-wide ${styles.legalMuted}`}>
+          <p className={`mt-6 text-sm font-bold uppercase tracking-[0.16em] ${styles.legalMuted}`}>
             {content.effective}
           </p>
-          <h1 className={`mt-3 text-4xl font-bold tracking-tight ${styles.text}`}>
+          <h1 className={`mt-3 text-4xl font-black tracking-tight ${styles.text}`}>
             {content.title}
           </h1>
           <p className={`mt-5 text-base leading-7 ${styles.legalMuted}`}>
@@ -980,7 +833,7 @@ function LegalPage({ content, styles }) {
         <div className={`divide-y ${styles.legalDivide}`}>
           {content.sections.map((section) => (
             <article key={section.title} className="py-8">
-              <h2 className={`text-xl font-semibold ${styles.text}`}>
+              <h2 className={`text-xl font-bold ${styles.text}`}>
                 {section.title}
               </h2>
               <p className={`mt-3 text-sm leading-6 ${styles.legalMuted}`}>
@@ -1001,22 +854,22 @@ function DeleteAccountPage({ t, styles }) {
 
   return (
     <section className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-      <div className="mx-auto max-w-3xl">
+      <div className={`mx-auto max-w-3xl rounded-lg border p-6 sm:p-8 ${styles.surface}`}>
         <a
           href="/"
-          className={`inline-flex items-center gap-2 text-sm font-semibold transition ${styles.navTextNarrow}`}
+          className={`inline-flex items-center gap-2 text-sm font-bold transition ${styles.navTextNarrow}`}
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
           {t.legal.back}
         </a>
         <div className={`mt-8 border-b pb-8 ${styles.legalBorder}`}>
-          <div className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border ${styles.legalSoft}`}>
-            <Trash2 aria-hidden="true" className="h-5 w-5" />
+          <div className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border ${styles.legalSoft}`}>
+            <Trash2 aria-hidden="true" className="h-5 w-5 text-brand-amber" />
           </div>
-          <p className={`mt-6 text-sm font-semibold uppercase tracking-wide ${styles.legalMuted}`}>
+          <p className={`mt-6 text-sm font-bold uppercase tracking-[0.16em] ${styles.legalMuted}`}>
             {t.deleteAccount.badge}
           </p>
-          <h1 className={`mt-3 text-4xl font-bold tracking-tight ${styles.text}`}>
+          <h1 className={`mt-3 text-4xl font-black tracking-tight ${styles.text}`}>
             {t.deleteAccount.title}
           </h1>
           <p className={`mt-5 text-base leading-7 ${styles.legalMuted}`}>
@@ -1026,7 +879,7 @@ function DeleteAccountPage({ t, styles }) {
 
         <div className={`divide-y ${styles.legalDivide}`}>
           <article className="py-8">
-            <h2 className={`text-xl font-semibold ${styles.text}`}>
+            <h2 className={`text-xl font-bold ${styles.text}`}>
               {t.deleteAccount.deletedTitle}
             </h2>
             <p className={`mt-3 text-sm leading-6 ${styles.legalMuted}`}>
@@ -1035,7 +888,7 @@ function DeleteAccountPage({ t, styles }) {
           </article>
 
           <article className="py-8">
-            <h2 className={`text-xl font-semibold ${styles.text}`}>
+            <h2 className={`text-xl font-bold ${styles.text}`}>
               {t.deleteAccount.noAccessTitle}
             </h2>
             <p className={`mt-3 text-sm leading-6 ${styles.legalMuted}`}>
@@ -1043,7 +896,7 @@ function DeleteAccountPage({ t, styles }) {
             </p>
             <a
               href={mailto}
-              className={`mt-5 inline-flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition ${styles.primaryButton}`}
+              className={`mt-5 inline-flex min-h-12 items-center gap-2 rounded-lg px-4 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${styles.primaryButton}`}
             >
               <Mail aria-hidden="true" className="h-4 w-4" />
               {BRAND.supportEmail}
@@ -1078,20 +931,20 @@ function ResetPasswordBridgePage({ t, styles }) {
       <div className="mx-auto max-w-3xl">
         <a
           href="/"
-          className={`inline-flex items-center gap-2 text-sm font-semibold transition ${styles.navTextNarrow}`}
+          className={`inline-flex items-center gap-2 text-sm font-bold transition ${styles.navTextNarrow}`}
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
           {t.resetPassword.back}
         </a>
 
         <div className={`mt-8 rounded-lg border p-8 text-center ${styles.surface}`}>
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 text-accent">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-brand-amber/15 text-brand-amber">
             <KeyRound aria-hidden="true" className="h-6 w-6" />
           </div>
-          <p className={`mt-6 text-sm font-semibold uppercase tracking-wide ${styles.legalMuted}`}>
+          <p className={`mt-6 text-sm font-bold uppercase tracking-[0.16em] ${styles.legalMuted}`}>
             {t.resetPassword.badge}
           </p>
-          <h1 className={`mx-auto mt-3 max-w-xl text-3xl font-bold tracking-tight ${styles.text}`}>
+          <h1 className={`mx-auto mt-3 max-w-xl text-3xl font-black tracking-tight ${styles.text}`}>
             {t.resetPassword.title}
           </h1>
           <p className={`mx-auto mt-5 max-w-xl text-base leading-7 ${styles.legalMuted}`}>
@@ -1102,7 +955,7 @@ function ResetPasswordBridgePage({ t, styles }) {
             <>
               <a
                 href={appUrl}
-                className={`mt-7 inline-flex min-h-12 items-center justify-center rounded-lg px-6 text-sm font-bold transition ${styles.primaryButton}`}
+                className={`mt-7 inline-flex min-h-12 items-center justify-center rounded-lg px-6 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${styles.primaryButton}`}
               >
                 {t.resetPassword.button}
               </a>
@@ -1122,7 +975,7 @@ function App() {
     getStoredPreference('mur-language', LANGUAGES, 'es'),
   )
   const [theme, setTheme] = useState(() =>
-    getStoredPreference('mur-theme', THEMES, 'dark'),
+    getStoredPreference('mur-theme', THEMES, 'light'),
   )
   const path = window.location.pathname
   const isPrivacy = path === '/privacy' || path === '/privacy-policy'
@@ -1131,17 +984,44 @@ function App() {
   const isResetPassword = path === '/reset-password'
   const t = CONTENT[language]
   const styles = THEME[theme]
+  const currentMeta = useMemo(() => {
+    if (isPrivacy) {
+      return { title: `${t.legal.title} | MUR`, description: t.legal.intro }
+    }
+
+    if (isTerms) {
+      return { title: `${t.terms.title} | MUR`, description: t.terms.intro }
+    }
+
+    if (isDeleteAccount) {
+      return { title: `${t.deleteAccount.title} | MUR`, description: t.deleteAccount.intro }
+    }
+
+    if (isResetPassword) {
+      return { title: `${t.resetPassword.title} | MUR`, description: t.resetPassword.intro }
+    }
+
+    return t.meta
+  }, [isDeleteAccount, isPrivacy, isResetPassword, isTerms, t])
 
   useEffect(() => {
     window.localStorage.setItem('mur-language', language)
-    document.documentElement.lang = language
-  }, [language])
+    document.documentElement.lang = t.locale
+  }, [language, t.locale])
 
   useEffect(() => {
     window.localStorage.setItem('mur-theme', theme)
     document.documentElement.dataset.theme = theme
-    document.body.style.backgroundColor = theme === 'dark' ? '#161622' : '#f3e8d7'
+    document.body.style.backgroundColor = theme === 'dark' ? '#171611' : '#fbf6ec'
   }, [theme])
+
+  useEffect(() => {
+    document.title = currentMeta.title
+    setMetaTag('meta[name="description"]', 'content', currentMeta.description)
+    setMetaTag('meta[property="og:title"]', 'content', currentMeta.title)
+    setMetaTag('meta[property="og:description"]', 'content', currentMeta.description)
+    setMetaTag('meta[property="og:type"]', 'content', 'website')
+  }, [currentMeta.description, currentMeta.title])
 
   if (isPrivacy || isTerms || isDeleteAccount || isResetPassword) {
     return (

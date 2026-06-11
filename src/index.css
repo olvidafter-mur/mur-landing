@@ -10,8 +10,8 @@
   body {
     margin: 0;
     min-width: 320px;
-    background: #161622;
-    color: #f3e8d7;
+    background: #fbf6ec;
+    color: #25211b;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -21,102 +21,103 @@
   * {
     box-sizing: border-box;
   }
+
+  ::selection {
+    background: rgba(232, 140, 34, 0.28);
+  }
 }
 
 @layer components {
-  .linked-nodes-background {
+  .neighborhood-background {
     position: fixed;
     inset: 0;
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
+  }
+
+  .neighborhood-background::before,
+  .neighborhood-background::after {
+    position: absolute;
+    content: "";
+    inset: 0;
+  }
+
+  .neighborhood-background-light {
     background:
-      radial-gradient(circle at 18% 18%, var(--nodes-glow), transparent 30%),
-      radial-gradient(circle at 78% 28%, var(--nodes-soft-glow), transparent 34%),
-      var(--nodes-bg);
+      linear-gradient(115deg, rgba(221, 237, 234, 0.75), transparent 34%),
+      linear-gradient(245deg, rgba(248, 229, 200, 0.78), transparent 38%),
+      #fbf6ec;
   }
 
-  .linked-nodes-background-dark {
-    --nodes-bg: #161622;
-    --nodes-glow: rgba(255, 157, 0, 0.12);
-    --nodes-soft-glow: rgba(230, 210, 181, 0.1);
-    --nodes-vignette:
-      linear-gradient(180deg, rgba(22, 22, 34, 0.04), rgba(22, 22, 34, 0.78)),
-      radial-gradient(circle at center, transparent 42%, rgba(22, 22, 34, 0.72));
+  .neighborhood-background-dark {
+    background:
+      linear-gradient(115deg, rgba(36, 124, 120, 0.22), transparent 35%),
+      linear-gradient(245deg, rgba(232, 140, 34, 0.16), transparent 42%),
+      #171611;
   }
 
-  .linked-nodes-background-light {
-    --nodes-bg: #f3e8d7;
-    --nodes-glow: rgba(255, 157, 0, 0.14);
-    --nodes-soft-glow: rgba(22, 22, 34, 0.1);
-    --nodes-vignette:
-      linear-gradient(180deg, rgba(243, 232, 215, 0.02), rgba(243, 232, 215, 0.46)),
-      radial-gradient(circle at center, transparent 52%, rgba(243, 232, 215, 0.42));
+  .neighborhood-background::before {
+    background:
+      linear-gradient(90deg, currentColor 1px, transparent 1px),
+      linear-gradient(0deg, currentColor 1px, transparent 1px);
+    background-size: 88px 88px;
+    opacity: 0.08;
+    transform: rotate(-7deg) scale(1.15);
   }
 
-  .linked-nodes-particles {
+  .neighborhood-background-light::before {
+    color: #25211b;
+  }
+
+  .neighborhood-background-dark::before {
+    color: #fbf6ec;
+    opacity: 0.055;
+  }
+
+  .neighborhood-background::after {
+    background:
+      linear-gradient(180deg, rgba(251, 246, 236, 0.12), rgba(251, 246, 236, 0.74)),
+      radial-gradient(circle at center, transparent 48%, rgba(251, 246, 236, 0.5));
+  }
+
+  .neighborhood-background-dark::after {
+    background:
+      linear-gradient(180deg, rgba(23, 22, 17, 0.08), rgba(23, 22, 17, 0.78)),
+      radial-gradient(circle at center, transparent 46%, rgba(23, 22, 17, 0.72));
+  }
+
+  .map-grid {
     position: absolute;
-    inset: 0;
-    opacity: 0.72;
+    inset: -30%;
+    background:
+      linear-gradient(36deg, transparent 47%, rgba(37, 33, 27, 0.12) 48%, rgba(37, 33, 27, 0.12) 51%, transparent 52%),
+      linear-gradient(118deg, transparent 46%, rgba(37, 33, 27, 0.1) 47%, rgba(37, 33, 27, 0.1) 50%, transparent 51%);
+    background-size: 78px 70px;
+    transform: rotate(5deg);
   }
 
-  .linked-nodes-background-light .linked-nodes-particles {
-    opacity: 0.95;
-  }
-
-  .linked-nodes-vignette {
+  .map-dot {
     position: absolute;
-    inset: 0;
-    background: var(--nodes-vignette);
+    width: 1rem;
+    height: 1rem;
+    border: 3px solid #fbf6ec;
+    border-radius: 999px;
+    box-shadow: 0 10px 22px rgba(37, 33, 27, 0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 
-  .typewriter-text {
-    display: grid;
-    width: 100%;
-  }
-
-  .typewriter-measure,
-  .typewriter-line {
-    grid-area: 1 / 1;
-  }
-
-  .typewriter-measure {
-    visibility: hidden;
-  }
-
-  .typewriter-line {
-    display: inline;
-  }
-
-  .typewriter-caret {
-    display: inline-block;
-    width: 0.08em;
-    height: 0.9em;
-    margin-left: 0.08em;
-    vertical-align: -0.08em;
-    background: currentColor;
-    animation: typewriter-caret-blink 850ms steps(2, end) infinite;
-  }
-
-  @keyframes typewriter-caret-blink {
-    0%,
-    45% {
-      opacity: 1;
-    }
-
-    46%,
-    100% {
-      opacity: 0;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .linked-nodes-particles {
-      display: none;
-    }
-
-    .typewriter-caret {
-      animation: none;
-    }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
