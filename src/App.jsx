@@ -48,7 +48,6 @@ const stagger = {
 const useCaseIcons = [MapPin, Bell, Compass, ShieldCheck]
 const navAnchors = [
   { href: '#how-it-works', key: 'howItWorks' },
-  { href: '#safety', key: 'safety' },
   { href: '#waitlist', key: 'waitlist' },
 ]
 
@@ -487,30 +486,6 @@ function HowItWorksSection({ t, styles }) {
   )
 }
 
-function SafetySection({ t, styles }) {
-  return (
-    <section className="px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-4xl">
-        <article id="safety" className={`scroll-mt-24 rounded-lg border p-6 sm:p-8 ${styles.tealSurface}`}>
-          <SectionIntro
-            eyebrow={t.home.safetyLabel}
-            title={t.home.safetyTitle}
-            styles={styles}
-          />
-          <div className="mt-8 grid gap-3">
-            {t.safety.map((item) => (
-              <div key={item} className={`flex gap-3 rounded-lg border p-4 ${styles.insetSurface}`}>
-                <ShieldCheck aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-teal" />
-                <p className={`text-sm font-semibold leading-6 ${styles.text}`}>{item}</p>
-              </div>
-            ))}
-          </div>
-        </article>
-      </div>
-    </section>
-  )
-}
-
 function WaitlistSection({ t, styles }) {
   return (
     <section id="waitlist" className="scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
@@ -566,7 +541,6 @@ function HomePage({ t, styles }) {
       <UseCasesSection t={t} styles={styles} />
       <ProductSection t={t} styles={styles} />
       <HowItWorksSection t={t} styles={styles} />
-      <SafetySection t={t} styles={styles} />
       <WaitlistSection t={t} styles={styles} />
       <FaqSection t={t} styles={styles} />
     </>

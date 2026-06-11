@@ -204,7 +204,6 @@ export const CONTENT = {
     nav: {
       menu: 'Menú',
       howItWorks: 'Cómo funciona',
-      safety: 'Seguridad',
       waitlist: 'Lista de espera',
       privacy: 'Política de privacidad',
       terms: 'Términos del servicio',
@@ -243,8 +242,6 @@ export const CONTENT = {
         'Cada publicación puede mostrar una ubicación aproximada o exacta. Las categorías ayudan a recibir menos ruido y más avisos útiles.',
       stepsLabel: 'Cómo funciona',
       stepsTitle: 'Tres pasos, sin vueltas',
-      safetyLabel: 'Confianza',
-      safetyTitle: 'La seguridad se ve, no se promete de lejos',
       waitlistLabel: 'Lista de espera',
       waitlistTitle: 'Sumate a la primera comunidad MUR',
       waitlistBody:
@@ -315,13 +312,6 @@ export const CONTENT = {
         body:
           'Elegí categoría, sumá detalles y decidí si compartís ubicación exacta o aproximada.',
       },
-    ],
-    safety: [
-      'Reportes y bloqueos dentro de la app.',
-      'Ubicación exacta opcional por publicación.',
-      'Categorías y filtros para bajar el ruido.',
-      'Cuenta y datos bajo control del usuario.',
-      'Moderación para cuidar la convivencia.',
     ],
     faq: [
       {
@@ -402,7 +392,6 @@ export const CONTENT = {
     nav: {
       menu: 'Menu',
       howItWorks: 'How it works',
-      safety: 'Safety',
       waitlist: 'Waitlist',
       privacy: 'Privacy policy',
       terms: 'Terms of service',
@@ -441,8 +430,6 @@ export const CONTENT = {
         'Each post can use approximate or exact location. Categories help you receive less noise and more useful alerts.',
       stepsLabel: 'How it works',
       stepsTitle: 'Three simple steps',
-      safetyLabel: 'Trust',
-      safetyTitle: 'Safety should be visible and concrete',
       waitlistLabel: 'Waitlist',
       waitlistTitle: 'Join the first MUR community',
       waitlistBody:
@@ -513,13 +500,6 @@ export const CONTENT = {
         body:
           'Choose a category, add details, and decide whether to share exact or approximate location.',
       },
-    ],
-    safety: [
-      'Reports and blocks inside the app.',
-      'Exact location is optional per post.',
-      'Categories and filters reduce noise.',
-      'Users stay in control of account and data.',
-      'Moderation helps protect community norms.',
     ],
     faq: [
       {
