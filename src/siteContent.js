@@ -205,7 +205,6 @@ export const CONTENT = {
       menu: 'Menú',
       howItWorks: 'Cómo funciona',
       safety: 'Seguridad',
-      business: 'Comercios',
       waitlist: 'Lista de espera',
       privacy: 'Política de privacidad',
       terms: 'Términos del servicio',
@@ -246,10 +245,6 @@ export const CONTENT = {
       stepsTitle: 'Tres pasos, sin vueltas',
       safetyLabel: 'Confianza',
       safetyTitle: 'La seguridad se ve, no se promete de lejos',
-      businessLabel: 'Para comercios',
-      businessTitle: 'Promos y novedades para vecinos reales',
-      businessBody:
-        'MUR puede ayudar a un comercio a aparecer donde importa: cerca de personas que caminan, compran y recomiendan.',
       waitlistLabel: 'Lista de espera',
       waitlistTitle: 'Sumate a la primera comunidad MUR',
       waitlistBody:
@@ -277,7 +272,7 @@ export const CONTENT = {
       {
         title: 'Ayuda entre vecinos',
         body:
-          'Objetos encontrados, consultas rápidas y pedidos concretos con contexto barrial.',
+          'Objetos encontrados, consultas rápidas y pedidos concretos con contexto cercano.',
       },
     ],
     samplePosts: [
@@ -294,7 +289,7 @@ export const CONTENT = {
       {
         category: 'Comercio',
         title: 'Panadería cercana con promo hoy',
-        meta: 'A 1,1 km · comercio verificado',
+        meta: 'A 1,1 km · publicación cercana',
       },
     ],
     previewStats: ['Feed cerca tuyo', 'Mapa activo', 'Filtros por categoría'],
@@ -328,12 +323,6 @@ export const CONTENT = {
       'Cuenta y datos bajo control del usuario.',
       'Moderación para cuidar la convivencia.',
     ],
-    businessBenefits: [
-      'Promos cercanas sin competir con toda la ciudad.',
-      'Visibilidad para vecinos que realmente están cerca.',
-      'Espacio para comercios verificados.',
-      'Novedades simples: horarios, lanzamientos y avisos.',
-    ],
     faq: [
       {
         question: '¿Qué es MUR?',
@@ -354,11 +343,6 @@ export const CONTENT = {
         question: '¿Cómo funcionan las alertas?',
         answer:
           'Las alertas se filtran por cercanía y categoría para que recibas menos ruido y más información útil.',
-      },
-      {
-        question: '¿Qué pasa con los comercios?',
-        answer:
-          'Los comercios pueden sumarse para comunicar promos, novedades y avisos relevantes a personas cercanas.',
       },
       {
         question: '¿Cómo se cuida la seguridad?',
@@ -419,7 +403,6 @@ export const CONTENT = {
       menu: 'Menu',
       howItWorks: 'How it works',
       safety: 'Safety',
-      business: 'Local shops',
       waitlist: 'Waitlist',
       privacy: 'Privacy policy',
       terms: 'Terms of service',
@@ -460,10 +443,6 @@ export const CONTENT = {
       stepsTitle: 'Three simple steps',
       safetyLabel: 'Trust',
       safetyTitle: 'Safety should be visible and concrete',
-      businessLabel: 'For local shops',
-      businessTitle: 'Promos and updates for real nearby neighbors',
-      businessBody:
-        'MUR can help a shop appear where it matters: near people who walk, buy, and recommend.',
       waitlistLabel: 'Waitlist',
       waitlistTitle: 'Join the first MUR community',
       waitlistBody:
@@ -507,8 +486,8 @@ export const CONTENT = {
       },
       {
         category: 'Shop',
-        title: 'Neighborhood bakery has a promo today',
-        meta: '1.1 km away · verified shop',
+        title: 'Nearby bakery has a promo today',
+        meta: '1.1 km away · nearby post',
       },
     ],
     previewStats: ['Nearby feed', 'Active map', 'Category filters'],
@@ -542,12 +521,6 @@ export const CONTENT = {
       'Users stay in control of account and data.',
       'Moderation helps protect community norms.',
     ],
-    businessBenefits: [
-      'Nearby promos without competing with the whole city.',
-      'Visibility for neighbors who are actually close.',
-      'Space for verified local shops.',
-      'Simple updates: hours, launches, and notices.',
-    ],
     faq: [
       {
         question: 'What is MUR?',
@@ -568,11 +541,6 @@ export const CONTENT = {
         question: 'How do alerts work?',
         answer:
           'Alerts are filtered by proximity and category so you get less noise and more useful information.',
-      },
-      {
-        question: 'What about local shops?',
-        answer:
-          'Local shops can join to share promos, updates, and relevant notices with nearby people.',
       },
       {
         question: 'How is safety handled?',

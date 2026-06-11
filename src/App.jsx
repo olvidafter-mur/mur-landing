@@ -487,10 +487,10 @@ function HowItWorksSection({ t, styles }) {
   )
 }
 
-function SafetyBusinessSection({ t, styles }) {
+function SafetySection({ t, styles }) {
   return (
     <section className="px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-2">
+      <div className="mx-auto max-w-4xl">
         <article id="safety" className={`scroll-mt-24 rounded-lg border p-6 sm:p-8 ${styles.tealSurface}`}>
           <SectionIntro
             eyebrow={t.home.safetyLabel}
@@ -505,32 +505,6 @@ function SafetyBusinessSection({ t, styles }) {
               </div>
             ))}
           </div>
-        </article>
-
-        <article id="business" className={`scroll-mt-24 rounded-lg border p-6 sm:p-8 ${styles.warmSurface}`}>
-          <SectionIntro
-            eyebrow={t.home.businessLabel}
-            title={t.home.businessTitle}
-            body={t.home.businessBody}
-            styles={styles}
-          />
-          <div className="mt-8 grid gap-3">
-            {t.businessBenefits.map((item) => (
-              <div key={item} className={`flex gap-3 rounded-lg border p-4 ${styles.insetSurface}`}>
-                <Bell aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-amber" />
-                <p className={`text-sm font-semibold leading-6 ${styles.text}`}>{item}</p>
-              </div>
-            ))}
-          </div>
-          <a
-            href={BRAND.waitlistUrl}
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => trackEvent('main_cta_click', { placement: 'business_section' })}
-            className={`mt-8 inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${styles.primaryButton}`}
-          >
-            {t.home.primaryCta}
-          </a>
         </article>
       </div>
     </section>
@@ -592,7 +566,7 @@ function HomePage({ t, styles }) {
       <UseCasesSection t={t} styles={styles} />
       <ProductSection t={t} styles={styles} />
       <HowItWorksSection t={t} styles={styles} />
-      <SafetyBusinessSection t={t} styles={styles} />
+      <SafetySection t={t} styles={styles} />
       <WaitlistSection t={t} styles={styles} />
       <FaqSection t={t} styles={styles} />
     </>
