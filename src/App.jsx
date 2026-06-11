@@ -21,7 +21,6 @@ import {
   Plus,
   Search,
   Send,
-  Settings,
   ShieldCheck,
   SlidersHorizontal,
   Sun,
@@ -271,121 +270,96 @@ function AppPreview({ t, styles }) {
   const feedPosts = t.samplePosts.slice(0, 3)
 
   return (
-    <div className="mx-auto w-full max-w-[30rem]">
-      <div className="grid gap-4 sm:grid-cols-[0.86fr_0.74fr] sm:items-end">
-        <div className="rounded-[2rem] border border-brand-ink/10 bg-[#111827] p-2 shadow-phone">
-          <div className="overflow-hidden rounded-[1.55rem] border border-brand-ink/10 bg-[#F4F5F9] text-brand-ink">
-            <div className="flex h-9 items-center justify-between px-4 text-[0.7rem] font-semibold text-brand-ink/55">
-              <span>15:15</span>
-              <span>97%</span>
-            </div>
+    <div className="mx-auto w-full max-w-[24rem]">
+      <div className="rounded-[2.25rem] border border-brand-ink/10 bg-[#111827] p-2.5 shadow-phone">
+        <div className="overflow-hidden rounded-[1.7rem] border border-brand-ink/10 bg-[#F4F5F9] text-brand-ink">
+          <div className="flex h-9 items-center justify-between px-5 text-[0.7rem] font-semibold text-brand-ink/55">
+            <span>15:15</span>
+            <span>97%</span>
+          </div>
 
-            <div className="px-4 pb-3">
-              <div className="flex items-center gap-3">
-                <div className="h-9 w-9 shrink-0 rounded-full bg-gradient-to-br from-brand-teal to-brand-amber ring-2 ring-white" />
-                <div className="flex min-h-11 flex-1 items-center gap-2 rounded-full border border-brand-ink/10 bg-[#ECEFF4] px-4 text-sm text-brand-ink/45">
-                  <Search aria-hidden="true" className="h-4 w-4" />
-                  {t.home.previewSearch}
-                </div>
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-brand-ink/10 bg-[#ECEFF4]">
-                  <SlidersHorizontal aria-hidden="true" className="h-5 w-5 text-brand-ink/70" />
-                </div>
+          <div className="px-5 pb-3">
+            <div className="flex items-center gap-3">
+              <div className="h-9 w-9 shrink-0 rounded-full bg-gradient-to-br from-brand-teal to-brand-amber ring-2 ring-white" />
+              <div className="flex min-h-11 flex-1 items-center gap-2 rounded-full border border-brand-ink/10 bg-[#ECEFF4] px-4 text-sm text-brand-ink/45">
+                <Search aria-hidden="true" className="h-4 w-4" />
+                {t.home.previewSearch}
+              </div>
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-brand-ink/10 bg-[#ECEFF4]">
+                <SlidersHorizontal aria-hidden="true" className="h-5 w-5 text-brand-ink/70" />
               </div>
             </div>
+          </div>
 
-            <div className="space-y-0 px-4 pb-5">
-              {feedPosts.map((post, index) => (
-                <article key={post.title} className="border-b border-brand-ink/10 py-4 last:border-b-0">
-                  <div className="flex gap-3">
-                    <div className="h-10 w-10 shrink-0 rounded-full bg-gradient-to-br from-brand-green via-brand-teal to-brand-amber" />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="min-w-0 text-sm">
-                          <span className="font-bold">{t.home.previewAuthor}</span>
-                          <span className="ml-1 text-brand-ink/45">· {post.time} · </span>
-                          <span className="font-semibold text-brand-amber">{post.distance}</span>
-                        </div>
-                        <span className="text-lg leading-none text-brand-ink/45">...</span>
+          <div className="space-y-0 px-5 pb-5">
+            {feedPosts.map((post, index) => (
+              <article key={post.title} className="border-b border-brand-ink/10 py-4 last:border-b-0">
+                <div className="flex gap-3">
+                  <div className="h-10 w-10 shrink-0 rounded-full bg-gradient-to-br from-brand-green via-brand-teal to-brand-amber" />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="min-w-0 text-sm">
+                        <span className="font-bold">{t.home.previewAuthor}</span>
+                        <span className="ml-1 text-brand-ink/45">· {post.time} · </span>
+                        <span className="font-semibold text-brand-amber">{post.distance}</span>
                       </div>
-                      <p className="mt-2 text-base leading-6">{post.title}</p>
+                      <span className="text-lg leading-none text-brand-ink/45">...</span>
+                    </div>
+                    <p className="mt-2 text-base leading-6">{post.title}</p>
 
-                      {index === 0 ? (
-                        <div className="mt-3 flex min-h-12 items-center justify-between rounded-lg border border-brand-ink/10 bg-[#ECEFF4] px-3">
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-sun text-brand-amber">
-                              <Image aria-hidden="true" className="h-4 w-4" />
-                            </div>
-                            <span className="font-bold">{t.home.previewImageLabel}</span>
+                    {index === 0 ? (
+                      <div className="mt-3 flex min-h-12 items-center justify-between rounded-lg border border-brand-ink/10 bg-[#ECEFF4] px-3">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-sun text-brand-amber">
+                            <Image aria-hidden="true" className="h-4 w-4" />
                           </div>
-                          <span className="text-xl text-brand-ink/55">›</span>
+                          <span className="font-bold">{t.home.previewImageLabel}</span>
                         </div>
-                      ) : null}
-
-                      {index === 2 ? (
-                        <div className="mt-3 rounded-lg border border-brand-ink/10 bg-[#ECEFF4] px-3 py-3">
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-amber text-white">
-                              <Plus aria-hidden="true" className="h-4 w-4 rotate-45" />
-                            </div>
-                            <span className="font-bold">{t.home.previewAudioLabel}</span>
-                            <span className="ml-auto text-xs text-brand-ink/45">0:05</span>
-                            <Mic aria-hidden="true" className="h-4 w-4 text-brand-ink/55" />
-                          </div>
-                          <div className="mt-2 h-1.5 rounded-full bg-brand-ink/10">
-                            <div className="h-full w-4/5 rounded-full bg-brand-ink/20" />
-                          </div>
-                        </div>
-                      ) : null}
-
-                      <div className="mt-3 flex items-center gap-6 text-brand-ink/65">
-                        <MessageCircle aria-hidden="true" className="h-5 w-5" />
-                        <Heart aria-hidden="true" className="h-5 w-5" />
-                        <Send aria-hidden="true" className="h-5 w-5" />
-                        <span className="ml-auto rounded-full border border-brand-ink/10 bg-[#F7F8FB] px-2 py-1 text-[0.68rem] text-brand-ink/45">
-                          {post.category}
-                        </span>
+                        <span className="text-xl text-brand-ink/55">›</span>
                       </div>
+                    ) : null}
+
+                    {index === 2 ? (
+                      <div className="mt-3 rounded-lg border border-brand-ink/10 bg-[#ECEFF4] px-3 py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-amber text-white">
+                            <Plus aria-hidden="true" className="h-4 w-4 rotate-45" />
+                          </div>
+                          <span className="font-bold">{t.home.previewAudioLabel}</span>
+                          <span className="ml-auto text-xs text-brand-ink/45">0:05</span>
+                          <Mic aria-hidden="true" className="h-4 w-4 text-brand-ink/55" />
+                        </div>
+                        <div className="mt-2 h-1.5 rounded-full bg-brand-ink/10">
+                          <div className="h-full w-4/5 rounded-full bg-brand-ink/20" />
+                        </div>
+                      </div>
+                    ) : null}
+
+                    <div className="mt-3 flex items-center gap-6 text-brand-ink/65">
+                      <MessageCircle aria-hidden="true" className="h-5 w-5" />
+                      <Heart aria-hidden="true" className="h-5 w-5" />
+                      <Send aria-hidden="true" className="h-5 w-5" />
+                      <span className="ml-auto rounded-full border border-brand-ink/10 bg-[#F7F8FB] px-2 py-1 text-[0.68rem] text-brand-ink/45">
+                        {post.category}
+                      </span>
                     </div>
                   </div>
-                </article>
-              ))}
-            </div>
-
-            <div className="relative mt-4 border-t border-brand-ink/10 bg-white/80 px-5 pb-3 pt-3">
-              <div className="flex items-center justify-between text-brand-ink/45">
-                <Home aria-hidden="true" className="h-5 w-5 text-brand-amber" />
-                <Map aria-hidden="true" className="h-5 w-5" />
-                <Bell aria-hidden="true" className="h-5 w-5" />
-                <User aria-hidden="true" className="h-5 w-5" />
-              </div>
-              <div className="absolute left-1/2 top-[-1.35rem] flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full border-4 border-[#F4F5F9] bg-brand-amber text-white shadow-accent">
-                <Plus aria-hidden="true" className="h-8 w-8" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="hidden rounded-[1.6rem] border border-brand-ink/10 bg-[#F4F5F9] p-3 text-brand-ink shadow-phone sm:block">
-          <div className="relative overflow-hidden rounded-[1.15rem] border border-brand-ink/10 bg-[#E9EEF2]">
-            <div className="map-preview-streets" aria-hidden="true" />
-            <div className="relative h-64 p-4">
-              <div>
-                <h3 className="text-xl font-black">{t.home.previewMapTitle}</h3>
-                <p className="text-sm text-brand-ink/45">{t.home.previewMapSubtitle}</p>
-              </div>
-              <span className="absolute right-4 top-4 rounded-full border border-brand-amber/20 bg-brand-sun px-3 py-1 text-xs font-bold text-brand-amber-deep">
-                {t.home.previewMapBadge}
-              </span>
-              <span className="absolute left-[45%] top-[52%] h-6 w-6 rounded-full border-4 border-white bg-[#7DB9F4] shadow-[0_0_0_8px_rgba(125,185,244,0.22)]" />
-              <span className="absolute bottom-5 right-5 flex h-11 w-11 items-center justify-center rounded-full bg-brand-ink/30 text-white shadow-soft">
-                <Settings aria-hidden="true" className="h-5 w-5" />
-              </span>
-            </div>
+                </div>
+              </article>
+            ))}
           </div>
 
-          <p className="mt-3 text-center text-[0.68rem] font-medium text-brand-ink/45">
-            {t.home.fictionalNote}
-          </p>
+          <div className="relative mt-3 border-t border-brand-ink/10 bg-white/80 px-6 pb-3 pt-3">
+            <div className="flex items-center justify-between text-brand-ink/45">
+              <Home aria-hidden="true" className="h-5 w-5 text-brand-amber" />
+              <Map aria-hidden="true" className="h-5 w-5" />
+              <Bell aria-hidden="true" className="h-5 w-5" />
+              <User aria-hidden="true" className="h-5 w-5" />
+            </div>
+            <div className="absolute left-1/2 top-[-1.35rem] flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full border-4 border-[#F4F5F9] bg-brand-amber text-white shadow-accent">
+              <Plus aria-hidden="true" className="h-8 w-8" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -444,16 +418,6 @@ function HeroSection({ t, styles }) {
         </div>
 
         <motion.div variants={fadeUp} className="relative hidden lg:block">
-          <div className={`mb-5 flex items-center gap-4 rounded-lg border p-4 ${styles.greenSurface}`}>
-            <img
-              src="/olvi.png"
-              alt={t.home.mascotAlt}
-              className="h-20 w-20 shrink-0 object-contain drop-shadow-[0_14px_24px_rgba(0,0,0,0.18)]"
-            />
-            <p className={`text-sm font-bold leading-6 ${styles.text}`}>
-              {t.home.mascotLabel}
-            </p>
-          </div>
           <AppPreview t={t} styles={styles} />
         </motion.div>
       </motion.div>
