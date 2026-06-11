@@ -52,9 +52,9 @@
 
   .neighborhood-background-dark {
     background:
-      linear-gradient(115deg, rgba(36, 124, 120, 0.22), transparent 35%),
-      linear-gradient(245deg, rgba(232, 140, 34, 0.16), transparent 42%),
-      #171611;
+      radial-gradient(circle at 20% 16%, rgba(255, 156, 1, 0.18), transparent 28%),
+      radial-gradient(circle at 82% 24%, rgba(230, 210, 181, 0.1), transparent 32%),
+      linear-gradient(180deg, #161622 0%, #111827 100%);
   }
 
   .neighborhood-background::before {
@@ -71,8 +71,8 @@
   }
 
   .neighborhood-background-dark::before {
-    color: #fbf6ec;
-    opacity: 0.055;
+    color: #e6d2b5;
+    opacity: 0.06;
   }
 
   .neighborhood-background::after {
@@ -83,18 +83,30 @@
 
   .neighborhood-background-dark::after {
     background:
-      linear-gradient(180deg, rgba(23, 22, 17, 0.08), rgba(23, 22, 17, 0.78)),
-      radial-gradient(circle at center, transparent 46%, rgba(23, 22, 17, 0.72));
+      linear-gradient(180deg, rgba(22, 22, 34, 0.04), rgba(22, 22, 34, 0.74)),
+      radial-gradient(circle at center, transparent 46%, rgba(17, 24, 39, 0.78));
   }
 
   .map-grid {
     position: absolute;
     inset: -30%;
+    --map-line-strong: rgba(37, 33, 27, 0.12);
+    --map-line-soft: rgba(37, 33, 27, 0.1);
     background:
-      linear-gradient(36deg, transparent 47%, rgba(37, 33, 27, 0.12) 48%, rgba(37, 33, 27, 0.12) 51%, transparent 52%),
-      linear-gradient(118deg, transparent 46%, rgba(37, 33, 27, 0.1) 47%, rgba(37, 33, 27, 0.1) 50%, transparent 51%);
+      linear-gradient(36deg, transparent 47%, var(--map-line-strong) 48%, var(--map-line-strong) 51%, transparent 52%),
+      linear-gradient(118deg, transparent 46%, var(--map-line-soft) 47%, var(--map-line-soft) 50%, transparent 51%);
     background-size: 78px 70px;
     transform: rotate(5deg);
+  }
+
+  .map-grid-dark {
+    --map-line-strong: rgba(230, 210, 181, 0.14);
+    --map-line-soft: rgba(230, 210, 181, 0.1);
+  }
+
+  .map-grid-light {
+    --map-line-strong: rgba(37, 33, 27, 0.12);
+    --map-line-soft: rgba(37, 33, 27, 0.1);
   }
 
   .map-dot {

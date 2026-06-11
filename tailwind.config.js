@@ -5,13 +5,19 @@ export default {
     extend: {
       colors: {
         brand: {
-          amber: "#E88C22",
-          "amber-deep": "#A85713",
+          amber: "#FF9C01",
+          "amber-deep": "#FF8E01",
+          blue: "#161622",
+          "blue-deep": "#111827",
+          "blue-panel": "#232533",
+          "blue-soft": "#1E1E2D",
           charcoal: "#383229",
+          cream: "#E6D2B5",
+          "cream-light": "#F3E8D7",
           green: "#5F7F45",
           ink: "#25211B",
           leaf: "#E8F0DA",
-          night: "#171611",
+          night: "#161622",
           paper: "#FBF6EC",
           "paper-soft": "#F1E4CF",
           river: "#DDEDEA",
