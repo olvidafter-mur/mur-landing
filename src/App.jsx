@@ -188,7 +188,7 @@ function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles,
 function HeaderMenu({ t, styles, narrow = false }) {
   const [isOpen, setIsOpen] = useState(false)
   const itemStyle = narrow ? styles.navLinkNarrow : styles.navLink
-  const panelStyle = narrow ? styles.legalSoft : styles.surface
+  const panelStyle = styles.menuPanel
   const links = [
     ...(!narrow
       ? navAnchors.map(({ href, key }) => ({ href, label: t.nav[key] }))
@@ -217,7 +217,7 @@ function HeaderMenu({ t, styles, narrow = false }) {
       </button>
 
       {isOpen && (
-        <div className={`absolute right-0 top-12 z-50 w-[min(20rem,calc(100vw-1.5rem))] rounded-lg border p-2 ${panelStyle}`}>
+        <div className={`absolute right-0 top-12 z-[120] w-[min(20rem,calc(100vw-1.5rem))] rounded-lg border p-2 ${panelStyle}`}>
           <div className="grid gap-2">
             {links.map(({ href, label, icon: Icon = Compass, external }) => (
               <a
@@ -741,7 +741,7 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
       />
 
       <div className="relative z-10">
-        <nav className={`border-b ${styles.navNarrow}`}>
+        <nav className={`sticky top-0 z-[100] border-b ${styles.navNarrow}`}>
           <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-3 px-3 py-2 sm:px-6 lg:px-8">
             <a href="/" className="flex min-h-11 shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
               <img src="/logo.png" alt="" className="h-8 w-8 object-contain" />

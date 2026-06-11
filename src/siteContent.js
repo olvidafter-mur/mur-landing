@@ -22,6 +22,7 @@ export const THEME = {
       'border-brand-ink/10 bg-white/70 text-brand-ink shadow-sm hover:border-brand-amber/60 hover:bg-white',
     navLinkNarrow:
       'border-brand-ink/10 bg-white/70 text-brand-ink hover:border-brand-amber/60 hover:bg-white',
+    menuPanel: 'border-brand-ink/10 bg-white shadow-soft',
     logoText: 'text-brand-ink',
     text: 'text-brand-ink',
     muted: 'text-brand-ink/70',
@@ -54,6 +55,7 @@ export const THEME = {
       'border-brand-paper/[0.12] bg-white/[0.07] text-brand-paper hover:border-brand-amber/60 hover:bg-white/[0.1]',
     navLinkNarrow:
       'border-brand-paper/[0.12] bg-white/[0.07] text-brand-paper hover:border-brand-amber/60 hover:bg-white/[0.1]',
+    menuPanel: 'border-brand-paper/[0.12] bg-brand-night shadow-soft-dark',
     logoText: 'text-brand-paper',
     text: 'text-brand-paper',
     muted: 'text-brand-paper/[0.72]',
