@@ -52,8 +52,8 @@
 
   .local-background-dark {
     background:
-      radial-gradient(circle at 20% 16%, rgba(255, 156, 1, 0.18), transparent 28%),
-      radial-gradient(circle at 82% 24%, rgba(230, 210, 181, 0.1), transparent 32%),
+      radial-gradient(circle at 18% 18%, rgba(255, 156, 1, 0.14), transparent 24rem),
+      radial-gradient(circle at 82% 22%, rgba(230, 210, 181, 0.06), transparent 22rem),
       linear-gradient(180deg, #161622 0%, #111827 100%);
   }
 
@@ -72,7 +72,7 @@
 
   .local-background-dark::before {
     color: #e6d2b5;
-    opacity: 0.06;
+    opacity: 0.025;
   }
 
   .local-background::after {
@@ -83,8 +83,8 @@
 
   .local-background-dark::after {
     background:
-      linear-gradient(180deg, rgba(22, 22, 34, 0.04), rgba(22, 22, 34, 0.74)),
-      radial-gradient(circle at center, transparent 46%, rgba(17, 24, 39, 0.78));
+      linear-gradient(180deg, rgba(22, 22, 34, 0.18), rgba(17, 24, 39, 0.86)),
+      radial-gradient(circle at 50% 36%, rgba(22, 22, 34, 0.08), rgba(17, 24, 39, 0.72) 72%);
   }
 
   .map-grid {

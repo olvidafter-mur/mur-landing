@@ -555,7 +555,11 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
     <main className={`relative min-h-screen overflow-hidden ${styles.marketingPage}`}>
       <div
         aria-hidden="true"
-        className={`local-background local-background-${theme}`}
+        className={
+          theme === 'dark'
+            ? 'local-background local-background-dark'
+            : 'local-background local-background-light'
+        }
       />
 
       <div className="relative z-10">
@@ -638,7 +642,11 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
     <main className={`min-h-screen ${styles.legalPage}`}>
       <div
         aria-hidden="true"
-        className={`local-background local-background-${theme}`}
+        className={
+          theme === 'dark'
+            ? 'local-background local-background-dark'
+            : 'local-background local-background-light'
+        }
       />
 
       <div className="relative z-10">
