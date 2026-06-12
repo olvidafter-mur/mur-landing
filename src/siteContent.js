@@ -224,7 +224,6 @@ export const CONTENT = {
       email: 'Email',
     },
     home: {
-      heroBadge: 'Muy pronto',
       title: 'Lo que pasa cerca importa.',
       body:
         'Enterate y publicá lo que pasa a pocos metros: alertas, mascotas, promos y novedades del barrio.',
@@ -423,7 +422,6 @@ export const CONTENT = {
       email: 'Email',
     },
     home: {
-      heroBadge: 'Coming soon',
       title: 'What happens nearby matters.',
       body:
         'See and share what is happening a few meters away: alerts, pets, promos, and local updates.',

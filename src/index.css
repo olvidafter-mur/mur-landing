@@ -352,16 +352,6 @@
     background: transparent;
   }
 
-  .simple-badge {
-    border-color: rgba(255, 156, 1, 0.28);
-    background: rgba(255, 156, 1, 0.08);
-    color: #25211b;
-  }
-
-  :root[data-theme="dark"] .simple-badge {
-    color: #f3e8d7;
-  }
-
   .simple-hero-preview {
     display: grid;
     justify-items: center;

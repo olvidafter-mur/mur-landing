@@ -305,17 +305,9 @@ function HeroSection({ t, styles, theme }) {
         className="mx-auto grid max-w-6xl items-center gap-10 lg:min-h-[620px] lg:grid-cols-[0.92fr_1.08fr]"
       >
         <div className="max-w-2xl">
-          <motion.div
-            variants={fadeUp}
-            className="simple-badge inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold uppercase tracking-[0.16em]"
-          >
-            <span className="h-2 w-2 rounded-full bg-brand-amber" aria-hidden="true" />
-            {t.home.heroBadge}
-          </motion.div>
-
           <motion.h1
             variants={fadeUp}
-            className={`mt-6 max-w-3xl text-4xl font-black leading-[0.96] sm:text-6xl lg:text-[4.85rem] ${styles.text}`}
+            className={`max-w-3xl text-4xl font-black leading-[0.96] sm:text-6xl lg:text-[4.85rem] ${styles.text}`}
           >
             {t.home.title}
           </motion.h1>
