@@ -197,20 +197,42 @@
   }
 
   .phone-preview-light {
-    border-color: rgba(37, 33, 27, 0.1);
-    background: rgba(255, 255, 255, 0.78);
-    box-shadow: 0 30px 90px rgba(37, 33, 27, 0.16);
+    border-color: rgba(37, 33, 27, 0.08);
+    background: rgba(255, 255, 255, 0.84);
+    box-shadow: 0 28px 80px rgba(37, 33, 27, 0.14);
   }
 
   .phone-preview-dark {
-    border-color: rgba(230, 210, 181, 0.14);
-    background: rgba(28, 28, 27, 0.92);
-    box-shadow: 0 34px 96px rgba(0, 0, 0, 0.42);
+    border-color: rgba(230, 210, 181, 0.22);
+    background: rgba(35, 35, 33, 0.94);
+    box-shadow:
+      0 34px 96px rgba(0, 0, 0, 0.42),
+      0 0 0 1px rgba(255, 156, 1, 0.08);
   }
 
   .hero-screens {
     position: relative;
     min-height: 500px;
+  }
+
+  .hero-screens::before {
+    position: absolute;
+    inset: 5.5rem 5% 4rem 18%;
+    z-index: 1;
+    border: 1px solid rgba(255, 156, 1, 0.12);
+    border-radius: 8px;
+    background:
+      linear-gradient(118deg, rgba(255, 156, 1, 0.1), transparent 48%),
+      linear-gradient(294deg, rgba(36, 124, 120, 0.08), transparent 54%);
+    content: "";
+    transform: rotate(-7deg);
+  }
+
+  :root[data-theme="dark"] .hero-screens::before {
+    border-color: rgba(230, 210, 181, 0.1);
+    background:
+      linear-gradient(118deg, rgba(255, 156, 1, 0.13), transparent 48%),
+      linear-gradient(294deg, rgba(36, 124, 120, 0.12), transparent 54%);
   }
 
   .hero-phone {

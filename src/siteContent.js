@@ -43,9 +43,9 @@ export const THEME = {
     previewMuted: 'text-brand-ink/55',
     mapGrid: 'map-grid map-grid-light',
     primaryButton:
-      'bg-brand-ink text-brand-paper hover:bg-brand-charcoal focus-visible:ring-brand-amber/80',
+      'bg-brand-amber text-brand-ink hover:bg-brand-amber-deep focus-visible:ring-brand-ink/20',
     secondaryButton:
-      'border-brand-ink/15 bg-white/70 text-brand-ink hover:border-brand-teal/50 hover:bg-white',
+      'border-brand-amber/25 bg-white/75 text-brand-ink hover:border-brand-amber/70 hover:bg-white',
     activeControl: 'border-brand-ink bg-brand-ink text-brand-paper',
     inactiveControl: 'border-transparent text-brand-ink/70 hover:text-brand-ink',
     legalDivide: 'divide-brand-ink/10',
