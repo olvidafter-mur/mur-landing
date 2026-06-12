@@ -11,7 +11,6 @@ import {
   KeyRound,
   Mail,
   Map,
-  MapPin,
   Menu,
   MessageCircle,
   Moon,
@@ -37,7 +36,7 @@ const springTransition = {
 }
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 1, y: 0 },
   visible: {
     opacity: 1,
     y: 0,
@@ -296,20 +295,19 @@ function AppPreview({ theme, screenIndex = 0, className = '' }) {
   )
 }
 
-function HeroSection({ t, styles }) {
+function HeroSection({ t, styles, theme }) {
   return (
-    <section className="cinema-hero relative overflow-hidden px-4 pb-10 pt-8 sm:px-6 sm:pb-12 sm:pt-10 lg:px-8">
-      <div aria-hidden="true" className="hero-horizon" />
+    <section className="simple-hero relative overflow-hidden px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
       <motion.div
         initial="hidden"
         animate="visible"
         variants={stagger}
-        className="relative z-10 mx-auto grid max-w-6xl items-center gap-6 sm:gap-10 lg:min-h-[560px] lg:grid-cols-[0.82fr_1.18fr]"
+        className="mx-auto grid max-w-6xl items-center gap-10 lg:min-h-[620px] lg:grid-cols-[0.92fr_1.08fr]"
       >
         <div className="max-w-2xl">
           <motion.div
             variants={fadeUp}
-            className="inline-flex items-center gap-2 rounded-lg border border-brand-amber/30 bg-brand-amber/[0.12] px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-brand-cream-light"
+            className="simple-badge inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold uppercase tracking-[0.16em]"
           >
             <span className="h-2 w-2 rounded-full bg-brand-amber" aria-hidden="true" />
             {t.home.heroBadge}
@@ -317,14 +315,14 @@ function HeroSection({ t, styles }) {
 
           <motion.h1
             variants={fadeUp}
-            className="mt-6 max-w-3xl text-4xl font-black leading-[0.96] text-brand-cream-light sm:text-6xl lg:text-[4.85rem]"
+            className={`mt-6 max-w-3xl text-4xl font-black leading-[0.96] sm:text-6xl lg:text-[4.85rem] ${styles.text}`}
           >
             {t.home.title}
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
-            className="mt-5 max-w-xl text-base leading-7 text-brand-cream/85 sm:text-lg"
+            className={`mt-5 max-w-xl text-base leading-7 sm:text-lg ${styles.muted}`}
           >
             {t.home.body}
           </motion.p>
@@ -335,7 +333,7 @@ function HeroSection({ t, styles }) {
               href={BRAND.instagramUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg border border-brand-cream/[0.22] bg-brand-cream/[0.06] px-5 text-sm font-bold text-brand-cream-light transition hover:border-brand-amber/60 hover:bg-brand-cream/[0.1]"
+              className={`inline-flex min-h-12 items-center justify-center rounded-lg border px-5 text-sm font-bold transition ${styles.secondaryButton}`}
             >
               {BRAND.instagramHandle}
             </a>
@@ -343,62 +341,52 @@ function HeroSection({ t, styles }) {
 
           <motion.div variants={fadeUp} className="mt-7 hidden flex-wrap gap-2 sm:flex">
             {t.previewStats.map((item) => (
-              <span key={item} className="rounded-lg border border-brand-cream/15 bg-brand-cream/[0.06] px-3 py-2 text-xs font-bold text-brand-cream/85">
+              <span key={item} className={`rounded-lg border px-3 py-2 text-xs font-bold ${styles.insetSurface} ${styles.muted}`}>
                 {item}
               </span>
             ))}
           </motion.div>
         </div>
 
-        <motion.div variants={fadeUp} className="mur-hero-stage">
-          <div className="story-card story-card-one">
-            <MapPin aria-hidden="true" className="h-4 w-4 text-brand-amber" />
-            <span>{t.previewStats[0]}</span>
+        <motion.div variants={fadeUp} className="simple-hero-preview">
+          <AppPreview theme={theme} screenIndex={0} className="simple-hero-phone" />
+          <div className={`simple-preview-caption rounded-lg border p-4 ${styles.surface}`}>
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-amber">
+              {t.home.previewEyebrow}
+            </p>
+            <h2 className={`mt-2 text-xl font-black ${styles.text}`}>
+              {t.home.previewTitle}
+            </h2>
+            <p className={`mt-2 text-sm leading-6 ${styles.muted}`}>
+              {t.home.previewBody}
+            </p>
           </div>
-
-          <AppPreview theme="light" screenIndex={0} className="cinema-phone cinema-phone-front" />
-          <AppPreview theme="dark" screenIndex={1} className="cinema-phone cinema-phone-back" />
-
-          <img
-            src="/olvi.png"
-            alt={t.home.mascotAlt}
-            className="hero-mascot"
-            width="260"
-            height="260"
-          />
         </motion.div>
       </motion.div>
     </section>
   )
 }
 
-function ProductFeatureBand({ t, theme }) {
+function ProductFeatureBand({ t, styles }) {
   return (
-    <section id="nearby" className="product-band scroll-mt-24 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.04fr_0.96fr]">
+    <section id="nearby" className="product-band scroll-mt-24 px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.25 }}
-          className="product-console"
+          className="max-w-xl"
         >
-          <div className="console-sidebar" aria-hidden="true">
-            <img src="/logo.png" alt="" className="h-7 w-7 rounded-lg object-contain" />
-            <MapPin className="h-5 w-5" />
-            <Bell className="h-5 w-5" />
-            <Compass className="h-5 w-5" />
-            <MessageCircle className="h-5 w-5" />
-          </div>
-          <div className="console-body">
-            <div className="console-search" aria-hidden="true">
-              <span>{t.home.previewSearch}</span>
-            </div>
-            <div className="console-grid">
-              <AppPreview theme={theme} screenIndex={0} className="band-phone band-phone-main" />
-              <AppPreview theme={theme} screenIndex={1} className="band-phone band-phone-side" />
-            </div>
-          </div>
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
+            {t.home.productLabel}
+          </p>
+          <h2 className={`mt-3 text-3xl font-black leading-tight sm:text-4xl ${styles.text}`}>
+            {t.home.productTitle}
+          </h2>
+          <p className={`mt-5 text-base leading-7 ${styles.muted}`}>
+            {t.home.productBody}
+          </p>
         </motion.div>
 
         <motion.div
@@ -406,30 +394,18 @@ function ProductFeatureBand({ t, theme }) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.25 }}
-          className="text-brand-cream-light"
+          className="grid gap-3 sm:grid-cols-2"
         >
-          <motion.p variants={fadeUp} className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
-            {t.home.productLabel}
-          </motion.p>
-          <motion.h2 variants={fadeUp} className="mt-3 max-w-2xl text-3xl font-black leading-tight sm:text-4xl">
-            {t.home.productTitle}
-          </motion.h2>
-          <motion.p variants={fadeUp} className="mt-5 max-w-xl text-base leading-7 text-brand-cream/85">
-            {t.home.productBody}
-          </motion.p>
+          {t.productPoints.map((point, index) => {
+            const Icon = productPointIcons[index] ?? Compass
 
-          <motion.div variants={stagger} className="mt-7 grid gap-3 sm:grid-cols-2">
-            {t.productPoints.map((point, index) => {
-              const Icon = productPointIcons[index] ?? Compass
-
-              return (
-                <motion.div key={point} variants={fadeUp} className="product-point">
-                  <Icon aria-hidden="true" className="h-4 w-4 text-brand-amber" />
-                  <span>{point}</span>
-                </motion.div>
-              )
-            })}
-          </motion.div>
+            return (
+              <motion.div key={point} variants={fadeUp} className={`product-point ${styles.surface}`}>
+                <Icon aria-hidden="true" className="h-4 w-4 text-brand-amber" />
+                <span>{point}</span>
+              </motion.div>
+            )
+          })}
         </motion.div>
       </div>
     </section>
@@ -573,8 +549,8 @@ function FaqSection({ t, styles }) {
 function HomePage({ t, styles, theme }) {
   return (
     <>
-      <HeroSection t={t} styles={styles} />
-      <ProductFeatureBand t={t} theme={theme} />
+      <HeroSection t={t} styles={styles} theme={theme} />
+      <ProductFeatureBand t={t} styles={styles} />
       <UseCasesSection t={t} styles={styles} />
       <HowItWorksSection t={t} styles={styles} />
       <FaqSection t={t} styles={styles} />
@@ -957,7 +933,7 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem('mur-theme', theme)
     document.documentElement.dataset.theme = theme
-    document.body.style.backgroundColor = theme === 'dark' ? '#151514' : '#ffffff'
+    document.body.style.backgroundColor = theme === 'dark' ? '#111111' : '#ffffff'
   }, [theme])
 
   useEffect(() => {
