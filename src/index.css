@@ -377,8 +377,8 @@
     isolation: isolate;
     color: #f3e8d7;
     background:
-      radial-gradient(circle at 17% 18%, rgba(255, 156, 1, 0.18), transparent 25%),
-      radial-gradient(circle at 78% 21%, rgba(36, 124, 120, 0.32), transparent 34%),
+      radial-gradient(circle at 17% 18%, rgba(255, 156, 1, 0.14), transparent 24%),
+      radial-gradient(circle at 78% 21%, rgba(36, 124, 120, 0.26), transparent 34%),
       linear-gradient(132deg, #151514 0%, #161622 48%, #25211b 100%);
   }
 
@@ -401,13 +401,7 @@
   }
 
   .cinema-hero::after {
-    bottom: -10.5rem;
-    height: 18rem;
-    background:
-      linear-gradient(100deg, #247c78 0%, #ff9c01 52%, #e6d2b5 100%);
-    transform: rotate(-4.5deg);
-    transform-origin: left top;
-    box-shadow: 0 -24px 80px rgba(255, 156, 1, 0.18);
+    display: none;
   }
 
   .hero-horizon {
@@ -426,7 +420,7 @@
 
   .mur-hero-stage {
     position: relative;
-    min-height: 560px;
+    min-height: 500px;
     perspective: 1300px;
   }
 
@@ -435,38 +429,38 @@
     left: 5%;
     top: 8%;
     width: 92%;
-    height: 68%;
+    height: 72%;
     border: 1px solid rgba(230, 210, 181, 0.12);
     border-radius: 8px;
     background:
-      linear-gradient(120deg, rgba(255, 156, 1, 0.12), transparent 42%),
-      linear-gradient(292deg, rgba(36, 124, 120, 0.18), transparent 55%),
+      linear-gradient(120deg, rgba(255, 156, 1, 0.08), transparent 42%),
+      linear-gradient(292deg, rgba(36, 124, 120, 0.16), transparent 55%),
       rgba(230, 210, 181, 0.04);
     content: "";
-    transform: rotateY(-22deg) rotateZ(-6deg);
+    transform: rotate(-4deg);
     transform-origin: center;
   }
 
   .cinema-phone {
     position: absolute;
     z-index: 4;
-    width: min(38vw, 18rem);
+    width: min(24vw, 14rem);
     transform-style: preserve-3d;
   }
 
   .cinema-phone-front {
-    right: 13%;
-    top: 2.5rem;
-    transform: rotateY(-19deg) rotateZ(5deg) translateZ(40px);
+    right: 17%;
+    top: 2.25rem;
+    transform: rotate(4deg);
   }
 
   .cinema-phone-back {
-    left: 12%;
-    top: 6.5rem;
+    left: 17%;
+    top: 6.25rem;
     z-index: 3;
-    width: min(32vw, 15rem);
+    width: min(21vw, 12.5rem);
     opacity: 0.96;
-    transform: rotateY(-26deg) rotateZ(-8deg) translateZ(-10px);
+    transform: rotate(-7deg);
   }
 
   .story-card,
@@ -492,8 +486,8 @@
   }
 
   .story-card-one {
-    right: 8%;
-    top: 0.5rem;
+    right: 12%;
+    top: 1rem;
   }
 
   .story-card-two {
@@ -541,10 +535,10 @@
 
   .hero-mascot {
     position: absolute;
-    right: -1.25rem;
-    bottom: -0.5rem;
+    right: 4%;
+    bottom: 3.5rem;
     z-index: 7;
-    width: clamp(6.5rem, 16vw, 11rem);
+    width: clamp(5.5rem, 9vw, 7rem);
     height: auto;
     filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.34));
   }
@@ -554,16 +548,14 @@
     overflow: hidden;
     color: #f3e8d7;
     background:
-      linear-gradient(104deg, rgba(36, 124, 120, 0.95), rgba(22, 22, 34, 0.96) 48%, rgba(37, 33, 27, 0.98)),
+      radial-gradient(circle at 12% 48%, rgba(36, 124, 120, 0.28), transparent 32%),
+      linear-gradient(104deg, rgba(22, 22, 34, 0.98), rgba(37, 33, 27, 0.98)),
       #161622;
   }
 
   .product-band::before,
   .product-band::after {
-    position: absolute;
-    inset-inline: -8vw;
-    content: "";
-    pointer-events: none;
+    display: none;
   }
 
   .product-band::before {
@@ -603,7 +595,6 @@
       linear-gradient(140deg, rgba(255, 156, 1, 0.12), transparent 42%),
       rgba(17, 24, 39, 0.78);
     box-shadow: 0 36px 100px rgba(0, 0, 0, 0.38);
-    transform: rotate(-3.5deg);
   }
 
   .console-sidebar {
@@ -722,7 +713,7 @@
   }
 
   .product-console {
-    transform: rotate(-2deg);
+    transform: none;
   }
 }
 
@@ -839,7 +830,7 @@
   }
 
   .product-band {
-    padding-top: 5rem;
+    padding-top: 2.5rem;
   }
 
   .product-console {

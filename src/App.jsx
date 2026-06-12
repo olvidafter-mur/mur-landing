@@ -21,7 +21,6 @@ import {
   Store,
   Sun,
   Trash2,
-  UsersRound,
   X,
 } from 'lucide-react'
 
@@ -298,16 +297,14 @@ function AppPreview({ theme, screenIndex = 0, className = '' }) {
 }
 
 function HeroSection({ t, styles }) {
-  const heroPosts = t.samplePosts.slice(0, 3)
-
   return (
-    <section className="cinema-hero relative overflow-hidden px-4 pb-10 pt-8 sm:px-6 sm:pb-20 sm:pt-12 lg:px-8">
+    <section className="cinema-hero relative overflow-hidden px-4 pb-10 pt-8 sm:px-6 sm:pb-12 sm:pt-10 lg:px-8">
       <div aria-hidden="true" className="hero-horizon" />
       <motion.div
         initial="hidden"
         animate="visible"
         variants={stagger}
-        className="relative z-10 mx-auto grid max-w-6xl items-center gap-6 sm:gap-10 lg:min-h-[680px] lg:grid-cols-[0.82fr_1.18fr]"
+        className="relative z-10 mx-auto grid max-w-6xl items-center gap-6 sm:gap-10 lg:min-h-[560px] lg:grid-cols-[0.82fr_1.18fr]"
       >
         <div className="max-w-2xl">
           <motion.div
@@ -356,29 +353,11 @@ function HeroSection({ t, styles }) {
         <motion.div variants={fadeUp} className="mur-hero-stage">
           <div className="story-card story-card-one">
             <MapPin aria-hidden="true" className="h-4 w-4 text-brand-amber" />
-            <span>{t.samplePosts[0].distance}</span>
-          </div>
-          <div className="story-card story-card-two">
-            <Bell aria-hidden="true" className="h-4 w-4 text-brand-amber" />
-            <span>{heroPosts[1].category}</span>
-          </div>
-          <div className="story-card story-card-three">
-            <UsersRound aria-hidden="true" className="h-4 w-4 text-brand-amber" />
             <span>{t.previewStats[0]}</span>
           </div>
 
           <AppPreview theme="light" screenIndex={0} className="cinema-phone cinema-phone-front" />
           <AppPreview theme="dark" screenIndex={1} className="cinema-phone cinema-phone-back" />
-
-          <div className="hero-post-strip" aria-hidden="true">
-            {heroPosts.map((post) => (
-              <div key={post.title} className="hero-post-chip">
-                <span>{post.category}</span>
-                <strong>{post.title}</strong>
-                <small>{post.meta}</small>
-              </div>
-            ))}
-          </div>
 
           <img
             src="/olvi.png"
