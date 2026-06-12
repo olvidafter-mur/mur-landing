@@ -7,29 +7,22 @@ import {
   Compass,
   FileText,
   Globe2,
-  Heart,
-  Home,
-  Image,
   KeyRound,
   Mail,
-  Map,
   MapPin,
   Menu,
-  MessageCircle,
-  Mic,
   Moon,
-  Plus,
-  Search,
-  Send,
   ShieldCheck,
-  SlidersHorizontal,
   Sun,
   Trash2,
-  User,
   X,
 } from 'lucide-react'
 
 import { BRAND, CONTENT, LANGUAGES, THEME, THEMES } from './siteContent'
+import darkFeedEn from './assets/screenshots/mur-feed-dark-en.jpeg'
+import darkFeedEs from './assets/screenshots/mur-feed-dark-es.jpeg'
+import lightFeedEn from './assets/screenshots/mur-feed-light-en.jpeg'
+import lightFeedEs from './assets/screenshots/mur-feed-light-es.jpeg'
 
 const springTransition = {
   type: 'spring',
@@ -266,116 +259,54 @@ function WaitlistAction({ t, styles }) {
   )
 }
 
-function AppPreview({ t, styles }) {
-  const feedPosts = t.samplePosts.slice(0, 3)
+const appScreenshots = {
+  light: [
+    { src: lightFeedEs, alt: 'MUR feed screenshot in light mode with Spanish labels' },
+    { src: lightFeedEn, alt: 'MUR feed screenshot in light mode with English labels' },
+  ],
+  dark: [
+    { src: darkFeedEs, alt: 'MUR feed screenshot in dark mode with Spanish labels' },
+    { src: darkFeedEn, alt: 'MUR feed screenshot in dark mode with English labels' },
+  ],
+}
+
+function AppPreview({ theme, screenIndex = 0, className = '' }) {
+  const screenshot = appScreenshots[theme][screenIndex]
+  const tone = theme === 'dark' ? 'phone-preview-dark' : 'phone-preview-light'
 
   return (
-    <div className="mx-auto w-full max-w-[24rem]">
-      <div className="rounded-[2.25rem] border border-brand-ink/10 bg-[#111827] p-2.5 shadow-phone">
-        <div className="overflow-hidden rounded-[1.7rem] border border-brand-ink/10 bg-[#F4F5F9] text-brand-ink">
-          <div className="flex h-9 items-center justify-between px-5 text-[0.7rem] font-semibold text-brand-ink/55">
-            <span>15:15</span>
-            <span>97%</span>
-          </div>
-
-          <div className="px-5 pb-3">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 shrink-0 rounded-full bg-gradient-to-br from-brand-teal to-brand-amber ring-2 ring-white" />
-              <div className="flex min-h-11 flex-1 items-center gap-2 rounded-full border border-brand-ink/10 bg-[#ECEFF4] px-4 text-sm text-brand-ink/45">
-                <Search aria-hidden="true" className="h-4 w-4" />
-                {t.home.previewSearch}
-              </div>
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-brand-ink/10 bg-[#ECEFF4]">
-                <SlidersHorizontal aria-hidden="true" className="h-5 w-5 text-brand-ink/70" />
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-0 px-5 pb-5">
-            {feedPosts.map((post, index) => (
-              <article key={post.title} className="border-b border-brand-ink/10 py-4 last:border-b-0">
-                <div className="flex gap-3">
-                  <div className="h-10 w-10 shrink-0 rounded-full bg-gradient-to-br from-brand-green via-brand-teal to-brand-amber" />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="min-w-0 text-sm">
-                        <span className="font-bold">{t.home.previewAuthor}</span>
-                        <span className="ml-1 text-brand-ink/45">· {post.time} · </span>
-                        <span className="font-semibold text-brand-amber">{post.distance}</span>
-                      </div>
-                      <span className="text-lg leading-none text-brand-ink/45">...</span>
-                    </div>
-                    <p className="mt-2 text-base leading-6">{post.title}</p>
-
-                    {index === 0 ? (
-                      <div className="mt-3 flex min-h-12 items-center justify-between rounded-lg border border-brand-ink/10 bg-[#ECEFF4] px-3">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-sun text-brand-amber">
-                            <Image aria-hidden="true" className="h-4 w-4" />
-                          </div>
-                          <span className="font-bold">{t.home.previewImageLabel}</span>
-                        </div>
-                        <span className="text-xl text-brand-ink/55">›</span>
-                      </div>
-                    ) : null}
-
-                    {index === 2 ? (
-                      <div className="mt-3 rounded-lg border border-brand-ink/10 bg-[#ECEFF4] px-3 py-3">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-amber text-white">
-                            <Plus aria-hidden="true" className="h-4 w-4 rotate-45" />
-                          </div>
-                          <span className="font-bold">{t.home.previewAudioLabel}</span>
-                          <span className="ml-auto text-xs text-brand-ink/45">0:05</span>
-                          <Mic aria-hidden="true" className="h-4 w-4 text-brand-ink/55" />
-                        </div>
-                        <div className="mt-2 h-1.5 rounded-full bg-brand-ink/10">
-                          <div className="h-full w-4/5 rounded-full bg-brand-ink/20" />
-                        </div>
-                      </div>
-                    ) : null}
-
-                    <div className="mt-3 flex items-center gap-6 text-brand-ink/65">
-                      <MessageCircle aria-hidden="true" className="h-5 w-5" />
-                      <Heart aria-hidden="true" className="h-5 w-5" />
-                      <Send aria-hidden="true" className="h-5 w-5" />
-                      <span className="ml-auto rounded-full border border-brand-ink/10 bg-[#F7F8FB] px-2 py-1 text-[0.68rem] text-brand-ink/45">
-                        {post.category}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <div className="relative mt-3 border-t border-brand-ink/10 bg-white/80 px-6 pb-3 pt-3">
-            <div className="flex items-center justify-between text-brand-ink/45">
-              <Home aria-hidden="true" className="h-5 w-5 text-brand-amber" />
-              <Map aria-hidden="true" className="h-5 w-5" />
-              <Bell aria-hidden="true" className="h-5 w-5" />
-              <User aria-hidden="true" className="h-5 w-5" />
-            </div>
-            <div className="absolute left-1/2 top-[-1.35rem] flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full border-4 border-[#F4F5F9] bg-brand-amber text-white shadow-accent">
-              <Plus aria-hidden="true" className="h-8 w-8" />
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className={`phone-preview ${tone} ${className}`}>
+      <img
+        src={screenshot.src}
+        alt={screenshot.alt}
+        width="739"
+        height="1600"
+        loading={screenIndex === 0 ? 'eager' : 'lazy'}
+        className="block aspect-[739/1600] w-full rounded-[1.65rem] object-cover"
+      />
     </div>
   )
 }
 
-function HeroSection({ t, styles }) {
+function HeroSection({ t, styles, theme }) {
   return (
-    <section className="relative px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:px-8">
+    <section className="relative overflow-hidden px-4 pb-12 pt-10 sm:px-6 sm:pb-16 sm:pt-14 lg:min-h-[calc(100vh-4rem)] lg:px-8">
+      <div aria-hidden="true" className="hero-decor">
+        <span className="decor-ring decor-ring-one" />
+        <span className="decor-ring decor-ring-two" />
+        <span className="decor-ring decor-ring-three" />
+        <span className="decor-slab decor-slab-one" />
+        <span className="decor-slab decor-slab-two" />
+        <span className="decor-line-stack decor-line-stack-one" />
+      </div>
+
       <motion.div
         initial="hidden"
         animate="visible"
         variants={stagger}
-        className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.02fr_0.88fr]"
+        className="relative z-10 mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[0.74fr_1.26fr]"
       >
-        <div>
+        <div className="max-w-2xl">
           <motion.div
             variants={fadeUp}
             className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] ${styles.warmSurface}`}
@@ -386,39 +317,50 @@ function HeroSection({ t, styles }) {
 
           <motion.h1
             variants={fadeUp}
-            className={`mt-6 max-w-3xl text-5xl font-black leading-[0.98] sm:text-6xl lg:text-7xl ${styles.text}`}
+            className={`mt-6 max-w-3xl text-5xl font-black leading-[0.96] sm:text-6xl lg:text-7xl ${styles.text}`}
           >
             {t.home.title}
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
-            className={`mt-6 max-w-2xl text-lg leading-8 sm:text-xl ${styles.muted}`}
+            className={`mt-5 max-w-xl text-base leading-7 sm:text-lg ${styles.muted}`}
           >
             {t.home.body}
           </motion.p>
 
-          <motion.div
-            variants={fadeUp}
-            className={`mt-5 flex items-center gap-3 rounded-lg border p-3 lg:hidden ${styles.greenSurface}`}
-          >
-            <img
-              src="/olvi.png"
-              alt={t.home.mascotAlt}
-              className="h-14 w-14 shrink-0 object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,0.16)]"
-            />
-            <p className={`text-sm font-bold leading-5 ${styles.text}`}>
-              {t.home.mascotLabel}
-            </p>
+          <motion.div variants={fadeUp} className="mt-7 flex flex-wrap items-center gap-3">
+            <WaitlistAction t={t} styles={styles} />
+            <a
+              href={BRAND.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={`inline-flex min-h-12 items-center justify-center rounded-lg border px-5 text-sm font-bold transition ${styles.secondaryButton}`}
+            >
+              {BRAND.instagramHandle}
+            </a>
           </motion.div>
 
-          <motion.div variants={fadeUp} className="mt-7">
-            <WaitlistAction t={t} styles={styles} />
+          <motion.div variants={fadeUp} className="mt-7 flex flex-wrap gap-2">
+            {t.previewStats.map((item) => (
+              <span key={item} className={`rounded-lg border px-3 py-2 text-xs font-bold ${styles.insetSurface}`}>
+                {item}
+              </span>
+            ))}
           </motion.div>
         </div>
 
-        <motion.div variants={fadeUp} className="relative hidden lg:block">
-          <AppPreview t={t} styles={styles} />
+        <motion.div variants={fadeUp} className="hero-screens">
+          <AppPreview theme={theme} screenIndex={0} className="hero-phone hero-phone-front" />
+          <AppPreview theme={theme} screenIndex={1} className="hero-phone hero-phone-back" />
+          <div className={`hero-floating-card hero-floating-card-top ${styles.surface}`}>
+            <span>{theme === 'dark' ? t.controls.dark : t.controls.light}</span>
+            <strong>{t.home.previewEyebrow}</strong>
+          </div>
+          <div className={`hero-floating-card hero-floating-card-bottom ${styles.surface}`}>
+            <span>{t.previewStats[0]}</span>
+            <strong>{t.samplePosts[0].distance}</strong>
+          </div>
         </motion.div>
       </motion.div>
     </section>
@@ -427,20 +369,28 @@ function HeroSection({ t, styles }) {
 
 function UseCasesSection({ t, styles }) {
   return (
-    <section className="px-4 py-16 sm:px-6 lg:px-8">
+    <section className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
-        <SectionIntro
-          eyebrow={t.home.useCasesLabel}
-          title={t.home.useCasesTitle}
-          styles={styles}
-        />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
+              {t.home.useCasesLabel}
+            </p>
+            <h2 className={`mt-3 max-w-2xl text-3xl font-black leading-tight sm:text-4xl ${styles.text}`}>
+              {t.home.useCasesTitle}
+            </h2>
+          </div>
+          <p className={`max-w-sm text-sm leading-6 ${styles.muted}`}>
+            {t.home.fictionalNote}
+          </p>
+        </div>
 
         <motion.div
           variants={stagger}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+          className="mt-8 grid gap-3 md:grid-cols-2 lg:grid-cols-4"
         >
           {t.useCases.map((item, index) => {
             const Icon = useCaseIcons[index]
@@ -449,7 +399,7 @@ function UseCasesSection({ t, styles }) {
               <motion.article
                 key={item.title}
                 variants={fadeUp}
-                className={`rounded-lg border p-5 ${styles.surface}`}
+                className={`visual-card rounded-lg border p-4 ${styles.surface}`}
               >
                 <div className={`flex h-11 w-11 items-center justify-center rounded-lg border ${
                   index % 2 === 0 ? styles.tealSurface : styles.warmSurface
@@ -457,8 +407,8 @@ function UseCasesSection({ t, styles }) {
                 >
                   <Icon aria-hidden="true" className="h-5 w-5 text-brand-amber" />
                 </div>
-                <h3 className={`mt-5 text-xl font-bold ${styles.text}`}>{item.title}</h3>
-                <p className={`mt-3 text-sm leading-6 ${styles.muted}`}>{item.body}</p>
+                <h3 className={`mt-5 text-lg font-bold ${styles.text}`}>{item.title}</h3>
+                <p className={`mt-2 text-sm leading-5 ${styles.muted}`}>{item.body}</p>
               </motion.article>
             )
           })}
@@ -468,36 +418,9 @@ function UseCasesSection({ t, styles }) {
   )
 }
 
-function ProductSection({ t, styles }) {
-  return (
-    <section className="px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.9fr_1fr]">
-        <AppPreview t={t} styles={styles} />
-
-        <div>
-          <SectionIntro
-            eyebrow={t.home.productLabel}
-            title={t.home.productTitle}
-            body={t.home.productBody}
-            styles={styles}
-          />
-          <div className="mt-8 grid gap-3">
-            {t.productPoints.map((point) => (
-              <div key={point} className={`flex gap-3 rounded-lg border p-4 ${styles.softSurface}`}>
-                <ShieldCheck aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-teal" />
-                <p className={`text-sm font-semibold leading-6 ${styles.text}`}>{point}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 function HowItWorksSection({ t, styles }) {
   return (
-    <section id="how-it-works" className="scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
+    <section id="how-it-works" className="scroll-mt-24 px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
         <SectionIntro
           eyebrow={t.home.stepsLabel}
@@ -506,14 +429,14 @@ function HowItWorksSection({ t, styles }) {
           centered
         />
 
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
+        <div className="mt-8 grid gap-3 md:grid-cols-3">
           {t.steps.map((step, index) => (
-            <article key={step.title} className={`rounded-lg border p-6 ${styles.surface}`}>
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-amber text-sm font-black text-brand-ink">
+            <article key={step.title} className={`rounded-lg border p-5 ${styles.surface}`}>
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-amber text-sm font-black text-brand-ink">
                 {index + 1}
               </div>
-              <h3 className={`mt-5 text-xl font-bold ${styles.text}`}>{step.title}</h3>
-              <p className={`mt-3 text-sm leading-6 ${styles.muted}`}>{step.body}</p>
+              <h3 className={`mt-5 text-lg font-bold ${styles.text}`}>{step.title}</h3>
+              <p className={`mt-2 text-sm leading-5 ${styles.muted}`}>{step.body}</p>
             </article>
           ))}
         </div>
@@ -524,61 +447,32 @@ function HowItWorksSection({ t, styles }) {
 
 function WaitlistSection({ t, styles }) {
   return (
-    <section id="waitlist" className="scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
-      <div className={`mx-auto grid max-w-6xl gap-8 rounded-lg border p-6 sm:p-8 lg:grid-cols-[0.95fr_1.05fr] ${styles.surface}`}>
+    <section id="waitlist" className={`waitlist-band scroll-mt-24 border-y px-4 py-12 sm:px-6 sm:py-16 lg:px-8 ${styles.border}`}>
+      <div className="relative z-10 mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
         <div>
-          <SectionIntro
-            eyebrow={t.home.waitlistLabel}
-            title={t.home.waitlistTitle}
-            body={t.home.waitlistBody}
-            styles={styles}
-          />
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
+            {t.home.waitlistLabel}
+          </p>
+          <h2 className={`mt-3 max-w-2xl text-3xl font-black leading-tight sm:text-4xl ${styles.text}`}>
+            {t.home.waitlistTitle}
+          </h2>
+          <p className={`mt-4 max-w-2xl text-sm leading-6 ${styles.muted}`}>
+            {t.home.waitlistBody}
+          </p>
         </div>
-        <div className={`flex items-center rounded-lg border p-5 ${styles.softSurface}`}>
-          <WaitlistAction t={t} styles={styles} />
-        </div>
+        <WaitlistAction t={t} styles={styles} />
       </div>
     </section>
   )
 }
 
-function FaqSection({ t, styles }) {
-  return (
-    <section className="px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-4xl">
-        <SectionIntro
-          eyebrow={t.home.faqLabel}
-          title={t.home.faqTitle}
-          styles={styles}
-          centered
-        />
-        <div className="mt-10 grid gap-3">
-          {t.faq.map((item) => (
-            <details key={item.question} className={`group rounded-lg border p-5 ${styles.surface}`}>
-              <summary className={`flex cursor-pointer list-none items-center justify-between gap-4 text-base font-bold ${styles.text}`}>
-                {item.question}
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-amber/15 text-brand-amber transition group-open:rotate-45">
-                  +
-                </span>
-              </summary>
-              <p className={`mt-4 text-sm leading-6 ${styles.muted}`}>{item.answer}</p>
-            </details>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function HomePage({ t, styles }) {
+function HomePage({ t, styles, theme }) {
   return (
     <>
-      <HeroSection t={t} styles={styles} />
+      <HeroSection t={t} styles={styles} theme={theme} />
       <UseCasesSection t={t} styles={styles} />
-      <ProductSection t={t} styles={styles} />
       <HowItWorksSection t={t} styles={styles} />
       <WaitlistSection t={t} styles={styles} />
-      <FaqSection t={t} styles={styles} />
     </>
   )
 }
@@ -995,7 +889,7 @@ function App() {
       t={t}
       styles={styles}
     >
-      <HomePage t={t} styles={styles} />
+      <HomePage t={t} styles={styles} theme={theme} />
     </MarketingShell>
   )
 }

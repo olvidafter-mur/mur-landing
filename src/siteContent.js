@@ -226,7 +226,7 @@ export const CONTENT = {
       heroBadge: 'Muy pronto',
       title: 'Lo que pasa cerca importa.',
       body:
-        'Mascotas perdidas, alertas, accidentes, promos de comercios y novedades cercanas, todo cerca tuyo y con contexto.',
+        'Enterate y publicá lo que pasa a pocos metros: alertas, mascotas, promos y novedades del barrio.',
       primaryCta: 'Sumarme a la lista',
       mascotAlt: 'OLVI, la mascota de MUR',
       mascotLabel: 'OLVI está preparando una app para que lo cercano se entienda mejor.',
@@ -239,7 +239,7 @@ export const CONTENT = {
       previewImageLabel: 'Imagen',
       previewAudioLabel: 'Audio',
       useCasesLabel: 'Usos cotidianos',
-      useCasesTitle: 'Hecha para lo que sí pasa cerca',
+      useCasesTitle: 'Lo cercano, visible de un vistazo',
       productLabel: 'Cómo se ve',
       productTitle: 'Publicá con contexto, sin regalar más ubicación de la necesaria',
       productBody:
@@ -249,31 +249,31 @@ export const CONTENT = {
       waitlistLabel: 'Lista de espera',
       waitlistTitle: 'Sumate a la primera comunidad MUR',
       waitlistBody:
-        'Completá el formulario de espera. Vamos a abrir gradualmente para que la experiencia arranque con actividad útil desde el primer día.',
+        'Abrimos de a poco para que cada zona arranque con actividad real desde el primer día.',
       faqLabel: 'Preguntas frecuentes',
       faqTitle: 'Lo básico, claro',
-      fictionalNote: 'Ejemplos ficticios para mostrar el uso del producto.',
+      fictionalNote: 'Vista real de producto con ejemplos de uso.',
     },
     useCases: [
       {
         title: 'Mascotas perdidas',
         body:
-          'Avisos cercanos con foto, referencia aproximada y comentarios para coordinar ayuda rápido.',
+          'Fotos, referencia cercana y comentarios para coordinar ayuda.',
       },
       {
         title: 'Tránsito y accidentes',
         body:
-          'Alertas útiles para circular con cuidado, evitar una calle o avisar a quien viene cerca.',
+          'Alertas rápidas para circular con más contexto.',
       },
       {
         title: 'Comercios cercanos',
         body:
-          'Promos del día, horarios especiales y novedades vistas por gente que está cerca.',
+          'Promos y novedades vistas por gente de la zona.',
       },
       {
         title: 'Ayuda entre vecinos',
         body:
-          'Objetos encontrados, consultas rápidas y pedidos concretos con contexto cercano.',
+          'Consultas y pedidos concretos con contexto local.',
       },
     ],
     samplePosts: [
@@ -310,17 +310,17 @@ export const CONTENT = {
       {
         title: 'Entrá a MUR',
         body:
-          'MUR ordena la experiencia alrededor de donde vivís, trabajás o te movés todos los días.',
+          'La app se ordena alrededor de donde te movés.',
       },
       {
         title: 'Mirá qué pasa cerca',
         body:
-          'Revisá publicaciones, alertas y comercios desde el feed o el mapa.',
+          'Feed, mapa y categorías en una vista simple.',
       },
       {
         title: 'Publicá con contexto',
         body:
-          'Elegí categoría, sumá detalles y decidí si compartís ubicación exacta o aproximada.',
+          'Elegí categoría y ubicación exacta o aproximada.',
       },
     ],
     faq: [
@@ -424,7 +424,7 @@ export const CONTENT = {
       heroBadge: 'Coming soon',
       title: 'What happens nearby matters.',
       body:
-        'Lost pets, alerts, accidents, local shop promos, and nearby updates, all close to you and with useful context.',
+        'See and share what is happening a few meters away: alerts, pets, promos, and local updates.',
       primaryCta: 'Join the waitlist',
       mascotAlt: 'OLVI, the MUR mascot',
       mascotLabel: 'OLVI is preparing an app that helps nearby life feel easier to understand.',
@@ -437,7 +437,7 @@ export const CONTENT = {
       previewImageLabel: 'Image',
       previewAudioLabel: 'Audio',
       useCasesLabel: 'Everyday uses',
-      useCasesTitle: 'Built for what actually happens nearby',
+      useCasesTitle: 'Nearby, visible at a glance',
       productLabel: 'How it looks',
       productTitle: 'Post with context without sharing more location than needed',
       productBody:
@@ -447,31 +447,31 @@ export const CONTENT = {
       waitlistLabel: 'Waitlist',
       waitlistTitle: 'Join the first MUR community',
       waitlistBody:
-        'Complete the waitlist form. We will open gradually so the first experience starts with useful local activity.',
+        'We are opening gradually so each area starts with real activity from day one.',
       faqLabel: 'FAQ',
       faqTitle: 'The basics, clearly',
-      fictionalNote: 'Fictional examples shown to explain the product.',
+      fictionalNote: 'Real product view with sample use cases.',
     },
     useCases: [
       {
         title: 'Lost pets',
         body:
-          'Nearby posts with photos, approximate references, and comments to coordinate help quickly.',
+          'Photos, nearby context, and comments to coordinate help.',
       },
       {
         title: 'Traffic and accidents',
         body:
-          'Useful alerts to move carefully, avoid a street, or warn someone nearby.',
+          'Quick alerts for moving with more context.',
       },
       {
         title: 'Local shops',
         body:
-          'Daily promos, special hours, and updates seen by people who are close.',
+          'Promos and updates seen by people in the area.',
       },
       {
         title: 'Neighbor help',
         body:
-          'Found items, quick questions, and concrete requests with nearby context.',
+          'Questions and concrete requests with local context.',
       },
     ],
     samplePosts: [
@@ -508,17 +508,17 @@ export const CONTENT = {
       {
         title: 'Open MUR',
         body:
-          'MUR organizes the experience around where you live, work, or move every day.',
+          'The app organizes around where you move.',
       },
       {
         title: 'See what is nearby',
         body:
-          'Browse posts, alerts, and local shops from the feed or the map.',
+          'Feed, map, and categories in one simple view.',
       },
       {
         title: 'Post with context',
         body:
-          'Choose a category, add details, and decide whether to share exact or approximate location.',
+          'Choose category and exact or approximate location.',
       },
     ],
     faq: [
