@@ -109,10 +109,10 @@
   }
 
   .decor-ring-one {
-    right: min(4vw, 3rem);
-    top: 5rem;
-    width: clamp(10rem, 21vw, 18rem);
-    height: clamp(10rem, 21vw, 18rem);
+    right: min(3vw, 2rem);
+    top: 5.5rem;
+    width: clamp(10rem, 18vw, 16rem);
+    height: clamp(10rem, 18vw, 16rem);
   }
 
   .decor-ring-two {
@@ -124,25 +124,25 @@
   }
 
   .decor-ring-three {
-    right: 38%;
-    bottom: 2rem;
-    width: 7rem;
-    height: 7rem;
+    right: 36%;
+    bottom: 4.5rem;
+    width: 6rem;
+    height: 6rem;
     border-color: rgba(95, 127, 69, 0.28);
   }
 
   .decor-slab {
     border-radius: 8px;
-    opacity: 0.78;
+    opacity: 0.5;
     transform: rotate(-18deg);
   }
 
   .decor-slab-one {
-    right: 8%;
-    top: 12rem;
-    width: clamp(8rem, 18vw, 15rem);
-    height: 4.5rem;
-    background: linear-gradient(90deg, rgba(255, 156, 1, 0.24), rgba(36, 124, 120, 0.12));
+    right: 7%;
+    top: 11rem;
+    width: clamp(7rem, 14vw, 12rem);
+    height: 3.2rem;
+    background: linear-gradient(90deg, rgba(255, 156, 1, 0.2), rgba(36, 124, 120, 0.09));
   }
 
   .decor-slab-two {
@@ -156,15 +156,15 @@
 
   .decor-line-stack {
     right: 1.5rem;
-    bottom: 7rem;
-    width: 12rem;
-    height: 7rem;
+    bottom: 5rem;
+    width: 10rem;
+    height: 6rem;
     background: repeating-linear-gradient(
       135deg,
       rgba(37, 33, 27, 0.14) 0 1px,
       transparent 1px 13px
     );
-    opacity: 0.42;
+    opacity: 0.34;
   }
 
   :root[data-theme="dark"] .decor-ring {
@@ -210,7 +210,7 @@
 
   .hero-screens {
     position: relative;
-    min-height: 660px;
+    min-height: 500px;
   }
 
   .hero-phone {
@@ -218,18 +218,18 @@
   }
 
   .hero-phone-front {
-    right: 6%;
+    right: 12%;
     top: 0;
     z-index: 3;
-    width: min(38vw, 21rem);
+    width: min(27vw, 15rem);
     transform: rotate(4deg);
   }
 
   .hero-phone-back {
-    left: 8%;
-    top: 5.75rem;
+    left: 19%;
+    top: 2rem;
     z-index: 2;
-    width: min(36vw, 19.5rem);
+    width: min(24vw, 13.5rem);
     transform: rotate(-7deg);
   }
 
@@ -258,13 +258,13 @@
   }
 
   .hero-floating-card-top {
-    right: 0;
-    top: 6.5rem;
+    right: 8%;
+    top: 4.8rem;
   }
 
   .hero-floating-card-bottom {
-    left: 0;
-    bottom: 7rem;
+    left: 16%;
+    bottom: 5.75rem;
   }
 
   .visual-card {
@@ -380,21 +380,19 @@
   }
 
   .hero-screens {
-    min-height: 540px;
-  }
-
-  .hero-phone {
-    width: min(63vw, 15rem);
+    min-height: 335px;
   }
 
   .hero-phone-front {
-    right: 0.25rem;
+    right: 0.35rem;
     top: 0;
+    width: min(43vw, 9.8rem);
   }
 
   .hero-phone-back {
-    left: 0.25rem;
-    top: 4rem;
+    left: 0.35rem;
+    top: 1.5rem;
+    width: min(39vw, 8.9rem);
   }
 
   .hero-floating-card {
@@ -404,12 +402,12 @@
 
   .hero-floating-card-top {
     right: 0.25rem;
-    top: 3.75rem;
+    top: 2rem;
   }
 
   .hero-floating-card-bottom {
     left: 0.25rem;
-    bottom: 4.5rem;
+    bottom: 1.5rem;
   }
 }
 

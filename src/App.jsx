@@ -290,7 +290,7 @@ function AppPreview({ theme, screenIndex = 0, className = '' }) {
 
 function HeroSection({ t, styles, theme }) {
   return (
-    <section className="relative overflow-hidden px-4 pb-12 pt-10 sm:px-6 sm:pb-16 sm:pt-14 lg:min-h-[calc(100vh-4rem)] lg:px-8">
+    <section className="relative overflow-hidden px-4 pb-6 pt-8 sm:px-6 sm:pb-12 sm:pt-14 lg:min-h-[calc(82vh-4rem)] lg:px-8 lg:py-8">
       <div aria-hidden="true" className="hero-decor">
         <span className="decor-ring decor-ring-one" />
         <span className="decor-ring decor-ring-two" />
@@ -304,7 +304,7 @@ function HeroSection({ t, styles, theme }) {
         initial="hidden"
         animate="visible"
         variants={stagger}
-        className="relative z-10 mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[0.74fr_1.26fr]"
+        className="relative z-10 mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[0.8fr_1.2fr]"
       >
         <div className="max-w-2xl">
           <motion.div
@@ -317,7 +317,7 @@ function HeroSection({ t, styles, theme }) {
 
           <motion.h1
             variants={fadeUp}
-            className={`mt-6 max-w-3xl text-5xl font-black leading-[0.96] sm:text-6xl lg:text-7xl ${styles.text}`}
+            className={`mt-6 max-w-3xl text-4xl font-black leading-[0.96] sm:text-6xl lg:text-[4.85rem] ${styles.text}`}
           >
             {t.home.title}
           </motion.h1>
@@ -341,7 +341,7 @@ function HeroSection({ t, styles, theme }) {
             </a>
           </motion.div>
 
-          <motion.div variants={fadeUp} className="mt-7 flex flex-wrap gap-2">
+          <motion.div variants={fadeUp} className="mt-7 hidden flex-wrap gap-2 sm:flex">
             {t.previewStats.map((item) => (
               <span key={item} className={`rounded-lg border px-3 py-2 text-xs font-bold ${styles.insetSurface}`}>
                 {item}
