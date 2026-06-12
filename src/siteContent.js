@@ -14,16 +14,16 @@ export const THEME = {
   light: {
     marketingPage: 'bg-white text-brand-ink',
     legalPage: 'bg-white text-brand-ink',
-    nav: 'border-brand-ink/10 bg-white/90 backdrop-blur-xl',
+    nav: 'border-brand-cream/15 bg-[#151514]/95 backdrop-blur-xl',
     navNarrow: 'border-brand-ink/10 bg-white/95 backdrop-blur-xl',
-    navText: 'text-brand-ink/70 hover:text-brand-ink',
+    navText: 'text-brand-cream/80 hover:text-brand-cream-light',
     navTextNarrow: 'text-brand-ink/70 hover:text-brand-ink',
     navLink:
       'border-brand-ink/10 bg-white/70 text-brand-ink shadow-sm hover:border-brand-amber/60 hover:bg-white',
     navLinkNarrow:
       'border-brand-ink/10 bg-white/70 text-brand-ink hover:border-brand-amber/60 hover:bg-white',
     menuPanel: 'border-brand-ink/10 bg-white shadow-soft',
-    logoText: 'text-brand-ink',
+    logoText: 'text-brand-amber',
     text: 'text-brand-ink',
     muted: 'text-brand-ink/70',
     border: 'border-brand-ink/10',
@@ -203,6 +203,7 @@ export const CONTENT = {
     },
     nav: {
       menu: 'Menú',
+      nearby: 'Producto',
       howItWorks: 'Cómo funciona',
       waitlist: 'Lista de espera',
       privacy: 'Política de privacidad',
@@ -401,6 +402,7 @@ export const CONTENT = {
     },
     nav: {
       menu: 'Menu',
+      nearby: 'Product',
       howItWorks: 'How it works',
       waitlist: 'Waitlist',
       privacy: 'Privacy policy',

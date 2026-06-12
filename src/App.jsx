@@ -7,14 +7,21 @@ import {
   Compass,
   FileText,
   Globe2,
+  HeartHandshake,
   KeyRound,
   Mail,
+  Map,
   MapPin,
   Menu,
+  MessageCircle,
   Moon,
+  PawPrint,
+  Quote,
   ShieldCheck,
+  Store,
   Sun,
   Trash2,
+  UsersRound,
   X,
 } from 'lucide-react'
 
@@ -49,8 +56,10 @@ const stagger = {
   },
 }
 
-const useCaseIcons = [MapPin, Bell, Compass, ShieldCheck]
+const useCaseIcons = [PawPrint, Bell, Store, HeartHandshake]
+const productPointIcons = [Map, Bell, Compass, MessageCircle]
 const navAnchors = [
+  { href: '#nearby', key: 'nearby' },
   { href: '#how-it-works', key: 'howItWorks' },
   { href: '#waitlist', key: 'waitlist' },
 ]
@@ -288,28 +297,22 @@ function AppPreview({ theme, screenIndex = 0, className = '' }) {
   )
 }
 
-function HeroSection({ t, styles, theme }) {
-  return (
-    <section className="relative overflow-hidden px-4 pb-6 pt-8 sm:px-6 sm:pb-12 sm:pt-14 lg:min-h-[calc(82vh-4rem)] lg:px-8 lg:py-8">
-      <div aria-hidden="true" className="hero-decor">
-        <span className="decor-ring decor-ring-one" />
-        <span className="decor-ring decor-ring-two" />
-        <span className="decor-ring decor-ring-three" />
-        <span className="decor-slab decor-slab-one" />
-        <span className="decor-slab decor-slab-two" />
-        <span className="decor-line-stack decor-line-stack-one" />
-      </div>
+function HeroSection({ t, styles }) {
+  const heroPosts = t.samplePosts.slice(0, 3)
 
+  return (
+    <section className="cinema-hero relative overflow-hidden px-4 pb-10 pt-8 sm:px-6 sm:pb-20 sm:pt-12 lg:px-8">
+      <div aria-hidden="true" className="hero-horizon" />
       <motion.div
         initial="hidden"
         animate="visible"
         variants={stagger}
-        className="relative z-10 mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[0.8fr_1.2fr]"
+        className="relative z-10 mx-auto grid max-w-6xl items-center gap-6 sm:gap-10 lg:min-h-[680px] lg:grid-cols-[0.82fr_1.18fr]"
       >
         <div className="max-w-2xl">
           <motion.div
             variants={fadeUp}
-            className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] ${styles.warmSurface}`}
+            className="inline-flex items-center gap-2 rounded-lg border border-brand-amber/30 bg-brand-amber/[0.12] px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-brand-cream-light"
           >
             <span className="h-2 w-2 rounded-full bg-brand-amber" aria-hidden="true" />
             {t.home.heroBadge}
@@ -317,14 +320,14 @@ function HeroSection({ t, styles, theme }) {
 
           <motion.h1
             variants={fadeUp}
-            className={`mt-6 max-w-3xl text-4xl font-black leading-[0.96] sm:text-6xl lg:text-[4.85rem] ${styles.text}`}
+            className="mt-6 max-w-3xl text-4xl font-black leading-[0.96] text-brand-cream-light sm:text-6xl lg:text-[4.85rem]"
           >
             {t.home.title}
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
-            className={`mt-5 max-w-xl text-base leading-7 sm:text-lg ${styles.muted}`}
+            className="mt-5 max-w-xl text-base leading-7 text-brand-cream/85 sm:text-lg"
           >
             {t.home.body}
           </motion.p>
@@ -335,7 +338,7 @@ function HeroSection({ t, styles, theme }) {
               href={BRAND.instagramUrl}
               target="_blank"
               rel="noreferrer"
-              className={`inline-flex min-h-12 items-center justify-center rounded-lg border px-5 text-sm font-bold transition ${styles.secondaryButton}`}
+              className="inline-flex min-h-12 items-center justify-center rounded-lg border border-brand-cream/[0.22] bg-brand-cream/[0.06] px-5 text-sm font-bold text-brand-cream-light transition hover:border-brand-amber/60 hover:bg-brand-cream/[0.1]"
             >
               {BRAND.instagramHandle}
             </a>
@@ -343,26 +346,113 @@ function HeroSection({ t, styles, theme }) {
 
           <motion.div variants={fadeUp} className="mt-7 hidden flex-wrap gap-2 sm:flex">
             {t.previewStats.map((item) => (
-              <span key={item} className={`rounded-lg border px-3 py-2 text-xs font-bold ${styles.insetSurface}`}>
+              <span key={item} className="rounded-lg border border-brand-cream/15 bg-brand-cream/[0.06] px-3 py-2 text-xs font-bold text-brand-cream/85">
                 {item}
               </span>
             ))}
           </motion.div>
         </div>
 
-        <motion.div variants={fadeUp} className="hero-screens">
-          <AppPreview theme={theme} screenIndex={0} className="hero-phone hero-phone-front" />
-          <AppPreview theme={theme} screenIndex={1} className="hero-phone hero-phone-back" />
-          <div className={`hero-floating-card hero-floating-card-top ${styles.surface}`}>
-            <span>{theme === 'dark' ? t.controls.dark : t.controls.light}</span>
-            <strong>{t.home.previewEyebrow}</strong>
+        <motion.div variants={fadeUp} className="mur-hero-stage">
+          <div className="story-card story-card-one">
+            <MapPin aria-hidden="true" className="h-4 w-4 text-brand-amber" />
+            <span>{t.samplePosts[0].distance}</span>
           </div>
-          <div className={`hero-floating-card hero-floating-card-bottom ${styles.surface}`}>
+          <div className="story-card story-card-two">
+            <Bell aria-hidden="true" className="h-4 w-4 text-brand-amber" />
+            <span>{heroPosts[1].category}</span>
+          </div>
+          <div className="story-card story-card-three">
+            <UsersRound aria-hidden="true" className="h-4 w-4 text-brand-amber" />
             <span>{t.previewStats[0]}</span>
-            <strong>{t.samplePosts[0].distance}</strong>
           </div>
+
+          <AppPreview theme="light" screenIndex={0} className="cinema-phone cinema-phone-front" />
+          <AppPreview theme="dark" screenIndex={1} className="cinema-phone cinema-phone-back" />
+
+          <div className="hero-post-strip" aria-hidden="true">
+            {heroPosts.map((post) => (
+              <div key={post.title} className="hero-post-chip">
+                <span>{post.category}</span>
+                <strong>{post.title}</strong>
+                <small>{post.meta}</small>
+              </div>
+            ))}
+          </div>
+
+          <img
+            src="/olvi.png"
+            alt={t.home.mascotAlt}
+            className="hero-mascot"
+            width="260"
+            height="260"
+          />
         </motion.div>
       </motion.div>
+    </section>
+  )
+}
+
+function ProductFeatureBand({ t, theme }) {
+  return (
+    <section id="nearby" className="product-band scroll-mt-24 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.04fr_0.96fr]">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          className="product-console"
+        >
+          <div className="console-sidebar" aria-hidden="true">
+            <img src="/logo.png" alt="" className="h-7 w-7 rounded-lg object-contain" />
+            <MapPin className="h-5 w-5" />
+            <Bell className="h-5 w-5" />
+            <Compass className="h-5 w-5" />
+            <MessageCircle className="h-5 w-5" />
+          </div>
+          <div className="console-body">
+            <div className="console-search" aria-hidden="true">
+              <span>{t.home.previewSearch}</span>
+            </div>
+            <div className="console-grid">
+              <AppPreview theme={theme} screenIndex={0} className="band-phone band-phone-main" />
+              <AppPreview theme={theme} screenIndex={1} className="band-phone band-phone-side" />
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          className="text-brand-cream-light"
+        >
+          <motion.p variants={fadeUp} className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
+            {t.home.productLabel}
+          </motion.p>
+          <motion.h2 variants={fadeUp} className="mt-3 max-w-2xl text-3xl font-black leading-tight sm:text-4xl">
+            {t.home.productTitle}
+          </motion.h2>
+          <motion.p variants={fadeUp} className="mt-5 max-w-xl text-base leading-7 text-brand-cream/85">
+            {t.home.productBody}
+          </motion.p>
+
+          <motion.div variants={stagger} className="mt-7 grid gap-3 sm:grid-cols-2">
+            {t.productPoints.map((point, index) => {
+              const Icon = productPointIcons[index] ?? Compass
+
+              return (
+                <motion.div key={point} variants={fadeUp} className="product-point">
+                  <Icon aria-hidden="true" className="h-4 w-4 text-brand-amber" />
+                  <span>{point}</span>
+                </motion.div>
+              )
+            })}
+          </motion.div>
+        </motion.div>
+      </div>
     </section>
   )
 }
@@ -448,7 +538,7 @@ function HowItWorksSection({ t, styles }) {
 function WaitlistSection({ t, styles }) {
   return (
     <section id="waitlist" className={`waitlist-band scroll-mt-24 border-y px-4 py-12 sm:px-6 sm:py-16 lg:px-8 ${styles.border}`}>
-      <div className="relative z-10 mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+      <div className="relative z-10 mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1fr_0.7fr_auto] lg:items-center">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
             {t.home.waitlistLabel}
@@ -460,7 +550,42 @@ function WaitlistSection({ t, styles }) {
             {t.home.waitlistBody}
           </p>
         </div>
+        <div className={`flex items-start gap-3 rounded-lg border p-4 ${styles.insetSurface}`}>
+          <Quote aria-hidden="true" className="mt-1 h-4 w-4 shrink-0 text-brand-amber" />
+          <p className={`text-sm font-semibold leading-6 ${styles.muted}`}>
+            {t.home.mascotLabel}
+          </p>
+        </div>
         <WaitlistAction t={t} styles={styles} />
+      </div>
+    </section>
+  )
+}
+
+function FaqSection({ t, styles }) {
+  return (
+    <section className="faq-section px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.72fr_1.28fr]">
+        <div>
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
+            {t.home.faqLabel}
+          </p>
+          <h2 className={`mt-3 text-3xl font-black leading-tight sm:text-4xl ${styles.text}`}>
+            {t.home.faqTitle}
+          </h2>
+          <p className={`mt-4 max-w-sm text-sm leading-6 ${styles.muted}`}>
+            {t.home.fictionalNote}
+          </p>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-2">
+          {t.faq.slice(0, 4).map((item) => (
+            <article key={item.question} className={`rounded-lg border p-5 ${styles.surface}`}>
+              <h3 className={`text-base font-bold ${styles.text}`}>{item.question}</h3>
+              <p className={`mt-3 text-sm leading-6 ${styles.muted}`}>{item.answer}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -469,9 +594,11 @@ function WaitlistSection({ t, styles }) {
 function HomePage({ t, styles, theme }) {
   return (
     <>
-      <HeroSection t={t} styles={styles} theme={theme} />
+      <HeroSection t={t} styles={styles} />
+      <ProductFeatureBand t={t} theme={theme} />
       <UseCasesSection t={t} styles={styles} />
       <HowItWorksSection t={t} styles={styles} />
+      <FaqSection t={t} styles={styles} />
       <WaitlistSection t={t} styles={styles} />
     </>
   )
