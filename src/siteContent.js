@@ -12,10 +12,10 @@ export const THEMES = ['light', 'dark']
 
 export const THEME = {
   light: {
-    marketingPage: 'bg-brand-paper text-brand-ink',
-    legalPage: 'bg-brand-paper text-brand-ink',
-    nav: 'border-brand-ink/10 bg-brand-paper/90 backdrop-blur-xl',
-    navNarrow: 'border-brand-ink/10 bg-brand-paper/95 backdrop-blur-xl',
+    marketingPage: 'bg-white text-brand-ink',
+    legalPage: 'bg-white text-brand-ink',
+    nav: 'border-brand-ink/10 bg-white/90 backdrop-blur-xl',
+    navNarrow: 'border-brand-ink/10 bg-white/95 backdrop-blur-xl',
     navText: 'text-brand-ink/70 hover:text-brand-ink',
     navTextNarrow: 'text-brand-ink/70 hover:text-brand-ink',
     navLink:
@@ -28,7 +28,7 @@ export const THEME = {
     muted: 'text-brand-ink/70',
     border: 'border-brand-ink/10',
     surface: 'border-brand-ink/10 bg-white/[0.78] shadow-soft backdrop-blur-sm',
-    softSurface: 'border-brand-ink/10 bg-brand-paper-soft/80',
+    softSurface: 'border-brand-ink/10 bg-white/80',
     insetSurface: 'border-brand-ink/10 bg-white/70',
     warmSurface: 'border-brand-amber/20 bg-brand-sun/80',
     tealSurface: 'border-brand-teal/20 bg-brand-river/80',
@@ -51,10 +51,10 @@ export const THEME = {
     legalDivide: 'divide-brand-ink/10',
   },
   dark: {
-    marketingPage: 'bg-brand-blue text-brand-cream-light',
-    legalPage: 'bg-brand-blue-deep text-brand-cream-light',
-    nav: 'border-brand-cream/15 bg-brand-blue-deep/95 backdrop-blur-xl',
-    navNarrow: 'border-brand-cream/15 bg-brand-blue-deep/95 backdrop-blur-xl',
+    marketingPage: 'bg-[#171716] text-brand-cream-light',
+    legalPage: 'bg-[#151514] text-brand-cream-light',
+    nav: 'border-brand-cream/15 bg-[#151514]/95 backdrop-blur-xl',
+    navNarrow: 'border-brand-cream/15 bg-[#151514]/95 backdrop-blur-xl',
     navText: 'text-brand-cream/80 hover:text-brand-cream-light',
     navTextNarrow: 'text-brand-cream/80 hover:text-brand-cream-light',
     navLink:

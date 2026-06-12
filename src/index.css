@@ -10,7 +10,7 @@
   body {
     margin: 0;
     min-width: 320px;
-    background: #fbf6ec;
+    background: #ffffff;
     color: #25211b;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -45,16 +45,16 @@
 
   .local-background-light {
     background:
-      linear-gradient(128deg, rgba(221, 237, 234, 0.5), transparent 34%),
-      linear-gradient(236deg, rgba(248, 229, 200, 0.62), transparent 42%),
-      linear-gradient(180deg, #fffdf9 0%, #fbf6ec 100%);
+      linear-gradient(128deg, rgba(36, 124, 120, 0.08), transparent 32%),
+      linear-gradient(236deg, rgba(255, 156, 1, 0.1), transparent 40%),
+      linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
   }
 
   .local-background-dark {
     background:
-      linear-gradient(132deg, rgba(36, 124, 120, 0.16), transparent 34%),
-      linear-gradient(238deg, rgba(255, 156, 1, 0.12), transparent 40%),
-      linear-gradient(180deg, #20201d 0%, #141413 100%);
+      linear-gradient(132deg, rgba(36, 124, 120, 0.12), transparent 34%),
+      linear-gradient(238deg, rgba(255, 156, 1, 0.1), transparent 40%),
+      linear-gradient(180deg, #1c1c1a 0%, #151514 100%);
   }
 
   .local-background::before {
@@ -76,16 +76,16 @@
 
   .local-background::after {
     background:
-      linear-gradient(142deg, transparent 0 42%, rgba(255, 156, 1, 0.08) 42% 44%, transparent 44%),
-      linear-gradient(36deg, transparent 0 62%, rgba(36, 124, 120, 0.08) 62% 64%, transparent 64%),
-      linear-gradient(180deg, rgba(255, 253, 249, 0.18), rgba(251, 246, 236, 0.72));
+      linear-gradient(142deg, transparent 0 42%, rgba(255, 156, 1, 0.06) 42% 44%, transparent 44%),
+      linear-gradient(36deg, transparent 0 62%, rgba(36, 124, 120, 0.06) 62% 64%, transparent 64%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.78));
   }
 
   .local-background-dark::after {
     background:
-      linear-gradient(142deg, transparent 0 42%, rgba(255, 156, 1, 0.12) 42% 44%, transparent 44%),
-      linear-gradient(36deg, transparent 0 62%, rgba(95, 127, 69, 0.12) 62% 64%, transparent 64%),
-      linear-gradient(180deg, rgba(32, 32, 29, 0.18), rgba(20, 20, 19, 0.82));
+      linear-gradient(142deg, transparent 0 42%, rgba(255, 156, 1, 0.1) 42% 44%, transparent 44%),
+      linear-gradient(36deg, transparent 0 62%, rgba(95, 127, 69, 0.1) 62% 64%, transparent 64%),
+      linear-gradient(180deg, rgba(28, 28, 26, 0.16), rgba(21, 21, 20, 0.86));
   }
 
   .hero-decor {
@@ -346,7 +346,7 @@
     position: absolute;
     width: 1rem;
     height: 1rem;
-    border: 3px solid #fbf6ec;
+    border: 3px solid #ffffff;
     border-radius: 999px;
     box-shadow: 0 10px 22px rgba(37, 33, 27, 0.2);
   }

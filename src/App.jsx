@@ -851,7 +851,7 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem('mur-theme', theme)
     document.documentElement.dataset.theme = theme
-    document.body.style.backgroundColor = theme === 'dark' ? '#161622' : '#fbf6ec'
+    document.body.style.backgroundColor = theme === 'dark' ? '#151514' : '#ffffff'
   }, [theme])
 
   useEffect(() => {
