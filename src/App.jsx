@@ -304,7 +304,7 @@ function HeroSection({ t, styles, theme }) {
         variants={stagger}
         className="mx-auto grid max-w-6xl items-center gap-10 lg:min-h-[620px] lg:grid-cols-[0.92fr_1.08fr]"
       >
-        <div className="max-w-2xl">
+        <div className="max-w-2xl lg:-translate-y-12">
           <motion.h1
             variants={fadeUp}
             className={`max-w-3xl text-4xl font-black leading-[0.96] sm:text-6xl lg:text-[4.85rem] ${styles.text}`}
