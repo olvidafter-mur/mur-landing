@@ -46,32 +46,30 @@ export const THEME = {
       'bg-brand-amber text-brand-ink hover:bg-brand-amber-deep focus-visible:ring-brand-ink/20',
     secondaryButton:
       'border-brand-amber/25 bg-white/75 text-brand-ink hover:border-brand-amber/70 hover:bg-white',
-    activeControl: 'border-brand-ink bg-brand-ink text-brand-paper',
-    inactiveControl: 'border-transparent text-brand-ink/70 hover:text-brand-ink',
     legalDivide: 'divide-brand-ink/10',
   },
   dark: {
-    marketingPage: 'bg-[#111111] text-brand-cream-light',
-    legalPage: 'bg-[#111111] text-brand-cream-light',
-    nav: 'border-white/10 bg-[#111111]/95 backdrop-blur-xl',
-    navNarrow: 'border-white/10 bg-[#111111]/95 backdrop-blur-xl',
+    marketingPage: 'bg-brand-blue text-brand-cream-light',
+    legalPage: 'bg-brand-blue text-brand-cream-light',
+    nav: 'border-white/10 bg-brand-blue/95 backdrop-blur-xl',
+    navNarrow: 'border-white/10 bg-brand-blue/95 backdrop-blur-xl',
     navText: 'text-brand-cream/80 hover:text-brand-cream-light',
     navTextNarrow: 'text-brand-cream/80 hover:text-brand-cream-light',
     navLink:
       'border-brand-cream/15 bg-brand-cream/[0.06] text-brand-cream-light hover:border-brand-amber/70 hover:bg-brand-cream/[0.1]',
     navLinkNarrow:
       'border-brand-cream/15 bg-brand-cream/[0.06] text-brand-cream-light hover:border-brand-amber/70 hover:bg-brand-cream/[0.1]',
-    menuPanel: 'border-white/10 bg-[#191919] shadow-soft-dark',
+    menuPanel: 'border-white/10 bg-brand-blue shadow-soft-dark',
     logoText: 'text-brand-amber',
     text: 'text-brand-cream-light',
     muted: 'text-brand-cream/85',
     border: 'border-white/10',
-    surface: 'border-white/10 bg-[#1a1a1a] shadow-sm',
-    softSurface: 'border-white/10 bg-[#181818]',
+    surface: 'border-white/10 bg-brand-blue shadow-sm',
+    softSurface: 'border-white/10 bg-brand-blue',
     insetSurface: 'border-white/10 bg-white/[0.06]',
-    warmSurface: 'border-brand-amber/25 bg-[#1a1a1a]',
-    tealSurface: 'border-brand-teal/25 bg-[#1a1a1a]',
-    greenSurface: 'border-brand-green/25 bg-[#1a1a1a]',
+    warmSurface: 'border-brand-amber/25 bg-brand-blue',
+    tealSurface: 'border-brand-cream/25 bg-brand-blue',
+    greenSurface: 'border-brand-cream/25 bg-brand-blue',
     legalBorder: 'border-brand-cream/15',
     legalMuted: 'text-brand-cream/85',
     legalSoft: 'border-brand-cream/15 bg-brand-cream/[0.06] text-brand-cream-light',
@@ -85,8 +83,6 @@ export const THEME = {
       'bg-brand-amber text-brand-blue hover:bg-brand-amber-deep focus-visible:ring-brand-cream-light/80',
     secondaryButton:
       'border-brand-cream/20 bg-brand-cream/[0.06] text-brand-cream-light hover:border-brand-amber/60 hover:bg-brand-cream/[0.1]',
-    activeControl: 'border-brand-cream-light bg-brand-cream-light text-brand-blue',
-    inactiveControl: 'border-transparent text-brand-cream/75 hover:text-white',
     legalDivide: 'divide-brand-cream/15',
   },
 }
@@ -224,10 +220,10 @@ export const CONTENT = {
       email: 'Email',
     },
     home: {
-      title: 'Lo que pasa cerca importa.',
+      title: 'Tu barrio tiene algo que contarte.',
       body:
-        'Enterate y publicá lo que pasa a pocos metros: alertas, mascotas, promos y novedades del barrio.',
-      primaryCta: 'Sumarme a la lista',
+        'Conectate con él: unite a la waitlist y te avisamos para que pruebes MUR antes que todos.',
+      primaryCta: 'Quiero unirme a MUR',
       mascotAlt: 'OLVI, la mascota de MUR',
       mascotLabel: 'OLVI está preparando una app para que lo cercano se entienda mejor.',
       previewEyebrow: 'Vista de producto',
@@ -241,15 +237,15 @@ export const CONTENT = {
       useCasesLabel: 'Usos cotidianos',
       useCasesTitle: 'Lo cercano, visible de un vistazo',
       productLabel: 'Cómo se ve',
-      productTitle: 'Publicá con contexto, sin regalar más ubicación de la necesaria',
+      productTitle: 'Lo cercano, en un feed.',
       productBody:
-        'Cada publicación puede mostrar una ubicación aproximada o exacta. Las categorías ayudan a recibir menos ruido y más avisos útiles.',
+        'Mapa, categorías y comentarios. Sin ruido.',
       stepsLabel: 'Cómo funciona',
-      stepsTitle: 'Tres pasos, sin vueltas',
+      stepsTitle: 'Simple',
       waitlistLabel: 'Lista de espera',
-      waitlistTitle: 'Sumate a la primera comunidad MUR',
+      waitlistTitle: 'Probá MUR primero',
       waitlistBody:
-        'Abrimos de a poco para que cada zona arranque con actividad real desde el primer día.',
+        'Abrimos por zonas.',
       faqLabel: 'Preguntas frecuentes',
       faqTitle: 'Lo básico, claro',
       fictionalNote: 'Vista real de producto con ejemplos de uso.',
@@ -301,26 +297,22 @@ export const CONTENT = {
     ],
     previewStats: ['Feed cerca tuyo', 'Mapa activo', 'Filtros por categoría'],
     productPoints: [
-      'Feed cercano con publicaciones recientes.',
-      'Mapa con actividad cercana.',
-      'Filtros para mascotas, alertas, comercios y novedades.',
-      'Comentarios y likes para coordinar sin salir de la app.',
+      'Feed cercano',
+      'Mapa activo',
+      'Filtros simples',
     ],
     steps: [
       {
-        title: 'Entrá a MUR',
-        body:
-          'La app se ordena alrededor de donde te movés.',
+        title: 'Abrí',
+        body: '',
       },
       {
-        title: 'Mirá qué pasa cerca',
-        body:
-          'Feed, mapa y categorías en una vista simple.',
+        title: 'Mirá cerca',
+        body: '',
       },
       {
-        title: 'Publicá con contexto',
-        body:
-          'Elegí categoría y ubicación exacta o aproximada.',
+        title: 'Publicá',
+        body: '',
       },
     ],
     faq: [
@@ -422,10 +414,10 @@ export const CONTENT = {
       email: 'Email',
     },
     home: {
-      title: 'What happens nearby matters.',
+      title: 'Your neighborhood has something to tell you.',
       body:
-        'See and share what is happening a few meters away: alerts, pets, promos, and local updates.',
-      primaryCta: 'Join the waitlist',
+        'Join the waitlist and we will let you try MUR before everyone else.',
+      primaryCta: 'Join MUR',
       mascotAlt: 'OLVI, the MUR mascot',
       mascotLabel: 'OLVI is preparing an app that helps nearby life feel easier to understand.',
       previewEyebrow: 'Product preview',
@@ -439,15 +431,15 @@ export const CONTENT = {
       useCasesLabel: 'Everyday uses',
       useCasesTitle: 'Nearby, visible at a glance',
       productLabel: 'How it looks',
-      productTitle: 'Post with context without sharing more location than needed',
+      productTitle: 'Nearby, in one feed.',
       productBody:
-        'Each post can use approximate or exact location. Categories help you receive less noise and more useful alerts.',
+        'Map, categories, comments. No noise.',
       stepsLabel: 'How it works',
-      stepsTitle: 'Three simple steps',
+      stepsTitle: 'Simple',
       waitlistLabel: 'Waitlist',
-      waitlistTitle: 'Join the first MUR community',
+      waitlistTitle: 'Try MUR first',
       waitlistBody:
-        'We are opening gradually so each area starts with real activity from day one.',
+        'Rolling out by area.',
       faqLabel: 'FAQ',
       faqTitle: 'The basics, clearly',
       fictionalNote: 'Real product view with sample use cases.',
@@ -499,26 +491,22 @@ export const CONTENT = {
     ],
     previewStats: ['Nearby feed', 'Active map', 'Category filters'],
     productPoints: [
-      'Nearby feed with recent posts.',
-      'Map with nearby activity.',
-      'Filters for pets, alerts, shops, and updates.',
-      'Comments and likes to coordinate inside the app.',
+      'Nearby feed',
+      'Active map',
+      'Simple filters',
     ],
     steps: [
       {
-        title: 'Open MUR',
-        body:
-          'The app organizes around where you move.',
+        title: 'Open',
+        body: '',
       },
       {
-        title: 'See what is nearby',
-        body:
-          'Feed, map, and categories in one simple view.',
+        title: 'Look nearby',
+        body: '',
       },
       {
-        title: 'Post with context',
-        body:
-          'Choose category and exact or approximate location.',
+        title: 'Post',
+        body: '',
       },
     ],
     faq: [

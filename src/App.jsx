@@ -1,23 +1,21 @@
-import { useEffect, useMemo, useState } from 'react'
+import { Suspense, useEffect, useRef, useMemo, useState } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { RoundedBox, useTexture } from '@react-three/drei'
 import { motion } from 'framer-motion'
+import * as THREE from 'three'
 import {
   ArrowLeft,
-  AtSign,
   Bell,
   Compass,
   FileText,
   Globe2,
-  HeartHandshake,
   KeyRound,
   Mail,
   Map,
   Menu,
   MessageCircle,
   Moon,
-  PawPrint,
-  Quote,
   ShieldCheck,
-  Store,
   Sun,
   Trash2,
   X,
@@ -33,6 +31,16 @@ const springTransition = {
   type: 'spring',
   stiffness: 120,
   damping: 18,
+}
+
+function InstagramMark(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none" />
+    </svg>
+  )
 }
 
 const fadeUp = {
@@ -54,7 +62,6 @@ const stagger = {
   },
 }
 
-const useCaseIcons = [PawPrint, Bell, Store, HeartHandshake]
 const productPointIcons = [Map, Bell, Compass, MessageCircle]
 const navAnchors = [
   { href: '#nearby', key: 'nearby' },
@@ -97,14 +104,14 @@ const trackEvent = (name, detail = {}) => {
 function SectionIntro({ eyebrow, title, body, styles, centered = false }) {
   return (
     <div className={centered ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl'}>
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-brand-amber">
         {eyebrow}
       </p>
-      <h2 className={`mt-3 text-3xl font-bold leading-tight sm:text-4xl ${styles.text}`}>
+      <h2 className="mt-2 text-3xl font-black leading-tight text-brand-ink sm:text-4xl">
         {title}
       </h2>
       {body ? (
-        <p className={`mt-4 text-base leading-7 ${styles.muted}`}>
+        <p className="mt-3 text-sm font-semibold leading-6 text-brand-ink/62">
           {body}
         </p>
       ) : null}
@@ -112,83 +119,32 @@ function SectionIntro({ eyebrow, title, body, styles, centered = false }) {
   )
 }
 
-function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles, compact = false }) {
+function PreferenceControls({ language, setLanguage, theme, setTheme, t, styles }) {
   const nextLanguage = language === 'es' ? 'en' : 'es'
   const nextTheme = theme === 'dark' ? 'light' : 'dark'
   const ThemeIcon = theme === 'dark' ? Moon : Sun
 
-  if (compact) {
-    return (
-      <div className="flex shrink-0 items-center gap-1.5">
-        <button
-          type="button"
-          aria-label={`${t.controls.language}: ${language.toUpperCase()}`}
-          onClick={() => setLanguage(nextLanguage)}
-          className={`inline-flex min-h-11 items-center gap-1.5 rounded-lg border px-3 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
-        >
-          <Globe2 aria-hidden="true" className={`h-4 w-4 ${styles.muted}`} />
-          {language.toUpperCase()}
-        </button>
-
-        <button
-          type="button"
-          aria-label={`${t.controls.theme}: ${t.controls[theme]}`}
-          onClick={() => setTheme(nextTheme)}
-          className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
-        >
-          <ThemeIcon aria-hidden="true" className="h-4 w-4" />
-        </button>
-      </div>
-    )
-  }
-
   return (
-    <div className="flex flex-wrap items-center justify-end gap-2">
+    <div className="flex shrink-0 items-center justify-end gap-1.5">
       <button
         type="button"
-        aria-label={t.controls.language}
+        aria-label={`${t.controls.language}: ${language.toUpperCase()}`}
+        title={`${t.controls.language}: ${language.toUpperCase()}`}
         onClick={() => setLanguage(nextLanguage)}
-        className={`inline-flex items-center rounded-lg border p-1 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
+        className={`inline-flex min-h-11 min-w-16 items-center justify-center gap-1.5 rounded-lg border px-3 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
       >
-        <Globe2 aria-hidden="true" className={`ml-2 mr-1 h-4 w-4 ${styles.muted}`} />
-        <span
-          className={`inline-flex min-w-[42px] justify-center rounded-md border px-3 py-1.5 transition ${
-            language === 'en' ? styles.activeControl : styles.inactiveControl
-          }`}
-        >
-          EN
-        </span>
-        <span
-          className={`inline-flex min-w-[42px] justify-center rounded-md border px-3 py-1.5 transition ${
-            language === 'es' ? styles.activeControl : styles.inactiveControl
-          }`}
-        >
-          ES
-        </span>
+        <Globe2 aria-hidden="true" className={`h-4 w-4 ${styles.muted}`} />
+        {language.toUpperCase()}
       </button>
 
       <button
         type="button"
-        aria-label={t.controls.theme}
+        aria-label={`${t.controls.theme}: ${t.controls[theme]}`}
+        title={`${t.controls.theme}: ${t.controls[theme]}`}
         onClick={() => setTheme(nextTheme)}
-        className={`inline-flex items-center rounded-lg border p-1 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
+        className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-amber/80 ${styles.insetSurface}`}
       >
-        <span
-          className={`inline-flex min-w-[82px] items-center justify-center gap-1 rounded-md border px-3 py-1.5 transition ${
-            theme === 'light' ? styles.activeControl : styles.inactiveControl
-          }`}
-        >
-          <Sun aria-hidden="true" className="h-3.5 w-3.5" />
-          {t.controls.light}
-        </span>
-        <span
-          className={`inline-flex min-w-[82px] items-center justify-center gap-1 rounded-md border px-3 py-1.5 transition ${
-            theme === 'dark' ? styles.activeControl : styles.inactiveControl
-          }`}
-        >
-          <Moon aria-hidden="true" className="h-3.5 w-3.5" />
-          {t.controls.dark}
-        </span>
+        <ThemeIcon aria-hidden="true" className="h-4 w-4" />
       </button>
     </div>
   )
@@ -205,7 +161,7 @@ function HeaderMenu({ t, styles, narrow = false }) {
     { href: '/privacy', label: t.nav.privacy, icon: FileText },
     { href: '/terms', label: t.nav.terms, icon: ShieldCheck },
     { href: '/delete-account', label: t.nav.deleteAccount, icon: Trash2 },
-    { href: BRAND.instagramUrl, label: BRAND.instagramHandle, icon: AtSign, external: true },
+    { href: BRAND.instagramUrl, label: 'Instagram', icon: InstagramMark, external: true },
   ]
 
   return (
@@ -248,10 +204,15 @@ function HeaderMenu({ t, styles, narrow = false }) {
   )
 }
 
-function WaitlistAction({ t, styles }) {
+function WaitlistAction({ t, styles, variant = 'default' }) {
   const handleClick = () => {
     trackEvent('waitlist_submission')
   }
+
+  const buttonStyle =
+    variant === 'hero'
+      ? 'bg-white text-brand-blue shadow-[0_16px_34px_rgba(22,22,34,0.18)] hover:bg-brand-cream-light focus-visible:ring-white/80'
+      : styles.primaryButton
 
   return (
     <a
@@ -259,7 +220,7 @@ function WaitlistAction({ t, styles }) {
       target="_blank"
       rel="noreferrer"
       onClick={handleClick}
-      className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${styles.primaryButton}`}
+      className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${buttonStyle}`}
     >
       {t.home.primaryCta}
     </a>
@@ -277,83 +238,227 @@ const appScreenshots = {
   ],
 }
 
-function AppPreview({ theme, screenIndex = 0, className = '' }) {
-  const screenshot = appScreenshots[theme][screenIndex]
-  const tone = theme === 'dark' ? 'phone-preview-dark' : 'phone-preview-light'
+const clamp01 = (value) => Math.min(1, Math.max(0, value))
+
+const getHeroScrollProgress = () => {
+  if (typeof window === 'undefined') return 0
+  return clamp01(window.scrollY / (window.innerHeight * 0.9))
+}
+
+const getPrefersReducedMotion = () => {
+  if (typeof window === 'undefined') return false
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+function useMediaQuery(query) {
+  const getMatch = () => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia(query).matches
+  }
+
+  const [matches, setMatches] = useState(getMatch)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query)
+    const updateMatch = () => setMatches(mediaQuery.matches)
+
+    updateMatch()
+    mediaQuery.addEventListener?.('change', updateMatch)
+
+    return () => {
+      mediaQuery.removeEventListener?.('change', updateMatch)
+    }
+  }, [query])
+
+  return matches
+}
+
+function Phone3DModel({ screenshot, zoomRef }) {
+  const groupRef = useRef(null)
+  const isDraggingRef = useRef(false)
+  const isHoveringRef = useRef(false)
+  const { size } = useThree()
+  const screenTexture = useTexture(screenshot.src)
+  const isMobileScene = size.width < 480
+
+  useEffect(() => {
+    screenTexture.colorSpace = THREE.SRGBColorSpace
+    screenTexture.anisotropy = 8
+    screenTexture.needsUpdate = true
+  }, [screenTexture])
+
+  useFrame((state) => {
+    if (!groupRef.current) return
+
+    const progress = getPrefersReducedMotion() ? 0.35 : getHeroScrollProgress()
+    const float = getPrefersReducedMotion() ? 0 : Math.sin(state.clock.elapsedTime * 0.9) * 0.045
+    const pointerWeight = isDraggingRef.current ? 0.1 : isHoveringRef.current ? 0.05 : 0.025
+    const pointerX = getPrefersReducedMotion() ? 0 : THREE.MathUtils.clamp(state.pointer.x * pointerWeight, -0.07, 0.07)
+    const pointerY = getPrefersReducedMotion() ? 0 : THREE.MathUtils.clamp(state.pointer.y * pointerWeight, -0.055, 0.055)
+    const wheelZoom = zoomRef.current
+    const zoomSettle = 1 - wheelZoom * 0.62
+    const targetRotationX = (THREE.MathUtils.lerp(-0.014, 0.026, progress) - pointerY) * zoomSettle
+    const targetRotationY = (THREE.MathUtils.lerp(-0.018, 0.028, progress) + pointerX) * zoomSettle
+    const targetRotationZ = (THREE.MathUtils.lerp(0.006, -0.014, progress) + pointerX * 0.045) * zoomSettle
+    const targetX = THREE.MathUtils.lerp(0.02, -0.12, progress)
+    const baseY = isMobileScene ? 0.12 : -0.04
+    const endY = isMobileScene ? 0.2 : 0.02
+    const baseScale = isMobileScene ? 0.8 : 1.02
+    const endScale = isMobileScene ? 0.78 : 0.98
+    const targetY = THREE.MathUtils.lerp(baseY, endY, progress) + float
+    const targetScale = THREE.MathUtils.lerp(baseScale, endScale, progress) * (1 + wheelZoom * 0.72)
+
+    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotationX, 0.08)
+    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY, 0.08)
+    groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, targetRotationZ, 0.08)
+    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.08)
+    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.08)
+    groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale, 0.08))
+  })
 
   return (
-    <div className={`phone-preview ${tone} ${className}`}>
-      <img
-        src={screenshot.src}
-        alt={screenshot.alt}
-        width="739"
-        height="1600"
-        loading={screenIndex === 0 ? 'eager' : 'lazy'}
-        className="block aspect-[739/1600] w-full rounded-[1.65rem] object-cover"
-      />
+    <group
+      ref={groupRef}
+      position={[0.02, isMobileScene ? 0.12 : -0.04, 0]}
+      rotation={[-0.014, -0.018, 0.006]}
+      scale={isMobileScene ? 0.8 : 1.02}
+      onPointerOver={() => {
+        isHoveringRef.current = true
+      }}
+      onPointerOut={() => {
+        isHoveringRef.current = false
+        isDraggingRef.current = false
+      }}
+      onPointerDown={(event) => {
+        event.stopPropagation()
+        isDraggingRef.current = true
+        event.target.setPointerCapture?.(event.pointerId)
+      }}
+      onPointerUp={(event) => {
+        isDraggingRef.current = false
+        event.target.releasePointerCapture?.(event.pointerId)
+      }}
+    >
+      <RoundedBox args={[2.12, 4.72, 0.026]} radius={0.18} smoothness={24} castShadow receiveShadow>
+        <meshStandardMaterial color="#161622" roughness={0.2} metalness={0.58} />
+      </RoundedBox>
+
+      <RoundedBox args={[2.06, 4.64, 0.027]} radius={0.16} smoothness={22} position={[0, 0, 0.01]}>
+        <meshStandardMaterial color="#000000" roughness={0.42} metalness={0.18} />
+      </RoundedBox>
+
+      <RoundedBox args={[2.03, 4.43, 0.012]} radius={0.12} smoothness={18} position={[0, -0.02, 0.044]}>
+        <meshStandardMaterial color="#000000" roughness={0.5} metalness={0.08} />
+      </RoundedBox>
+
+      <mesh position={[0, -0.02, 0.056]}>
+        <planeGeometry args={[2.0, 4.33]} />
+        <meshBasicMaterial map={screenTexture} toneMapped={false} side={THREE.DoubleSide} />
+      </mesh>
+
+      <mesh position={[0, -0.02, 0.06]}>
+        <planeGeometry args={[2.0, 4.33]} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.026} roughness={0.08} metalness={0.1} side={THREE.DoubleSide} />
+      </mesh>
+
+      <RoundedBox args={[0.32, 0.035, 0.014]} radius={0.018} smoothness={12} position={[0, 2.25, 0.072]}>
+        <meshStandardMaterial color="#000000" roughness={0.2} />
+      </RoundedBox>
+
+      <RoundedBox args={[0.014, 0.42, 0.018]} radius={0.008} smoothness={8} position={[-1.076, 1.02, 0]}>
+        <meshStandardMaterial color="#161622" roughness={0.35} metalness={0.3} />
+      </RoundedBox>
+      <RoundedBox args={[0.014, 0.6, 0.018]} radius={0.008} smoothness={8} position={[1.076, 0.5, 0]}>
+        <meshStandardMaterial color="#161622" roughness={0.35} metalness={0.3} />
+      </RoundedBox>
+    </group>
+  )
+}
+
+function HeroPhoneScene({ theme, language, t }) {
+  const screenshotIndex = language === 'en' ? 1 : 0
+  const screenshot = appScreenshots[theme]?.[screenshotIndex] ?? appScreenshots.dark[0]
+  const zoomRef = useRef(0)
+  const handleWheel = (event) => {
+    if (event.cancelable) {
+      event.preventDefault()
+    }
+    const direction = event.deltaY > 0 ? -1 : 1
+    zoomRef.current = clamp01(zoomRef.current + direction * 0.12)
+  }
+
+  return (
+    <div className="hero-phone-stage" aria-label={t.home.previewTitle} onWheel={handleWheel}>
+      <Canvas
+        className="hero-phone-canvas"
+        shadows
+        dpr={[1, 2]}
+        camera={{ position: [0, 0.05, 8.8], fov: 37 }}
+        gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
+      >
+        <ambientLight intensity={1.45} />
+        <directionalLight position={[-3, 5, 6]} intensity={2.3} castShadow />
+        <pointLight position={[2.7, 2.2, 3.8]} intensity={1.35} color="#f3e8d7" />
+        <Suspense fallback={null}>
+          <Phone3DModel screenshot={screenshot} zoomRef={zoomRef} />
+        </Suspense>
+      </Canvas>
     </div>
   )
 }
 
-function HeroSection({ t, styles, theme }) {
+function HeroSection({ t, styles, theme, language, showPhone = false }) {
+  const heroTitleClass = theme === 'dark' ? 'text-brand-cream-light' : 'text-white'
+  const heroBodyClass = theme === 'dark' ? 'text-brand-cream/82' : 'text-white/88'
+  const heroHandleClass =
+    theme === 'dark'
+      ? 'border-brand-cream/24 bg-brand-cream/[0.06] text-brand-cream-light hover:bg-brand-cream/[0.1]'
+      : 'border-white/30 bg-white/10 text-white hover:bg-white/16'
+
   return (
-    <section className="simple-hero relative overflow-hidden px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
+    <section className="simple-hero relative overflow-hidden px-4 pb-0 pt-10 sm:px-6 sm:pt-12 lg:px-8">
       <motion.div
         initial="hidden"
         animate="visible"
         variants={stagger}
-        className="mx-auto grid max-w-6xl items-center gap-10 lg:min-h-[620px] lg:grid-cols-[0.92fr_1.08fr]"
+        className="hero-shell mx-auto grid max-w-5xl items-center"
       >
-        <div className="max-w-2xl lg:-translate-y-12">
+        <div className="max-w-2xl">
           <motion.h1
             variants={fadeUp}
-            className={`max-w-3xl text-4xl font-black leading-[0.96] sm:text-6xl lg:text-[4.85rem] ${styles.text}`}
+            className={`max-w-3xl text-5xl font-black leading-[0.96] sm:text-6xl lg:text-[4.2rem] ${heroTitleClass}`}
           >
             {t.home.title}
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
-            className={`mt-5 max-w-xl text-base leading-7 sm:text-lg ${styles.muted}`}
+            className={`mt-5 max-w-xl text-base font-medium leading-7 sm:text-lg ${heroBodyClass}`}
           >
             {t.home.body}
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-7 flex flex-wrap items-center gap-3">
-            <WaitlistAction t={t} styles={styles} />
+            <WaitlistAction t={t} styles={styles} variant="hero" />
             <a
               href={BRAND.instagramUrl}
               target="_blank"
               rel="noreferrer"
-              className={`inline-flex min-h-12 items-center justify-center rounded-lg border px-5 text-sm font-bold transition ${styles.secondaryButton}`}
+              aria-label="Instagram de MUR"
+              title="Instagram de MUR"
+              className={`inline-flex h-12 w-12 items-center justify-center rounded-lg border text-sm font-bold transition ${heroHandleClass}`}
             >
-              {BRAND.instagramHandle}
+              <InstagramMark aria-hidden="true" className="h-5 w-5" />
             </a>
           </motion.div>
 
-          <motion.div variants={fadeUp} className="mt-7 hidden flex-wrap gap-2 sm:flex">
-            {t.previewStats.map((item) => (
-              <span key={item} className={`rounded-lg border px-3 py-2 text-xs font-bold ${styles.insetSurface} ${styles.muted}`}>
-                {item}
-              </span>
-            ))}
-          </motion.div>
         </div>
 
-        <motion.div variants={fadeUp} className="simple-hero-preview">
-          <AppPreview theme={theme} screenIndex={0} className="simple-hero-phone" />
-          <div className={`simple-preview-caption rounded-lg border p-4 ${styles.surface}`}>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-amber">
-              {t.home.previewEyebrow}
-            </p>
-            <h2 className={`mt-2 text-xl font-black ${styles.text}`}>
-              {t.home.previewTitle}
-            </h2>
-            <p className={`mt-2 text-sm leading-6 ${styles.muted}`}>
-              {t.home.previewBody}
-            </p>
-          </div>
-        </motion.div>
+        {showPhone ? (
+          <motion.div variants={fadeUp} className="mt-8">
+            <HeroPhoneScene theme={theme} language={language} t={t} />
+          </motion.div>
+        ) : null}
       </motion.div>
     </section>
   )
@@ -361,22 +466,22 @@ function HeroSection({ t, styles, theme }) {
 
 function ProductFeatureBand({ t, styles }) {
   return (
-    <section id="nearby" className="product-band scroll-mt-24 px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-      <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+    <section id="nearby" className="product-band scroll-mt-24">
+      <div className="grid gap-5">
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.25 }}
-          className="max-w-xl"
+          className="max-w-2xl"
         >
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-brand-amber">
             {t.home.productLabel}
           </p>
-          <h2 className={`mt-3 text-3xl font-black leading-tight sm:text-4xl ${styles.text}`}>
+          <h2 className="mt-2 text-3xl font-black leading-tight text-brand-ink sm:text-5xl">
             {t.home.productTitle}
           </h2>
-          <p className={`mt-5 text-base leading-7 ${styles.muted}`}>
+          <p className="mt-3 max-w-lg text-base font-semibold leading-6 text-brand-ink/68">
             {t.home.productBody}
           </p>
         </motion.div>
@@ -386,13 +491,13 @@ function ProductFeatureBand({ t, styles }) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.25 }}
-          className="grid gap-3 sm:grid-cols-2"
+          className="grid gap-3 sm:grid-cols-3"
         >
-          {t.productPoints.map((point, index) => {
+          {t.productPoints.slice(0, 3).map((point, index) => {
             const Icon = productPointIcons[index] ?? Compass
 
             return (
-              <motion.div key={point} variants={fadeUp} className={`product-point ${styles.surface}`}>
+              <motion.div key={point} variants={fadeUp} className="product-point">
                 <Icon aria-hidden="true" className="h-4 w-4 text-brand-amber" />
                 <span>{point}</span>
               </motion.div>
@@ -404,61 +509,10 @@ function ProductFeatureBand({ t, styles }) {
   )
 }
 
-function UseCasesSection({ t, styles }) {
-  return (
-    <section className="px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
-              {t.home.useCasesLabel}
-            </p>
-            <h2 className={`mt-3 max-w-2xl text-3xl font-black leading-tight sm:text-4xl ${styles.text}`}>
-              {t.home.useCasesTitle}
-            </h2>
-          </div>
-          <p className={`max-w-sm text-sm leading-6 ${styles.muted}`}>
-            {t.home.fictionalNote}
-          </p>
-        </div>
-
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="mt-8 grid gap-3 md:grid-cols-2 lg:grid-cols-4"
-        >
-          {t.useCases.map((item, index) => {
-            const Icon = useCaseIcons[index]
-
-            return (
-              <motion.article
-                key={item.title}
-                variants={fadeUp}
-                className={`visual-card rounded-lg border p-4 ${styles.surface}`}
-              >
-                <div className={`flex h-11 w-11 items-center justify-center rounded-lg border ${
-                  index % 2 === 0 ? styles.tealSurface : styles.warmSurface
-                }`}
-                >
-                  <Icon aria-hidden="true" className="h-5 w-5 text-brand-amber" />
-                </div>
-                <h3 className={`mt-5 text-lg font-bold ${styles.text}`}>{item.title}</h3>
-                <p className={`mt-2 text-sm leading-5 ${styles.muted}`}>{item.body}</p>
-              </motion.article>
-            )
-          })}
-        </motion.div>
-      </div>
-    </section>
-  )
-}
-
 function HowItWorksSection({ t, styles }) {
   return (
-    <section id="how-it-works" className="scroll-mt-24 px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl">
+    <section id="how-it-works" className="scroll-mt-24">
+      <div>
         <SectionIntro
           eyebrow={t.home.stepsLabel}
           title={t.home.stepsTitle}
@@ -466,14 +520,16 @@ function HowItWorksSection({ t, styles }) {
           centered
         />
 
-        <div className="mt-8 grid gap-3 md:grid-cols-3">
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
           {t.steps.map((step, index) => (
-            <article key={step.title} className={`rounded-lg border p-5 ${styles.surface}`}>
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-amber text-sm font-black text-brand-ink">
+            <article key={step.title} className="rounded-lg border border-brand-ink/10 bg-white p-4 shadow-sm">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-amber text-xs font-black text-brand-ink">
                 {index + 1}
               </div>
-              <h3 className={`mt-5 text-lg font-bold ${styles.text}`}>{step.title}</h3>
-              <p className={`mt-2 text-sm leading-5 ${styles.muted}`}>{step.body}</p>
+              <h3 className="mt-3 text-base font-black text-brand-ink">{step.title}</h3>
+              {step.body ? (
+                <p className="mt-1 text-sm font-semibold leading-5 text-brand-ink/58">{step.body}</p>
+              ) : null}
             </article>
           ))}
         </div>
@@ -484,23 +540,17 @@ function HowItWorksSection({ t, styles }) {
 
 function WaitlistSection({ t, styles }) {
   return (
-    <section id="waitlist" className={`waitlist-band scroll-mt-24 border-y px-4 py-12 sm:px-6 sm:py-16 lg:px-8 ${styles.border}`}>
-      <div className="relative z-10 mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1fr_0.7fr_auto] lg:items-center">
+    <section id="waitlist" className="waitlist-band scroll-mt-24 rounded-lg border border-brand-ink/10 bg-white p-5 shadow-sm">
+      <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-brand-amber">
             {t.home.waitlistLabel}
           </p>
-          <h2 className={`mt-3 max-w-2xl text-3xl font-black leading-tight sm:text-4xl ${styles.text}`}>
+          <h2 className="mt-2 text-2xl font-black leading-tight text-brand-ink sm:text-3xl">
             {t.home.waitlistTitle}
           </h2>
-          <p className={`mt-4 max-w-2xl text-sm leading-6 ${styles.muted}`}>
+          <p className="mt-2 text-sm font-semibold leading-5 text-brand-ink/62">
             {t.home.waitlistBody}
-          </p>
-        </div>
-        <div className={`flex items-start gap-3 rounded-lg border p-4 ${styles.insetSurface}`}>
-          <Quote aria-hidden="true" className="mt-1 h-4 w-4 shrink-0 text-brand-amber" />
-          <p className={`text-sm font-semibold leading-6 ${styles.muted}`}>
-            {t.home.mascotLabel}
           </p>
         </div>
         <WaitlistAction t={t} styles={styles} />
@@ -509,45 +559,30 @@ function WaitlistSection({ t, styles }) {
   )
 }
 
-function FaqSection({ t, styles }) {
-  return (
-    <section className="faq-section px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-      <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.72fr_1.28fr]">
-        <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-brand-amber">
-            {t.home.faqLabel}
-          </p>
-          <h2 className={`mt-3 text-3xl font-black leading-tight sm:text-4xl ${styles.text}`}>
-            {t.home.faqTitle}
-          </h2>
-          <p className={`mt-4 max-w-sm text-sm leading-6 ${styles.muted}`}>
-            {t.home.fictionalNote}
-          </p>
-        </div>
+function HomePage({ t, styles, theme, language }) {
+  const showStickyPhone = useMediaQuery('(min-width: 1024px)')
 
-        <div className="grid gap-3 md:grid-cols-2">
-          {t.faq.slice(0, 4).map((item) => (
-            <article key={item.question} className={`rounded-lg border p-5 ${styles.surface}`}>
-              <h3 className={`text-base font-bold ${styles.text}`}>{item.question}</h3>
-              <p className={`mt-3 text-sm leading-6 ${styles.muted}`}>{item.answer}</p>
-            </article>
-          ))}
+  return (
+    <div className="landing-layout">
+      <div className="landing-copy-flow">
+        <HeroSection t={t} styles={styles} theme={theme} language={language} showPhone={!showStickyPhone} />
+        <div className="landing-dock px-4 py-10 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-5xl gap-8">
+            <ProductFeatureBand t={t} styles={styles} />
+            <HowItWorksSection t={t} styles={styles} />
+            <WaitlistSection t={t} styles={styles} />
+          </div>
         </div>
       </div>
-    </section>
-  )
-}
 
-function HomePage({ t, styles, theme }) {
-  return (
-    <>
-      <HeroSection t={t} styles={styles} theme={theme} />
-      <ProductFeatureBand t={t} styles={styles} />
-      <UseCasesSection t={t} styles={styles} />
-      <HowItWorksSection t={t} styles={styles} />
-      <FaqSection t={t} styles={styles} />
-      <WaitlistSection t={t} styles={styles} />
-    </>
+      {showStickyPhone ? (
+        <div className="landing-phone-rail">
+          <div className="landing-phone-sticky">
+            <HeroPhoneScene theme={theme} language={language} t={t} />
+          </div>
+        </div>
+      ) : null}
+    </div>
   )
 }
 
@@ -556,7 +591,7 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
   const mailto = `mailto:${BRAND.supportEmail}`
 
   return (
-    <main className={`relative min-h-screen overflow-hidden ${styles.marketingPage}`}>
+    <main className={`relative min-h-screen ${styles.marketingPage}`}>
       <div
         aria-hidden="true"
         className={
@@ -568,7 +603,7 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
 
       <div className="relative z-10">
         <nav className={`sticky top-0 z-50 border-b ${styles.nav}`}>
-          <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-3 px-3 py-2 sm:px-6 lg:px-8">
+          <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-3 px-3 py-2 sm:px-6 lg:px-8">
             <a href="/" className="flex min-h-11 shrink-0 items-center gap-2.5" aria-label={BRAND.name}>
               <img src="/logo.png" alt="" className="h-8 w-8 object-contain sm:h-9 sm:w-9" />
               <span className={`text-lg font-black ${styles.logoText}`}>MUR</span>
@@ -583,27 +618,14 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
             </div>
 
             <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
-              <div className="lg:hidden">
-                <PreferenceControls
-                  compact
-                  language={language}
-                  setLanguage={setLanguage}
-                  theme={theme}
-                  setTheme={setTheme}
-                  t={t}
-                  styles={styles}
-                />
-              </div>
-              <div className="hidden lg:block">
-                <PreferenceControls
-                  language={language}
-                  setLanguage={setLanguage}
-                  theme={theme}
-                  setTheme={setTheme}
-                  t={t}
-                  styles={styles}
-                />
-              </div>
+              <PreferenceControls
+                language={language}
+                setLanguage={setLanguage}
+                theme={theme}
+                setTheme={setTheme}
+                t={t}
+                styles={styles}
+              />
               <HeaderMenu t={t} styles={styles} />
             </div>
           </div>
@@ -612,7 +634,7 @@ function MarketingShell({ children, language, setLanguage, theme, setTheme, t, s
         {children}
 
         <footer className="px-4 py-8 sm:px-6 lg:px-8">
-          <div className={`mx-auto flex max-w-6xl flex-col gap-3 border-t pt-8 text-sm ${styles.border} ${styles.muted} sm:flex-row sm:items-center sm:justify-between`}>
+          <div className={`mx-auto flex max-w-7xl flex-col gap-3 border-t pt-8 text-sm ${styles.border} ${styles.muted} sm:flex-row sm:items-center sm:justify-between`}>
             <span>© {currentYear} {BRAND.name}. {t.footer.tagline}</span>
             <div className="flex flex-wrap gap-4">
               <a className={`transition ${styles.navText}`} href={BRAND.instagramUrl} target="_blank" rel="noreferrer">
@@ -661,27 +683,14 @@ function LegalShell({ children, language, setLanguage, theme, setTheme, t, style
               <span className={`text-base font-black ${styles.text}`}>MUR</span>
             </a>
             <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
-              <div className="lg:hidden">
-                <PreferenceControls
-                  compact
-                  language={language}
-                  setLanguage={setLanguage}
-                  theme={theme}
-                  setTheme={setTheme}
-                  t={t}
-                  styles={styles}
-                />
-              </div>
-              <div className="hidden lg:block">
-                <PreferenceControls
-                  language={language}
-                  setLanguage={setLanguage}
-                  theme={theme}
-                  setTheme={setTheme}
-                  t={t}
-                  styles={styles}
-                />
-              </div>
+              <PreferenceControls
+                language={language}
+                setLanguage={setLanguage}
+                theme={theme}
+                setTheme={setTheme}
+                t={t}
+                styles={styles}
+              />
               <HeaderMenu t={t} styles={styles} narrow />
             </div>
           </div>
@@ -925,7 +934,7 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem('mur-theme', theme)
     document.documentElement.dataset.theme = theme
-    document.body.style.backgroundColor = theme === 'dark' ? '#111111' : '#ffffff'
+    document.body.style.backgroundColor = theme === 'dark' ? '#161622' : '#ffffff'
   }, [theme])
 
   useEffect(() => {
@@ -963,7 +972,7 @@ function App() {
       t={t}
       styles={styles}
     >
-      <HomePage t={t} styles={styles} theme={theme} />
+      <HomePage t={t} styles={styles} theme={theme} language={language} />
     </MarketingShell>
   )
 }
