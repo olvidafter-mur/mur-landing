@@ -301,7 +301,7 @@ const getStoryTargets = (element) => {
 }
 
 const easeOutCubic = (progress) => 1 - Math.pow(1 - progress, 3)
-const STORY_STEP_SCROLL_DURATION = 320
+const STORY_STEP_SCROLL_DURATION = 520
 const PHONE_CLICK_ZOOM_LEVELS = [0, 0.42, 0.84, 0.42]
 
 const createRoundedScreenGeometry = (width, height, radius) => {
