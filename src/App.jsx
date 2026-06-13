@@ -273,6 +273,53 @@ function useMediaQuery(query) {
   return matches
 }
 
+function useElementScrollProgress(ref, enabled) {
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    if (!enabled) {
+      setProgress(0)
+      return undefined
+    }
+
+    let frame = 0
+
+    const updateProgress = () => {
+      const element = ref.current
+      if (!element) return
+
+      const rect = element.getBoundingClientRect()
+      const scrollable = Math.max(1, rect.height - window.innerHeight)
+      setProgress(clamp01(-rect.top / scrollable))
+    }
+
+    const requestUpdate = () => {
+      window.cancelAnimationFrame(frame)
+      frame = window.requestAnimationFrame(updateProgress)
+    }
+
+    updateProgress()
+    window.addEventListener('scroll', requestUpdate, { passive: true })
+    window.addEventListener('resize', requestUpdate)
+
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', requestUpdate)
+      window.removeEventListener('resize', requestUpdate)
+    }
+  }, [enabled, ref])
+
+  return progress
+}
+
+const getStoryPhoneX = (progress) => {
+  if (progress <= 0.5) {
+    return 78 - (28 * progress) / 0.5
+  }
+
+  return 50 - (24 * (progress - 0.5)) / 0.5
+}
+
 function Phone3DModel({ screenshot, zoomRef }) {
   const groupRef = useRef(null)
   const isDraggingRef = useRef(false)
@@ -559,8 +606,147 @@ function WaitlistSection({ t, styles }) {
   )
 }
 
+function StoryCopyBlock({ eyebrow, title, body, children, compact = false }) {
+  return (
+    <motion.div
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.32 }}
+      className={`story-copy ${compact ? 'story-copy-compact' : ''}`}
+    >
+      <p className="story-eyebrow">{eyebrow}</p>
+      <h2>{title}</h2>
+      {body ? <p className="story-body">{body}</p> : null}
+      {children ? <div className="story-copy-extra">{children}</div> : null}
+    </motion.div>
+  )
+}
+
+function DesktopLandingStory({ t, styles, theme, language }) {
+  const storyRef = useRef(null)
+  const progress = useElementScrollProgress(storyRef, true)
+  const phoneX = useMemo(() => getStoryPhoneX(progress), [progress])
+  const storyStyle = useMemo(() => ({ '--phone-x': `${phoneX}%` }), [phoneX])
+  const heroTitleClass = theme === 'dark' ? 'text-brand-cream-light' : 'text-brand-blue'
+  const heroBodyClass = theme === 'dark' ? 'text-brand-cream/78' : 'text-brand-blue/78'
+  const heroHandleClass =
+    theme === 'dark'
+      ? 'border-brand-cream/22 bg-brand-cream/[0.05] text-brand-cream-light hover:bg-brand-cream/[0.09]'
+      : 'border-brand-blue/18 bg-white/35 text-brand-blue hover:bg-white/55'
+
+  return (
+    <div ref={storyRef} className="landing-story" style={storyStyle}>
+      <div className="landing-story-phone-layer">
+        <div className="landing-story-phone-sticky">
+          <div className="landing-story-phone-shell">
+            <HeroPhoneScene theme={theme} language={language} t={t} />
+          </div>
+        </div>
+      </div>
+
+      <div className="landing-story-scenes">
+        <section className="landing-story-scene story-scene-hero">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate="visible"
+            className="story-hero-copy"
+          >
+            <motion.h1
+              variants={fadeUp}
+              className={`text-5xl font-black leading-[0.96] sm:text-6xl lg:text-[4.5rem] ${heroTitleClass}`}
+            >
+              {t.home.title}
+            </motion.h1>
+            <motion.p
+              variants={fadeUp}
+              className={`mt-5 max-w-xl text-base font-semibold leading-7 sm:text-lg ${heroBodyClass}`}
+            >
+              {t.home.body}
+            </motion.p>
+            <motion.div variants={fadeUp} className="mt-7 flex flex-wrap items-center gap-3">
+              <WaitlistAction t={t} styles={styles} variant="hero" />
+              <a
+                href={BRAND.instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Instagram de MUR"
+                title="Instagram de MUR"
+                className={`inline-flex h-12 w-12 items-center justify-center rounded-lg border text-sm font-bold transition ${heroHandleClass}`}
+              >
+                <InstagramMark aria-hidden="true" className="h-5 w-5" />
+              </a>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        <section id="nearby" className="landing-story-scene story-scene-middle scroll-mt-24">
+          <StoryCopyBlock
+            eyebrow={t.home.productLabel}
+            title={t.home.productTitle}
+            body={t.home.productBody}
+          >
+            <div className="story-pill-list">
+              {t.productPoints.slice(0, 3).map((point, index) => {
+                const Icon = productPointIcons[index] ?? Compass
+
+                return (
+                  <div key={point} className="story-pill">
+                    <Icon aria-hidden="true" className="h-4 w-4 text-brand-amber" />
+                    <span>{point}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </StoryCopyBlock>
+
+          <StoryCopyBlock
+            eyebrow={t.home.stepsLabel}
+            title={t.home.stepsTitle}
+            compact
+          >
+            <div className="story-step-list">
+              {t.steps.map((step, index) => (
+                <div key={step.title} className="story-step">
+                  <span>{index + 1}</span>
+                  <div>
+                    <strong>{step.title}</strong>
+                    {step.body ? <p>{step.body}</p> : null}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </StoryCopyBlock>
+        </section>
+
+        <section id="waitlist" className="landing-story-scene story-scene-final scroll-mt-24">
+          <StoryCopyBlock
+            eyebrow={t.home.waitlistLabel}
+            title={t.home.waitlistTitle}
+            body={t.home.waitlistBody}
+          >
+            <div className="story-final-action">
+              <WaitlistAction t={t} styles={styles} />
+              <p>{t.footer.tagline}</p>
+            </div>
+          </StoryCopyBlock>
+        </section>
+      </div>
+    </div>
+  )
+}
+
 function HomePage({ t, styles, theme, language }) {
   const showStickyPhone = useMediaQuery('(min-width: 1024px)')
+
+  if (showStickyPhone) {
+    return (
+      <div className="landing-layout">
+        <DesktopLandingStory t={t} styles={styles} theme={theme} language={language} />
+      </div>
+    )
+  }
 
   return (
     <div className="landing-layout">
