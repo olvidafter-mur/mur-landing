@@ -238,7 +238,8 @@ const appScreenshots = {
   ],
 }
 
-const clamp01 = (value) => Math.min(1, Math.max(0, value))
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
+const clamp01 = (value) => clamp(value, 0, 1)
 
 const getHeroScrollProgress = () => {
   if (typeof window === 'undefined') return 0
@@ -273,32 +274,91 @@ function useMediaQuery(query) {
   return matches
 }
 
-function useElementScrollProgress(ref, enabled) {
-  const [progress, setProgress] = useState(0)
+const getStoryPhoneX = (scrollY, targets) => {
+  const [start = 0, middle = 1, end = 1] = targets
 
+  if (scrollY <= middle) {
+    const progress = clamp01((scrollY - start) / Math.max(1, middle - start))
+    return 78 - 28 * progress
+  }
+
+  const progress = clamp01((scrollY - middle) / Math.max(1, end - middle))
+  return 50 - 24 * progress
+}
+
+const getStoryTargets = (element) => {
+  if (!element) return []
+
+  const navOffset = 64
+  const scenes = Array.from(element.querySelectorAll('.landing-story-scene'))
+  const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+
+  return scenes.map((scene, index) => {
+    if (index === 0) return 0
+
+    return clamp(scene.getBoundingClientRect().top + window.scrollY - navOffset, 0, maxScroll)
+  })
+}
+
+const easeOutCubic = (progress) => 1 - Math.pow(1 - progress, 3)
+const STORY_STEP_SCROLL_DURATION = 320
+const PHONE_CLICK_ZOOM_LEVELS = [0, 0.42, 0.84, 0.42]
+
+const createRoundedScreenGeometry = (width, height, radius) => {
+  const shape = new THREE.Shape()
+  const x = -width / 2
+  const y = -height / 2
+
+  shape.moveTo(x + radius, y)
+  shape.lineTo(x + width - radius, y)
+  shape.quadraticCurveTo(x + width, y, x + width, y + radius)
+  shape.lineTo(x + width, y + height - radius)
+  shape.quadraticCurveTo(x + width, y + height, x + width - radius, y + height)
+  shape.lineTo(x + radius, y + height)
+  shape.quadraticCurveTo(x, y + height, x, y + height - radius)
+  shape.lineTo(x, y + radius)
+  shape.quadraticCurveTo(x, y, x + radius, y)
+
+  const geometry = new THREE.ShapeGeometry(shape, 28)
+  const positions = geometry.attributes.position
+  const uvs = []
+
+  for (let index = 0; index < positions.count; index += 1) {
+    const positionX = positions.getX(index)
+    const positionY = positions.getY(index)
+    uvs.push((positionX - x) / width, (positionY - y) / height)
+  }
+
+  geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2))
+
+  return geometry
+}
+
+function useStoryPhoneMotion(ref, enabled) {
   useEffect(() => {
+    const element = ref.current
+
+    if (!element) return undefined
+
     if (!enabled) {
-      setProgress(0)
+      element.style.setProperty('--phone-x', '78%')
       return undefined
     }
 
     let frame = 0
 
-    const updateProgress = () => {
-      const element = ref.current
-      if (!element) return
+    const updatePhonePosition = () => {
+      const targets = getStoryTargets(element)
 
-      const rect = element.getBoundingClientRect()
-      const scrollable = Math.max(1, rect.height - window.innerHeight)
-      setProgress(clamp01(-rect.top / scrollable))
+      element.style.setProperty('--phone-x', `${getStoryPhoneX(window.scrollY, targets)}%`)
     }
 
     const requestUpdate = () => {
       window.cancelAnimationFrame(frame)
-      frame = window.requestAnimationFrame(updateProgress)
+      frame = window.requestAnimationFrame(updatePhonePosition)
     }
 
-    updateProgress()
+    updatePhonePosition()
     window.addEventListener('scroll', requestUpdate, { passive: true })
     window.addEventListener('resize', requestUpdate)
 
@@ -308,25 +368,144 @@ function useElementScrollProgress(ref, enabled) {
       window.removeEventListener('resize', requestUpdate)
     }
   }, [enabled, ref])
-
-  return progress
 }
 
-const getStoryPhoneX = (progress) => {
-  if (progress <= 0.5) {
-    return 78 - (28 * progress) / 0.5
-  }
+function useLandingStepScroll(enabled) {
+  useEffect(() => {
+    if (!enabled || typeof document === 'undefined') return undefined
 
-  return 50 - (24 * (progress - 0.5)) / 0.5
+    document.documentElement.classList.add('landing-step-scroll')
+
+    return () => {
+      document.documentElement.classList.remove('landing-step-scroll')
+    }
+  }, [enabled])
 }
 
-function Phone3DModel({ screenshot, zoomRef }) {
+function useStoryStepScroll(ref, enabled) {
+  const isSteppingRef = useRef(false)
+  const scrollFrameRef = useRef(0)
+
+  useEffect(() => {
+    if (!enabled) return undefined
+
+    const getTargets = () => {
+      return getStoryTargets(ref.current)
+    }
+
+    const getNearestIndex = (targets) => {
+      return targets.reduce((nearest, target, index) => {
+        const currentDistance = Math.abs(window.scrollY - target)
+        const nearestDistance = Math.abs(window.scrollY - targets[nearest])
+
+        return currentDistance < nearestDistance ? index : nearest
+      }, 0)
+    }
+
+    const animateTo = (target) => {
+      window.cancelAnimationFrame(scrollFrameRef.current)
+
+      if (getPrefersReducedMotion()) {
+        window.scrollTo({ top: target, behavior: 'auto' })
+        isSteppingRef.current = false
+        return
+      }
+
+      const start = window.scrollY
+      const distance = target - start
+      const duration = STORY_STEP_SCROLL_DURATION
+      let startTime = 0
+
+      const tick = (time) => {
+        if (!startTime) startTime = time
+
+        const progress = clamp01((time - startTime) / duration)
+        window.scrollTo({ top: start + distance * easeOutCubic(progress), behavior: 'auto' })
+
+        if (progress < 1) {
+          scrollFrameRef.current = window.requestAnimationFrame(tick)
+          return
+        }
+
+        window.scrollTo({ top: target, behavior: 'auto' })
+        isSteppingRef.current = false
+      }
+
+      scrollFrameRef.current = window.requestAnimationFrame(tick)
+    }
+
+    const step = (direction) => {
+      const targets = getTargets()
+      if (!targets.length || isSteppingRef.current) return
+
+      const currentIndex = getNearestIndex(targets)
+      const nextIndex = direction > 0
+        ? Math.min(targets.length - 1, currentIndex + 1)
+        : Math.max(0, currentIndex - 1)
+
+      if (nextIndex === currentIndex) return
+
+      isSteppingRef.current = true
+      animateTo(targets[nextIndex])
+    }
+
+    const handleWheel = (event) => {
+      const deltaY = Number.isFinite(event.deltaY) && event.deltaY !== 0
+        ? event.deltaY
+        : Number.isFinite(event.wheelDelta)
+          ? -event.wheelDelta
+          : Number.isFinite(event.detail)
+            ? event.detail
+            : 0
+
+      if (Math.abs(deltaY) < 8) return
+
+      event.preventDefault()
+      step(deltaY > 0 ? 1 : -1)
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return
+
+      const activeElement = document.activeElement
+      if (activeElement instanceof HTMLElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeElement.tagName)) return
+
+      if (['ArrowDown', 'PageDown', ' '].includes(event.key)) {
+        event.preventDefault()
+        step(1)
+      }
+
+      if (['ArrowUp', 'PageUp'].includes(event.key)) {
+        event.preventDefault()
+        step(-1)
+      }
+    }
+
+    window.addEventListener('wheel', handleWheel, { passive: false })
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.cancelAnimationFrame(scrollFrameRef.current)
+      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [enabled, ref])
+}
+
+function Phone3DModel({ screenshot, zoomRef, theme }) {
   const groupRef = useRef(null)
   const isDraggingRef = useRef(false)
   const isHoveringRef = useRef(false)
   const { size } = useThree()
   const screenTexture = useTexture(screenshot.src)
   const isMobileScene = size.width < 480
+  const isLightTheme = theme === 'light'
+  const shellColor = isLightTheme ? '#f8f4ec' : '#161622'
+  const bezelColor = isLightTheme ? '#ffffff' : '#000000'
+  const screenPlateColor = isLightTheme ? '#d8d1c6' : '#050506'
+  const hardwareColor = isLightTheme ? '#f8f4ec' : '#161622'
+  const screenGeometry = useMemo(() => createRoundedScreenGeometry(1.89, 4.18, 0.105), [])
+  const glassGeometry = useMemo(() => createRoundedScreenGeometry(1.96, 4.28, 0.13), [])
 
   useEffect(() => {
     screenTexture.colorSpace = THREE.SRGBColorSpace
@@ -342,8 +521,8 @@ function Phone3DModel({ screenshot, zoomRef }) {
     const pointerWeight = isDraggingRef.current ? 0.1 : isHoveringRef.current ? 0.05 : 0.025
     const pointerX = getPrefersReducedMotion() ? 0 : THREE.MathUtils.clamp(state.pointer.x * pointerWeight, -0.07, 0.07)
     const pointerY = getPrefersReducedMotion() ? 0 : THREE.MathUtils.clamp(state.pointer.y * pointerWeight, -0.055, 0.055)
-    const wheelZoom = zoomRef.current
-    const zoomSettle = 1 - wheelZoom * 0.62
+    const clickZoom = zoomRef.current
+    const zoomSettle = 1 - clickZoom * 0.62
     const targetRotationX = (THREE.MathUtils.lerp(-0.014, 0.026, progress) - pointerY) * zoomSettle
     const targetRotationY = (THREE.MathUtils.lerp(-0.018, 0.028, progress) + pointerX) * zoomSettle
     const targetRotationZ = (THREE.MathUtils.lerp(0.006, -0.014, progress) + pointerX * 0.045) * zoomSettle
@@ -353,7 +532,7 @@ function Phone3DModel({ screenshot, zoomRef }) {
     const baseScale = isMobileScene ? 0.8 : 1.02
     const endScale = isMobileScene ? 0.78 : 0.98
     const targetY = THREE.MathUtils.lerp(baseY, endY, progress) + float
-    const targetScale = THREE.MathUtils.lerp(baseScale, endScale, progress) * (1 + wheelZoom * 0.72)
+    const targetScale = THREE.MathUtils.lerp(baseScale, endScale, progress) * (1 + clickZoom * 0.72)
 
     groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotationX, 0.08)
     groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY, 0.08)
@@ -387,36 +566,47 @@ function Phone3DModel({ screenshot, zoomRef }) {
       }}
     >
       <RoundedBox args={[2.12, 4.72, 0.026]} radius={0.18} smoothness={24} castShadow receiveShadow>
-        <meshStandardMaterial color="#161622" roughness={0.2} metalness={0.58} />
+        <meshStandardMaterial color={shellColor} roughness={isLightTheme ? 0.34 : 0.2} metalness={isLightTheme ? 0.18 : 0.58} />
       </RoundedBox>
 
       <RoundedBox args={[2.06, 4.64, 0.027]} radius={0.16} smoothness={22} position={[0, 0, 0.01]}>
-        <meshStandardMaterial color="#000000" roughness={0.42} metalness={0.18} />
+        <meshStandardMaterial color={bezelColor} roughness={isLightTheme ? 0.3 : 0.42} metalness={isLightTheme ? 0.08 : 0.18} />
       </RoundedBox>
 
-      <RoundedBox args={[2.03, 4.43, 0.012]} radius={0.12} smoothness={18} position={[0, -0.02, 0.044]}>
-        <meshStandardMaterial color="#000000" roughness={0.5} metalness={0.08} />
+      <RoundedBox args={[2.02, 4.42, 0.018]} radius={0.14} smoothness={20} position={[0, -0.02, 0.041]}>
+        <meshStandardMaterial color={screenPlateColor} roughness={0.42} metalness={isLightTheme ? 0.08 : 0.16} />
       </RoundedBox>
 
-      <mesh position={[0, -0.02, 0.056]}>
-        <planeGeometry args={[2.0, 4.33]} />
+      <RoundedBox args={[1.96, 4.3, 0.012]} radius={0.13} smoothness={18} position={[0, -0.02, 0.052]}>
+        <meshStandardMaterial color={isLightTheme ? '#ece8df' : '#0b0b0d'} roughness={0.36} metalness={0.04} />
+      </RoundedBox>
+
+      <mesh geometry={screenGeometry} position={[0, -0.02, 0.064]}>
         <meshBasicMaterial map={screenTexture} toneMapped={false} side={THREE.DoubleSide} />
       </mesh>
 
-      <mesh position={[0, -0.02, 0.06]}>
-        <planeGeometry args={[2.0, 4.33]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.026} roughness={0.08} metalness={0.1} side={THREE.DoubleSide} />
+      <mesh geometry={glassGeometry} position={[0, -0.02, 0.073]}>
+        <meshPhysicalMaterial
+          color="#ffffff"
+          transparent
+          opacity={isLightTheme ? 0.055 : 0.032}
+          roughness={0.04}
+          metalness={0}
+          clearcoat={1}
+          clearcoatRoughness={0.06}
+          side={THREE.DoubleSide}
+        />
       </mesh>
 
       <RoundedBox args={[0.32, 0.035, 0.014]} radius={0.018} smoothness={12} position={[0, 2.25, 0.072]}>
-        <meshStandardMaterial color="#000000" roughness={0.2} />
+        <meshStandardMaterial color={isLightTheme ? '#d9d2c6' : '#000000'} roughness={0.2} />
       </RoundedBox>
 
       <RoundedBox args={[0.014, 0.42, 0.018]} radius={0.008} smoothness={8} position={[-1.076, 1.02, 0]}>
-        <meshStandardMaterial color="#161622" roughness={0.35} metalness={0.3} />
+        <meshStandardMaterial color={hardwareColor} roughness={0.35} metalness={isLightTheme ? 0.12 : 0.3} />
       </RoundedBox>
       <RoundedBox args={[0.014, 0.6, 0.018]} radius={0.008} smoothness={8} position={[1.076, 0.5, 0]}>
-        <meshStandardMaterial color="#161622" roughness={0.35} metalness={0.3} />
+        <meshStandardMaterial color={hardwareColor} roughness={0.35} metalness={isLightTheme ? 0.12 : 0.3} />
       </RoundedBox>
     </group>
   )
@@ -426,16 +616,36 @@ function HeroPhoneScene({ theme, language, t }) {
   const screenshotIndex = language === 'en' ? 1 : 0
   const screenshot = appScreenshots[theme]?.[screenshotIndex] ?? appScreenshots.dark[0]
   const zoomRef = useRef(0)
-  const handleWheel = (event) => {
-    if (event.cancelable) {
+  const [zoomStep, setZoomStep] = useState(0)
+  const isZoomed = PHONE_CLICK_ZOOM_LEVELS[zoomStep] > 0
+  const zoomCursorClass = zoomStep >= 2 ? 'is-zooming-out' : 'is-zooming-in'
+
+  const advancePhoneZoom = () => {
+    setZoomStep((currentStep) => {
+      const nextStep = (currentStep + 1) % PHONE_CLICK_ZOOM_LEVELS.length
+      zoomRef.current = PHONE_CLICK_ZOOM_LEVELS[nextStep]
+
+      return nextStep
+    })
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault()
+      advancePhoneZoom()
     }
-    const direction = event.deltaY > 0 ? -1 : 1
-    zoomRef.current = clamp01(zoomRef.current + direction * 0.12)
   }
 
   return (
-    <div className="hero-phone-stage" aria-label={t.home.previewTitle} onWheel={handleWheel}>
+    <div
+      className={`hero-phone-stage ${zoomCursorClass}`}
+      aria-label={t.home.previewTitle}
+      aria-pressed={isZoomed}
+      role="button"
+      tabIndex={0}
+      onClick={advancePhoneZoom}
+      onKeyDown={handleKeyDown}
+    >
       <Canvas
         className="hero-phone-canvas"
         shadows
@@ -447,7 +657,7 @@ function HeroPhoneScene({ theme, language, t }) {
         <directionalLight position={[-3, 5, 6]} intensity={2.3} castShadow />
         <pointLight position={[2.7, 2.2, 3.8]} intensity={1.35} color="#f3e8d7" />
         <Suspense fallback={null}>
-          <Phone3DModel screenshot={screenshot} zoomRef={zoomRef} />
+          <Phone3DModel screenshot={screenshot} zoomRef={zoomRef} theme={theme} />
         </Suspense>
       </Canvas>
     </div>
@@ -625,18 +835,18 @@ function StoryCopyBlock({ eyebrow, title, body, children, compact = false }) {
 
 function DesktopLandingStory({ t, styles, theme, language }) {
   const storyRef = useRef(null)
-  const progress = useElementScrollProgress(storyRef, true)
-  const phoneX = useMemo(() => getStoryPhoneX(progress), [progress])
-  const storyStyle = useMemo(() => ({ '--phone-x': `${phoneX}%` }), [phoneX])
-  const heroTitleClass = theme === 'dark' ? 'text-brand-cream-light' : 'text-brand-blue'
-  const heroBodyClass = theme === 'dark' ? 'text-brand-cream/78' : 'text-brand-blue/78'
+  useStoryPhoneMotion(storyRef, true)
+  useLandingStepScroll(true)
+  useStoryStepScroll(storyRef, true)
+  const heroTitleClass = theme === 'dark' ? 'text-brand-cream-light' : 'text-white'
+  const heroBodyClass = theme === 'dark' ? 'text-brand-cream/78' : 'text-white/88'
   const heroHandleClass =
     theme === 'dark'
       ? 'border-brand-cream/22 bg-brand-cream/[0.05] text-brand-cream-light hover:bg-brand-cream/[0.09]'
       : 'border-brand-blue/18 bg-white/35 text-brand-blue hover:bg-white/55'
 
   return (
-    <div ref={storyRef} className="landing-story" style={storyStyle}>
+    <div ref={storyRef} className="landing-story">
       <div className="landing-story-phone-layer">
         <div className="landing-story-phone-sticky">
           <div className="landing-story-phone-shell">

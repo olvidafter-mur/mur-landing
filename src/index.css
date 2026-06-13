@@ -367,7 +367,6 @@
     width: clamp(24rem, 34vw, 40rem);
     height: min(90vh, 52rem);
     transform: translateX(-50%);
-    transition: left 120ms linear;
     pointer-events: auto;
     will-change: left;
   }
@@ -593,8 +592,19 @@
     touch-action: pan-y;
   }
 
-  .hero-phone-stage:active {
+  .hero-phone-stage.is-zooming-out,
+  .hero-phone-stage.is-zooming-out:active {
+    cursor: zoom-out;
+  }
+
+  .hero-phone-stage.is-zooming-in,
+  .hero-phone-stage.is-zooming-in:active {
     cursor: zoom-in;
+  }
+
+  .hero-phone-stage:focus-visible {
+    outline: 2px solid #ff9c01;
+    outline-offset: 0.35rem;
   }
 
   .hero-phone-stage::before {
@@ -939,6 +949,11 @@
 }
 
 @media (min-width: 1024px) {
+  html.landing-step-scroll {
+    scroll-behavior: auto;
+    scroll-padding-top: 4rem;
+  }
+
   .landing-copy-flow .simple-hero,
   .landing-copy-flow .landing-dock {
     padding-left: clamp(4.5rem, 8vw, 10rem);
