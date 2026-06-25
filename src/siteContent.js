@@ -383,6 +383,18 @@ export const CONTENT = {
       invalid:
         'El enlace de recuperación no es válido o ya no contiene la información necesaria. Volvé a solicitar un nuevo email desde la app.',
     },
+    sharedPost: {
+      back: 'Volver',
+      badge: 'Post compartido',
+      title: 'Abrir este post en MUR',
+      intro:
+        'Estamos abriendo la app para llevarte directo a la publicación compartida.',
+      button: 'Abrir en MUR',
+      fallback:
+        'Si la app no se abre automáticamente, tocá el botón. Si el post expiró, ya no va a estar disponible.',
+      invalid:
+        'Este enlace de post no contiene un identificador válido.',
+    },
   },
   en: {
     locale: 'en-US',
@@ -576,6 +588,18 @@ export const CONTENT = {
         'If the app does not open automatically, tap the button. This link is only valid for a limited time.',
       invalid:
         'The recovery link is invalid or no longer contains the required information. Request a new email from the app.',
+    },
+    sharedPost: {
+      back: 'Back',
+      badge: 'Shared post',
+      title: 'Open this post in MUR',
+      intro:
+        'We are opening the app to take you directly to the shared post.',
+      button: 'Open in MUR',
+      fallback:
+        'If the app does not open automatically, tap the button. If the post expired, it will no longer be available.',
+      invalid:
+        'This post link does not contain a valid post identifier.',
     },
   },
 }

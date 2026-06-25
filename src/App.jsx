@@ -1288,6 +1288,73 @@ function ResetPasswordBridgePage({ t, styles }) {
   )
 }
 
+const safeDecodeURIComponent = (value) => {
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return ''
+  }
+}
+
+function SharedPostBridgePage({ t, styles }) {
+  const [, rawPostId = ''] = window.location.pathname.match(/^\/p\/([^/?#]+)/) ?? []
+  const postId = safeDecodeURIComponent(rawPostId).trim()
+  const appUrl = postId ? `myapp://p/${encodeURIComponent(postId)}` : ''
+
+  useEffect(() => {
+    if (!appUrl) return undefined
+
+    const timer = window.setTimeout(() => {
+      window.location.href = appUrl
+    }, 400)
+
+    return () => window.clearTimeout(timer)
+  }, [appUrl])
+
+  return (
+    <section className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+      <div className="mx-auto max-w-3xl">
+        <a
+          href="/"
+          className={`inline-flex items-center gap-2 text-sm font-bold transition ${styles.navTextNarrow}`}
+        >
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+          {t.sharedPost.back}
+        </a>
+
+        <div className={`mt-8 rounded-lg border p-8 text-center ${styles.surface}`}>
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-brand-amber/15 text-brand-amber">
+            <MessageCircle aria-hidden="true" className="h-6 w-6" />
+          </div>
+          <p className={`mt-6 text-sm font-bold uppercase tracking-[0.16em] ${styles.legalMuted}`}>
+            {t.sharedPost.badge}
+          </p>
+          <h1 className={`mx-auto mt-3 max-w-xl text-3xl font-black tracking-tight ${styles.text}`}>
+            {t.sharedPost.title}
+          </h1>
+          <p className={`mx-auto mt-5 max-w-xl text-base leading-7 ${styles.legalMuted}`}>
+            {appUrl ? t.sharedPost.intro : t.sharedPost.invalid}
+          </p>
+
+          {appUrl ? (
+            <>
+              <a
+                href={appUrl}
+                className={`mt-7 inline-flex min-h-12 items-center justify-center rounded-lg px-6 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${styles.primaryButton}`}
+              >
+                {t.sharedPost.button}
+              </a>
+              <p className={`mx-auto mt-5 max-w-lg text-sm leading-6 ${styles.legalMuted}`}>
+                {t.sharedPost.fallback}
+              </p>
+            </>
+          ) : null}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function App() {
   const [language, setLanguage] = useState(() =>
     getStoredPreference('mur-language', LANGUAGES, 'es'),
@@ -1300,6 +1367,7 @@ function App() {
   const isTerms = path === '/terms' || path === '/terms-of-service'
   const isDeleteAccount = path === '/delete-account'
   const isResetPassword = path === '/reset-password'
+  const isSharedPost = /^\/p\/[^/?#]+/.test(path)
   const t = CONTENT[language]
   const styles = THEME[theme]
   const currentMeta = useMemo(() => {
@@ -1319,8 +1387,12 @@ function App() {
       return { title: `${t.resetPassword.title} | MUR`, description: t.resetPassword.intro }
     }
 
+    if (isSharedPost) {
+      return { title: `${t.sharedPost.title} | MUR`, description: t.sharedPost.intro }
+    }
+
     return t.meta
-  }, [isDeleteAccount, isPrivacy, isResetPassword, isTerms, t])
+  }, [isDeleteAccount, isPrivacy, isResetPassword, isSharedPost, isTerms, t])
 
   useEffect(() => {
     window.localStorage.setItem('mur-language', language)
@@ -1341,7 +1413,7 @@ function App() {
     setMetaTag('meta[property="og:type"]', 'content', 'website')
   }, [currentMeta.description, currentMeta.title])
 
-  if (isPrivacy || isTerms || isDeleteAccount || isResetPassword) {
+  if (isPrivacy || isTerms || isDeleteAccount || isResetPassword || isSharedPost) {
     return (
       <LegalShell
         language={language}
@@ -1355,6 +1427,7 @@ function App() {
         {isTerms ? <LegalPage content={t.terms} styles={styles} /> : null}
         {isDeleteAccount ? <DeleteAccountPage t={t} styles={styles} /> : null}
         {isResetPassword ? <ResetPasswordBridgePage t={t} styles={styles} /> : null}
+        {isSharedPost ? <SharedPostBridgePage t={t} styles={styles} /> : null}
       </LegalShell>
     )
   }
