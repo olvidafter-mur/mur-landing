@@ -1388,9 +1388,9 @@ function App() {
 
     if (isAlgorithmPaper) {
       return {
-        title: 'MUR Private Ranking Algorithm | Paper',
+        title: 'Guia de relevancia | MUR',
         description:
-          'Documento tecnico sobre el algoritmo privado de ranking interno de MUR.',
+          'Guia operativa para mejorar relevancia y visibilidad dentro de MUR.',
       }
     }
 

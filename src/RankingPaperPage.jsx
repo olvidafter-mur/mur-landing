@@ -2,281 +2,224 @@ import {
   ArrowLeft,
   BadgeCheck,
   BookOpenText,
-  Brain,
-  Database,
-  FileText,
-  GitBranch,
-  LockKeyhole,
-  Scale,
+  CheckCircle2,
+  Clock3,
+  MessageCircle,
   ShieldAlert,
-  Sigma,
-  TimerReset,
+  Sparkles,
+  Store,
+  TrendingUp,
+  Users,
 } from 'lucide-react'
 
-const paper = {
+const GUIDE = {
   es: {
-    badge: 'Documento tecnico interno',
-    title: 'MUR Private Ranking Algorithm',
+    badge: 'Guia operativa',
+    title: 'Como funciona la relevancia en MUR',
     subtitle:
-      'Un paper operativo para explicar como MUR calcula una puntuacion privada de reputacion, actividad y confianza por usuario.',
-    version: 'Version 2 - escala Fibonacci-inspirada',
+      'Una guia simple para equipos, devs, comercios y partners que quieren entender que mejora la visibilidad dentro de MUR sin exponer reglas internas sensibles.',
     updated: 'Actualizado: 8 de julio de 2026',
     back: 'Volver a MUR',
-    abstractTitle: 'Resumen',
-    abstract:
-      'MUR necesita ordenar contenido hiperlocal sin convertir el producto en una carrera publica de popularidad. Para eso calculamos un ranking interno, privado y no visible, que resume actividad reciente, historial, calidad de interacciones, diversidad de audiencia, confianza, monetizacion futura y penalizaciones de seguridad. El resultado se guarda en user_internal_rankings.normalized_score con rango 0 a 100 y solo debe ser usado por backend, funciones seguras o procesos con service_role.',
     navTitle: 'Indice',
-    sourceTitle: 'Inspiracion de plataformas reales',
-    sourceIntro:
-      'Las redes sociales modernas no usan un contador lineal unico. Separan inventario, senales, predicciones, seguridad y reglas de diversidad. Esta version de MUR toma ese criterio, pero lo adapta a una red hiperlocal donde los posts expiran a las 24 horas.',
-    modelTitle: 'Modelo conceptual',
-    modelIntro:
-      'La puntuacion de usuario no decide sola que post se ve. Es una senal de reputacion del autor que despues puede combinarse con distancia, frescura, categoria, afinidad del viewer y calidad propia del post.',
-    formulaTitle: 'Formula general',
-    formula:
-      'normalized_score = clamp((activity + author_quality + community + consistency + trust + monetization - moderation_penalty) * boost_multiplier, 0, 100)',
-    weightsTitle: 'Pesos numericos',
-    weightsIntro:
-      'La escala usa saltos Fibonacci-inspirados para expresar jerarquia de importancia: 3/5 para senales livianas, 8/13 para senales medias, 21/34 para senales fuertes y 55/89 para penalizaciones criticas. No es Fibonacci puro por evento; es una escala de techos y severidades.',
-    dataTitle: 'Fuentes de datos internas',
-    examplesTitle: 'Casos de uso calculados',
-    safetyTitle: 'Privacidad y seguridad',
-    lifecycleTitle: 'Ciclo de vida de posts de 24 horas',
-    implementationTitle: 'Implementacion actual',
-    futureTitle: 'Como se conecta con relevancia de posts',
-    referencesTitle: 'Referencias externas',
-    glossaryTitle: 'Glosario corto',
+    introTitle: 'Idea principal',
+    intro:
+      'MUR prioriza contenido cercano, util, actual y confiable. La relevancia no es un premio publico ni un numero visible: es una senal interna que ayuda a ordenar mejor la experiencia. El objetivo es que una persona vea primero lo que probablemente le sirve en su zona, no simplemente lo que mas ruido hace.',
+    privacyNote:
+      'Esta guia explica criterios de producto y buenas practicas. No publica reglas exactas, valores internos, estructuras tecnicas ni criterios sensibles de seguridad.',
+    signalsTitle: 'Senales que ayudan',
+    signalsIntro:
+      'Las senales se agrupan por comportamiento. Algunas indican actividad, otras utilidad, otras confianza y otras seguridad. Ninguna senal por si sola garantiza visibilidad.',
+    improveTitle: 'Como mejorar tu relevancia',
+    avoidTitle: 'Que puede bajar la relevancia',
+    examplesTitle: 'Casos practicos',
+    audienceTitle: 'Guia por tipo de equipo',
+    devTitle: 'Notas para devs',
+    lifecycleTitle: 'Publicaciones de corta duracion',
+    lifecycle:
+      'MUR trabaja con contenido local de vida corta. Publicar algo util en el momento correcto pesa mas que acumular actividad vieja. La consistencia ayuda, pero el contenido vencido deja de competir como contenido activo.',
+    closingTitle: 'Regla de oro',
+    closing:
+      'Para subir relevancia en MUR: publica cosas utiles, en la categoria correcta, con contexto claro, responde cuando la gente interactua y evita conductas que generen reportes o bloqueos.',
   },
   en: {
-    badge: 'Internal technical document',
-    title: 'MUR Private Ranking Algorithm',
+    badge: 'Operational guide',
+    title: 'How relevance works in MUR',
     subtitle:
-      'An operational paper explaining how MUR computes a private user score for reputation, activity, and trust.',
-    version: 'Version 2 - Fibonacci-inspired scale',
+      'A simple guide for teams, developers, businesses, and partners who want to understand what improves visibility inside MUR without exposing sensitive internal rules.',
     updated: 'Updated: July 8, 2026',
     back: 'Back to MUR',
-    abstractTitle: 'Abstract',
-    abstract:
-      'MUR needs to rank hyperlocal content without turning the product into a public popularity race. We compute an internal, private, non-visible ranking that summarizes recent activity, history, interaction quality, audience diversity, trust, future monetization, and safety penalties. The result is stored in user_internal_rankings.normalized_score from 0 to 100 and should only be used by backend services, secure functions, or service_role processes.',
     navTitle: 'Contents',
-    sourceTitle: 'Real-platform inspiration',
-    sourceIntro:
-      'Modern social networks do not use one linear counter. They separate inventory, signals, predictions, safety, and diversity rules. This MUR version borrows that design, but adapts it to a hyperlocal network where posts expire after 24 hours.',
-    modelTitle: 'Conceptual model',
-    modelIntro:
-      'The user score does not decide alone which post appears. It is an author reputation signal that can later be combined with distance, freshness, category, viewer affinity, and post-level quality.',
-    formulaTitle: 'General formula',
-    formula:
-      'normalized_score = clamp((activity + author_quality + community + consistency + trust + monetization - moderation_penalty) * boost_multiplier, 0, 100)',
-    weightsTitle: 'Numeric weights',
-    weightsIntro:
-      'The scale uses Fibonacci-inspired jumps to express hierarchy: 3/5 for light signals, 8/13 for medium signals, 21/34 for strong signals, and 55/89 for critical penalties. It is not pure Fibonacci per event; it is a scale for caps and severities.',
-    dataTitle: 'Internal data sources',
-    examplesTitle: 'Calculated use cases',
-    safetyTitle: 'Privacy and safety',
-    lifecycleTitle: '24-hour post lifecycle',
-    implementationTitle: 'Current implementation',
-    futureTitle: 'How it connects to post relevance',
-    referencesTitle: 'External references',
-    glossaryTitle: 'Short glossary',
+    introTitle: 'Core idea',
+    intro:
+      'MUR prioritizes nearby, useful, current, and trustworthy content. Relevance is not a public badge or a visible number: it is an internal signal that helps order the experience. The goal is for people to see what is probably useful in their area first, not simply what makes the most noise.',
+    privacyNote:
+      'This guide explains product criteria and best practices. It does not publish exact rules, internal values, technical structures, or sensitive safety criteria.',
+    signalsTitle: 'Signals that help',
+    signalsIntro:
+      'Signals are grouped by behavior. Some indicate activity, others usefulness, others trust, and others safety. No single signal guarantees visibility by itself.',
+    improveTitle: 'How to improve relevance',
+    avoidTitle: 'What can reduce relevance',
+    examplesTitle: 'Practical cases',
+    audienceTitle: 'Guide by team type',
+    devTitle: 'Developer notes',
+    lifecycleTitle: 'Short-lived posts',
+    lifecycle:
+      'MUR works with short-lived local content. Posting something useful at the right moment matters more than accumulating old activity. Consistency helps, but expired content no longer competes as active content.',
+    closingTitle: 'Golden rule',
+    closing:
+      'To improve relevance in MUR: publish useful things, choose the right category, add clear context, reply when people interact, and avoid behavior that creates reports or blocks.',
   },
 }
 
-const sections = [
-  ['abstract', 'Resumen'],
-  ['sources', 'Inspiracion'],
-  ['model', 'Modelo'],
-  ['weights', 'Pesos'],
-  ['data', 'Datos'],
-  ['examples', 'Ejemplos'],
-  ['safety', 'Seguridad'],
-  ['implementation', 'Implementacion'],
-  ['future', 'Uso futuro'],
+const navItems = [
+  ['intro', 'Idea'],
+  ['signals', 'Senales'],
+  ['improve', 'Mejorar'],
+  ['avoid', 'Evitar'],
+  ['examples', 'Casos'],
+  ['audience', 'Equipos'],
+  ['devs', 'Devs'],
 ]
 
-const platformNotes = [
+const helpfulSignals = [
   {
-    name: 'TikTok',
-    point:
-      'Declara tres grandes familias de senales: interacciones del usuario, informacion del contenido e informacion del usuario. Tambien indica que las interacciones suelen pesar mas.',
-    url: 'https://support.tiktok.com/en/using-tiktok/exploring-videos/how-tiktok-recommends-content',
-  },
-  {
-    name: 'YouTube',
-    point:
-      'Separa personalizacion y performance del contenido, optimizando por satisfaccion de largo plazo, no solo por clicks.',
-    url: 'https://support.google.com/youtube/answer/16533387?hl=en',
-  },
-  {
-    name: 'Meta/Facebook',
-    point:
-      'Describe un pipeline de inventario, senales, predicciones y score final; tambien usa procesos de integridad para bajar contenido problematico.',
-    url: 'https://transparency.meta.com/features/ranking-and-content/',
-  },
-  {
-    name: 'LinkedIn',
-    point:
-      'Explica ranking secuencial: las interacciones pasadas forman una trayectoria, no eventos aislados.',
-    url: 'https://www.linkedin.com/blog/engineering/feed/engineering-the-next-generation-of-linkedins-feed',
-  },
-  {
-    name: 'X/Twitter',
-    point:
-      'Su paper open-source muestra pesos muy distintos por accion: like bajo, respuesta profunda alta, feedback negativo y reportes extremadamente altos en negativo.',
-    url: 'https://raw.githubusercontent.com/twitter/the-algorithm-ml/main/projects/home/recap/README.md',
-  },
-]
-
-const componentCards = [
-  {
-    icon: TimerReset,
-    title: 'Activity score',
-    cap: 'max 34',
+    icon: Clock3,
+    title: 'Actividad actual',
+    impact: 'Alto',
     body:
-      'Premia actividad real. Un post activo suma fuerte porque en MUR el contenido vive poco. El historial suma menos y con logaritmo para evitar farming.',
+      'Publicar contenido reciente y vigente ayuda mas que tener actividad antigua. En MUR importa lo que esta pasando ahora cerca de alguien.',
   },
   {
-    icon: Brain,
-    title: 'Author quality',
-    cap: 'max 29',
+    icon: MessageCircle,
+    title: 'Conversacion real',
+    impact: 'Alto',
     body:
-      'Mide si otros reaccionan al autor. Comentarios recibidos pesan mucho mas que likes porque implican esfuerzo y conversacion.',
+      'Responder preguntas, recibir comentarios utiles y sostener conversaciones claras suele indicar que el contenido aporta valor.',
   },
   {
-    icon: GitBranch,
-    title: 'Community',
-    cap: 'max 18',
+    icon: Users,
+    title: 'Interaccion de personas distintas',
+    impact: 'Medio alto',
     body:
-      'Valora diversidad de audiencia y participacion. No alcanza con recibir 100 likes de un patron repetido; importa que haya personas distintas.',
+      'Es mejor recibir participacion distribuida de varias personas que muchas acciones repetidas desde el mismo patron.',
   },
   {
     icon: BadgeCheck,
-    title: 'Trust',
-    cap: 'max 13',
+    title: 'Confianza del perfil',
+    impact: 'Medio',
     body:
-      'Incluye verificacion interna y edad de cuenta. Es una senal estable, no una senal de viralidad.',
+      'Un perfil claro, consistente y verificable ayuda a que MUR entienda que hay una identidad confiable detras del contenido.',
   },
   {
-    icon: Scale,
-    title: 'Monetization',
-    cap: 'configurable',
+    icon: Store,
+    title: 'Categoria y contexto correctos',
+    impact: 'Medio',
     body:
-      'Permite boosts futuros: business, vip, subscription o super user. Vive en user_rank_boosts y no requiere cambiar la formula central.',
+      'Elegir bien la categoria, explicar que pasa y ubicar el contenido en el contexto adecuado mejora la experiencia de quienes lo ven.',
   },
   {
-    icon: ShieldAlert,
-    title: 'Moderation penalty',
-    cap: 'max -89',
+    icon: Sparkles,
+    title: 'Calidad sostenida',
+    impact: 'Medio',
     body:
-      'Reportes y bloqueos pesan fuerte. En ranking social, una senal negativa seria debe poder compensar muchas senales positivas livianas.',
+      'La constancia importa, pero no como spam. Es mejor publicar menos y mejor que publicar mucho contenido repetido.',
   },
 ]
 
-const weights = [
-  ['Post activo', '+5 por post activo', '13', 'Senal fuerte por disponibilidad actual.'],
-  ['Post reciente', '+3 por post 7d, +1 por post 30d', '13', 'Momentum de publicacion. Hoy casi todo cae dentro de 24h, pero queda preparado para historicos.'],
-  ['Historial de posts', 'ln(1 + lifetime_posts) * 1.7', '8', 'Reputacion productiva acumulada, con retornos decrecientes.'],
-  ['Like recibido', 'ln(1 + likes activos) * 2.4 + ln(1 + likes historicos) * 0.75', '8', 'Aporta, pero no puede dominar.'],
-  ['Comentario recibido', 'ln(1 + comments activos) * 6 + ln(1 + comments 30d) * 3', '21', 'Conversacion real; mucho mas valioso que un like.'],
-  ['Diversidad de audiencia', 'ln(1 + likers unicos) * 2.4 + ln(1 + commenters unicos) * 3.8', '13', 'Premia alcance distribuido, no interacciones repetidas.'],
-  ['Participacion dada', 'ln(1 + likes dados) * 0.35 + ln(1 + comments dados) * 1.8', '5', 'Evita que likear mucho infle el score. Comentar ayuda mas.'],
-  ['Consistencia', 'ln(1 + lifetime_posts) * 1.2 + dias activos', '5', 'Premia habito sin convertirlo en spam.'],
-  ['Perfil verificado', '+8', '8', 'Confianza interna.'],
-  ['Edad de cuenta', 'hasta +5 en 180 dias', '5', 'Madurez progresiva.'],
-  ['Reporte reciente', '-21 por reporte 90d', '-89 total', 'Castigo fuerte y fresco.'],
-  ['Reporte persistente', '-8 por reporte historico persistido', '-89 total', 'No desaparece cuando el post expira.'],
-  ['Bloqueo recibido', '-13 por bloqueo', '-89 total', 'Senal negativa social fuerte.'],
+const improveItems = [
+  'Publica cuando la informacion sea actual y util para una zona concreta.',
+  'Usa una categoria precisa: alerta, comercio, mascota, ayuda, consulta u otra categoria relevante.',
+  'Agrega contexto: que paso, donde aproximadamente, desde cuando y que accion esperas.',
+  'Responde comentarios cuando alguien pide mas informacion.',
+  'Evita republicar lo mismo muchas veces en poco tiempo.',
+  'Completa el perfil de forma clara si representas un comercio, equipo o proyecto.',
+  'Para comercios: comunica promos, novedades o avisos reales, no mensajes genericos permanentes.',
+  'Para equipos de marketing: mide calidad de respuesta, no solo cantidad de publicaciones.',
 ]
 
-const dataSources = [
-  ['public.posts', 'posts_total, posts_7d, posts_30d, active_post_days_30d', 'Fuente de actividad viva. Los posts se borran por cascada a las 24h.'],
-  ['public.profile_activity_stats', 'lifetime_posts_total, lifetime_likes_received_total', 'Contadores historicos publicos ya existentes; evitan amnesia del ranking.'],
-  ['public.post_likes', 'likes_received_total, likes_given_total, unique_likers_90d', 'Likes activos y diversidad de likers.'],
-  ['public.post_comments', 'comments_received_total, comments_given_total, unique_commenters_90d', 'Conversacion activa y participacion.'],
-  ['public.post_reports', 'reports_90d', 'Reportes recientes aun vinculados a posts activos.'],
-  ['public.user_rank_moderation_stats', 'reports_received_count', 'Contador privado persistente de reportes recibidos.'],
-  ['public.user_blocks', 'blocked_by_count', 'Senal negativa de relacion social.'],
-  ['public.user_rank_boosts', 'score_boost, multiplier, boost_type', 'Canal para business, vip, subscription o boosts manuales.'],
-  ['public.profiles', 'is_verified, created_at', 'Confianza y edad de cuenta.'],
+const avoidItems = [
+  'Contenido falso, confuso, exagerado o sin contexto local.',
+  'Publicaciones repetidas que parezcan spam.',
+  'Usar categorias incorrectas para ganar atencion.',
+  'Prometer beneficios, descuentos o informacion que despues no se cumple.',
+  'Ignorar preguntas importantes de la comunidad.',
+  'Recibir reportes frecuentes por contenido molesto, inseguro o abusivo.',
+  'Generar bloqueos por insistencia, acoso, venta agresiva o mensajes fuera de lugar.',
 ]
 
 const examples = [
   {
-    title: 'Usuario nuevo, activo y sano',
-    inputs: ['2 posts activos', '3 likes recibidos', '1 comentario recibido', '0 reportes', 'cuenta nueva'],
-    result:
-      'El score sube rapido por actividad actual: 2 posts activos aportan 10 puntos antes de caps. Si ademas recibe comentarios, author_quality empieza a pesar. Sigue lejos de 100 porque no tiene historial ni diversidad.',
-    interpretation:
-      'Buen caso para discovery local: la app puede mostrar sus posts si estan cerca, pero todavia no lo trata como autor confiable de largo plazo.',
+    title: 'Comercio local que quiere mejorar visibilidad',
+    do:
+      'Publica una promo real, con horario, zona, categoria comercio y respuesta rapida a consultas.',
+    why:
+      'MUR puede entender mejor que el contenido es actual, claro y util para personas cercanas.',
   },
   {
-    title: 'Vecino valioso y consistente',
-    inputs: ['1 post activo', '60 posts historicos', '40 likes historicos', '8 comentarios activos', '12 commenters unicos', 'sin reportes'],
-    result:
-      'Actividad actual suma poco pero suficiente; el historial suma con logaritmo; los comentarios y diversidad empujan fuerte. Puede quedar entre 55 y 80 segun antiguedad/verificacion.',
-    interpretation:
-      'Autor que probablemente merece prioridad cuando varios posts compiten por la misma zona.',
+    title: 'Vecino que reporta un problema urgente',
+    do:
+      'Publica una alerta clara, sin exagerar, con referencia aproximada y actualizacion si cambia la situacion.',
+    why:
+      'Las alertas utiles y recientes tienen mas valor cuando ayudan a tomar decisiones en el momento.',
   },
   {
-    title: 'Usuario que farmea likes',
-    inputs: ['0 posts activos', '300 likes dados', '5 likes recibidos', '0 comentarios', 'sin diversidad'],
-    result:
-      'Los likes dados usan ln() * 0.35 y estan dentro de participation cap 5. Puede sumar algo por participar, pero no gana ranking real.',
-    interpretation:
-      'Evita que tocar like muchas veces compita contra publicar contenido util o generar conversaciones.',
+    title: 'Equipo de marketing de una marca',
+    do:
+      'Planifica contenido por zona, evita repetir el mismo texto y responde dudas con informacion concreta.',
+    why:
+      'La relevancia mejora cuando el contenido se siente local y accionable, no como publicidad generica.',
   },
   {
-    title: 'Autor reportado o bloqueado',
-    inputs: ['3 posts activos', '20 likes recibidos', '2 reportes recientes', '1 bloqueo recibido'],
-    result:
-      'Los posts y likes suman, pero 2 reportes recientes restan 42 y el bloqueo resta 13, con penalizacion total cap 89. El score puede caer a 0.',
-    interpretation:
-      'Una cuenta con senales negativas serias no debe ganar distribucion por tener actividad alta.',
-  },
-  {
-    title: 'Futuro comercio con subscription',
-    inputs: ['rank sano', 'boost_type = business', 'score_boost = 10', 'multiplier = 1.25'],
-    result:
-      'El boost suma monetization_score y luego aplica multiplier. Si el usuario tiene mala moderacion, la penalizacion se resta antes del multiplicador.',
-    interpretation:
-      'La monetizacion aumenta relevancia, pero no deberia comprar impunidad frente a reportes o bloqueos.',
+    title: 'Cuenta con mucha actividad pero baja calidad',
+    do:
+      'Reducir frecuencia, mejorar contexto, usar categorias correctas y revisar que no haya quejas repetidas.',
+    why:
+      'Publicar mucho no compensa si el contenido genera reportes, bloqueos o baja utilidad.',
   },
 ]
 
-const safetyNotes = [
-  'El ranking es privado: no se muestra como estrellas, nivel, reputacion publica ni insignia.',
-  'Las tablas nuevas revocan acceso a public, anon y authenticated; solo service_role puede leer o escribir.',
-  'Los reportes persistentes viven fuera de post_reports para no desaparecer cuando un post expira.',
-  'Los boosts son trazables por boost_type, reason, metadata, starts_at y ends_at.',
-  'El score debe ser usado como senal secundaria de ranking, no como unica verdad.',
+const audienceGuides = [
+  {
+    icon: Store,
+    title: 'Comercios y partners',
+    body:
+      'Prioricen avisos reales, horarios, disponibilidad, zona y respuesta rapida. Una publicacion comercial debe ayudar a decidir, no solo interrumpir.',
+  },
+  {
+    icon: Users,
+    title: 'Marketing y operaciones',
+    body:
+      'Trabajen por zonas y momentos. MUR es local: el mismo mensaje no deberia repetirse igual para todos los barrios.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Producto y growth',
+    body:
+      'Midan retencion de conversaciones, reportes, bloqueos, calidad de respuestas y recurrencia sana. No optimicen solo por volumen.',
+  },
+  {
+    icon: CheckCircle2,
+    title: 'Moderacion',
+    body:
+      'Las senales negativas son parte central de la calidad. Una cuenta con buena actividad pero mala convivencia no deberia ganar distribucion.',
+  },
 ]
 
-const implementationNotes = [
-  ['Migration', 'supabase/migrations/20260708130000_create_internal_user_rankings.sql'],
-  ['Snapshot privado', 'public.user_internal_rankings'],
-  ['Funcion calculadora', 'public.calculate_user_internal_rank(_user_id uuid)'],
-  ['Refresh individual', 'public.refresh_user_internal_rank(_user_id uuid)'],
-  ['Refresh masivo', 'public.refresh_all_user_internal_ranks(_limit_count integer default 1000)'],
-  ['Boosts futuros', 'public.user_rank_boosts'],
-  ['Moderacion persistente', 'public.user_rank_moderation_stats'],
+const devNotes = [
+  'Tratar la relevancia como una senal de apoyo, no como el unico criterio de ordenamiento.',
+  'Combinar relevancia con cercania, frescura, categoria, idioma/contexto y seguridad.',
+  'No mostrar valores exactos al usuario final.',
+  'No construir features que permitan adivinar reglas internas por prueba y error.',
+  'Mantener logs, paneles internos y herramientas de analisis fuera de la landing publica.',
+  'Cuando se agreguen planes comerciales o membresias, deben mejorar visibilidad solo dentro de limites sanos de calidad y seguridad.',
 ]
 
-const references = [
-  ['TikTok: How TikTok recommends content', 'https://support.tiktok.com/en/using-tiktok/exploring-videos/how-tiktok-recommends-content'],
-  ['YouTube: Recommendation system', 'https://support.google.com/youtube/answer/16533387?hl=en'],
-  ['Meta: Facebook Feed ranking', 'https://transparency.meta.com/features/ranking-and-content/'],
-  ['LinkedIn Engineering: Next generation Feed', 'https://www.linkedin.com/blog/engineering/feed/engineering-the-next-generation-of-linkedins-feed'],
-  ['X/Twitter: Heavy Ranker README', 'https://raw.githubusercontent.com/twitter/the-algorithm-ml/main/projects/home/recap/README.md'],
-]
-
-function PaperSection({ id, eyebrow, title, children }) {
+function Section({ id, eyebrow, title, children }) {
   return (
     <section id={id} className="scroll-mt-24 border-t border-current/10 py-10">
-      {eyebrow ? (
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-brand-amber">
-          {eyebrow}
-        </p>
-      ) : null}
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-brand-amber">
+        {eyebrow}
+      </p>
       <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">
         {title}
       </h2>
@@ -285,16 +228,16 @@ function PaperSection({ id, eyebrow, title, children }) {
   )
 }
 
-function InlineCode({ children }) {
+function ImpactPill({ children, styles }) {
   return (
-    <code className="rounded-md border border-current/10 bg-current/[0.04] px-1.5 py-0.5 font-mono text-[0.92em]">
+    <span className={`rounded-md border px-2 py-1 text-xs font-black ${styles.legalSoft}`}>
       {children}
-    </code>
+    </span>
   )
 }
 
 function RankingPaperPage({ language = 'es', styles }) {
-  const t = paper[language] ?? paper.es
+  const t = GUIDE[language] ?? GUIDE.es
 
   return (
     <article className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
@@ -319,16 +262,15 @@ function RankingPaperPage({ language = 'es', styles }) {
             <p className={`mt-5 max-w-3xl text-lg font-semibold leading-8 ${styles.legalMuted}`}>
               {t.subtitle}
             </p>
-            <div className={`mt-6 flex flex-wrap gap-3 text-sm font-bold ${styles.legalMuted}`}>
-              <span className={`rounded-lg border px-3 py-2 ${styles.legalSoft}`}>{t.version}</span>
-              <span className={`rounded-lg border px-3 py-2 ${styles.legalSoft}`}>{t.updated}</span>
+            <div className={`mt-6 inline-flex rounded-lg border px-3 py-2 text-sm font-bold ${styles.legalSoft}`}>
+              {t.updated}
             </div>
           </div>
 
           <nav className={`rounded-lg border p-4 ${styles.surface}`}>
             <p className={`text-sm font-black ${styles.text}`}>{t.navTitle}</p>
             <div className="mt-3 grid gap-2">
-              {sections.map(([id, label]) => (
+              {navItems.map(([id, label]) => (
                 <a
                   key={id}
                   href={`#${id}`}
@@ -342,100 +284,59 @@ function RankingPaperPage({ language = 'es', styles }) {
         </header>
 
         <div className={`mt-10 rounded-lg border p-6 sm:p-8 ${styles.surface}`}>
-          <PaperSection id="abstract" eyebrow="00" title={t.abstractTitle}>
+          <Section id="intro" eyebrow="01" title={t.introTitle}>
             <p className={`max-w-4xl text-base font-semibold leading-8 ${styles.legalMuted}`}>
-              {t.abstract}
+              {t.intro}
             </p>
-            <div className={`mt-6 rounded-lg border p-4 font-mono text-sm leading-7 ${styles.legalSoft}`}>
-              <Sigma aria-hidden="true" className="mb-3 h-5 w-5 text-brand-amber" />
-              {t.formula}
+            <div className={`mt-6 flex gap-3 rounded-lg border p-4 ${styles.legalSoft}`}>
+              <ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-amber" />
+              <p className={`text-sm font-bold leading-6 ${styles.legalMuted}`}>
+                {t.privacyNote}
+              </p>
             </div>
-          </PaperSection>
+          </Section>
 
-          <PaperSection id="sources" eyebrow="01" title={t.sourceTitle}>
+          <Section id="signals" eyebrow="02" title={t.signalsTitle}>
             <p className={`max-w-4xl text-sm font-semibold leading-7 ${styles.legalMuted}`}>
-              {t.sourceIntro}
-            </p>
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              {platformNotes.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`rounded-lg border p-4 transition hover:border-brand-amber/60 ${styles.softSurface}`}
-                >
-                  <h3 className={`text-lg font-black ${styles.text}`}>{item.name}</h3>
-                  <p className={`mt-2 text-sm font-semibold leading-6 ${styles.legalMuted}`}>
-                    {item.point}
-                  </p>
-                </a>
-              ))}
-            </div>
-          </PaperSection>
-
-          <PaperSection id="model" eyebrow="02" title={t.modelTitle}>
-            <p className={`max-w-4xl text-sm font-semibold leading-7 ${styles.legalMuted}`}>
-              {t.modelIntro}
+              {t.signalsIntro}
             </p>
             <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {componentCards.map(({ icon: Icon, title, cap, body }) => (
+              {helpfulSignals.map(({ icon: Icon, title, impact, body }) => (
                 <div key={title} className={`rounded-lg border p-5 ${styles.softSurface}`}>
                   <div className="flex items-center justify-between gap-3">
                     <Icon aria-hidden="true" className="h-5 w-5 text-brand-amber" />
-                    <span className={`rounded-md border px-2 py-1 text-xs font-black ${styles.legalSoft}`}>{cap}</span>
+                    <ImpactPill styles={styles}>{impact}</ImpactPill>
                   </div>
                   <h3 className={`mt-4 text-lg font-black ${styles.text}`}>{title}</h3>
                   <p className={`mt-2 text-sm font-semibold leading-6 ${styles.legalMuted}`}>{body}</p>
                 </div>
               ))}
             </div>
-          </PaperSection>
+          </Section>
 
-          <PaperSection id="weights" eyebrow="03" title={t.weightsTitle}>
-            <p className={`max-w-4xl text-sm font-semibold leading-7 ${styles.legalMuted}`}>
-              {t.weightsIntro}
-            </p>
-            <div className="mt-6 overflow-x-auto">
-              <table className="w-full min-w-[56rem] border-collapse text-left text-sm">
-                <thead>
-                  <tr className={`border-b ${styles.legalBorder}`}>
-                    <th className="py-3 pr-4 font-black">Variable</th>
-                    <th className="py-3 pr-4 font-black">Peso</th>
-                    <th className="py-3 pr-4 font-black">Tope</th>
-                    <th className="py-3 font-black">Razon</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {weights.map(([name, weight, cap, reason]) => (
-                    <tr key={name} className={`border-b ${styles.legalBorder}`}>
-                      <td className="py-4 pr-4 font-black">{name}</td>
-                      <td className="py-4 pr-4 font-mono text-xs">{weight}</td>
-                      <td className="py-4 pr-4 font-mono text-xs">{cap}</td>
-                      <td className={`py-4 font-semibold leading-6 ${styles.legalMuted}`}>{reason}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </PaperSection>
-
-          <PaperSection id="data" eyebrow="04" title={t.dataTitle}>
-            <div className="grid gap-3">
-              {dataSources.map(([source, fields, purpose]) => (
-                <div key={source} className={`grid gap-3 rounded-lg border p-4 md:grid-cols-[14rem_1fr_1.2fr] ${styles.softSurface}`}>
-                  <div className="flex items-center gap-2 font-mono text-sm font-black">
-                    <Database aria-hidden="true" className="h-4 w-4 text-brand-amber" />
-                    {source}
-                  </div>
-                  <div className="font-mono text-xs leading-6">{fields}</div>
-                  <div className={`text-sm font-semibold leading-6 ${styles.legalMuted}`}>{purpose}</div>
+          <Section id="improve" eyebrow="03" title={t.improveTitle}>
+            <div className="grid gap-3 md:grid-cols-2">
+              {improveItems.map((item) => (
+                <div key={item} className={`flex gap-3 rounded-lg border p-4 ${styles.softSurface}`}>
+                  <CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-amber" />
+                  <p className={`text-sm font-semibold leading-6 ${styles.legalMuted}`}>{item}</p>
                 </div>
               ))}
             </div>
-          </PaperSection>
+          </Section>
 
-          <PaperSection id="examples" eyebrow="05" title={t.examplesTitle}>
+          <Section id="avoid" eyebrow="04" title={t.avoidTitle}>
+            <div className="grid gap-3 md:grid-cols-2">
+              {avoidItems.map((item) => (
+                <div key={item} className={`flex gap-3 rounded-lg border p-4 ${styles.softSurface}`}>
+                  <ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-amber" />
+                  <p className={`text-sm font-semibold leading-6 ${styles.legalMuted}`}>{item}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Section id="examples" eyebrow="05" title={t.examplesTitle}>
             <div className="grid gap-5">
               {examples.map((example, index) => (
                 <div key={example.title} className={`rounded-lg border p-5 ${styles.softSurface}`}>
@@ -445,92 +346,57 @@ function RankingPaperPage({ language = 'es', styles }) {
                     </span>
                     <h3 className={`text-xl font-black ${styles.text}`}>{example.title}</h3>
                   </div>
-                  <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_1.1fr_1.1fr]">
+                  <div className="mt-4 grid gap-4 lg:grid-cols-2">
                     <div>
-                      <p className="text-xs font-black uppercase tracking-[0.16em] text-brand-amber">Inputs</p>
-                      <ul className={`mt-2 grid gap-1 text-sm font-semibold leading-6 ${styles.legalMuted}`}>
-                        {example.inputs.map((item) => <li key={item}>{item}</li>)}
-                      </ul>
+                      <p className="text-xs font-black uppercase tracking-[0.16em] text-brand-amber">Hacer</p>
+                      <p className={`mt-2 text-sm font-semibold leading-6 ${styles.legalMuted}`}>{example.do}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-black uppercase tracking-[0.16em] text-brand-amber">Resultado</p>
-                      <p className={`mt-2 text-sm font-semibold leading-6 ${styles.legalMuted}`}>{example.result}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-[0.16em] text-brand-amber">Lectura de producto</p>
-                      <p className={`mt-2 text-sm font-semibold leading-6 ${styles.legalMuted}`}>{example.interpretation}</p>
+                      <p className="text-xs font-black uppercase tracking-[0.16em] text-brand-amber">Por que ayuda</p>
+                      <p className={`mt-2 text-sm font-semibold leading-6 ${styles.legalMuted}`}>{example.why}</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          </PaperSection>
+          </Section>
 
-          <PaperSection id="safety" eyebrow="06" title={t.safetyTitle}>
-            <div className="grid gap-3 md:grid-cols-2">
-              {safetyNotes.map((note) => (
-                <div key={note} className={`flex gap-3 rounded-lg border p-4 ${styles.softSurface}`}>
-                  <LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-amber" />
-                  <p className={`text-sm font-semibold leading-6 ${styles.legalMuted}`}>{note}</p>
+          <Section id="audience" eyebrow="06" title={t.audienceTitle}>
+            <div className="grid gap-4 md:grid-cols-2">
+              {audienceGuides.map(({ icon: Icon, title, body }) => (
+                <div key={title} className={`rounded-lg border p-5 ${styles.softSurface}`}>
+                  <Icon aria-hidden="true" className="h-5 w-5 text-brand-amber" />
+                  <h3 className={`mt-4 text-lg font-black ${styles.text}`}>{title}</h3>
+                  <p className={`mt-2 text-sm font-semibold leading-6 ${styles.legalMuted}`}>{body}</p>
                 </div>
               ))}
             </div>
-          </PaperSection>
+          </Section>
 
-          <PaperSection id="lifecycle" eyebrow="07" title={t.lifecycleTitle}>
-            <p className={`max-w-4xl text-sm font-semibold leading-7 ${styles.legalMuted}`}>
-              En MUR los posts expiran y se eliminan. Por eso el algoritmo separa dos mundos: <InlineCode>posts_total</InlineCode>, <InlineCode>likes_received_total</InlineCode> y <InlineCode>comments_received_total</InlineCode> describen el presente; <InlineCode>profile_activity_stats</InlineCode> y <InlineCode>user_rank_moderation_stats</InlineCode> conservan senales historicas compactas. Esto evita que una cuenta valiosa vuelva a cero cada dia y tambien evita que un reporte serio desaparezca junto con el post.
-            </p>
-          </PaperSection>
-
-          <PaperSection id="implementation" eyebrow="08" title={t.implementationTitle}>
+          <Section id="devs" eyebrow="07" title={t.devTitle}>
             <div className="grid gap-3">
-              {implementationNotes.map(([label, value]) => (
-                <div key={label} className={`grid gap-2 rounded-lg border p-4 md:grid-cols-[14rem_1fr] ${styles.softSurface}`}>
-                  <div className="flex items-center gap-2 text-sm font-black">
-                    <FileText aria-hidden="true" className="h-4 w-4 text-brand-amber" />
-                    {label}
-                  </div>
-                  <div className="font-mono text-xs leading-6">{value}</div>
+              {devNotes.map((item) => (
+                <div key={item} className={`flex gap-3 rounded-lg border p-4 ${styles.softSurface}`}>
+                  <TrendingUp aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-brand-amber" />
+                  <p className={`text-sm font-semibold leading-6 ${styles.legalMuted}`}>{item}</p>
                 </div>
               ))}
             </div>
-          </PaperSection>
+          </Section>
 
-          <PaperSection id="future" eyebrow="09" title={t.futureTitle}>
-            <div className={`rounded-lg border p-5 ${styles.softSurface}`}>
-              <p className={`text-sm font-semibold leading-7 ${styles.legalMuted}`}>
-                En una version futura del feed/mapa, el score de autor puede entrar como multiplicador moderado, por ejemplo:
-              </p>
-              <pre className={`mt-4 overflow-x-auto rounded-lg border p-4 font-mono text-xs leading-6 ${styles.legalSoft}`}>
-{`post_relevance =
-  freshness_score * 0.30 +
-  distance_score * 0.25 +
-  category_affinity * 0.15 +
-  post_engagement_quality * 0.15 +
-  author_private_rank * 0.15`}
-              </pre>
-              <p className={`mt-4 text-sm font-semibold leading-7 ${styles.legalMuted}`}>
-                La recomendacion es no dejar que <InlineCode>author_private_rank</InlineCode> pase de 15% a 25% del score de un post. MUR es hiperlocal: distancia, frescura y categoria deben seguir teniendo mucho peso. El ranking privado sirve para desempatar y proteger calidad, no para crear celebridades globales.
+          <Section id="lifecycle" eyebrow="08" title={t.lifecycleTitle}>
+            <p className={`max-w-4xl text-sm font-semibold leading-7 ${styles.legalMuted}`}>
+              {t.lifecycle}
+            </p>
+          </Section>
+
+          <Section id="closing" eyebrow="09" title={t.closingTitle}>
+            <div className={`rounded-lg border p-5 ${styles.legalSoft}`}>
+              <p className={`text-base font-black leading-8 ${styles.text}`}>
+                {t.closing}
               </p>
             </div>
-          </PaperSection>
-
-          <PaperSection id="references" eyebrow="10" title={t.referencesTitle}>
-            <div className="grid gap-2">
-              {references.map(([label, url]) => (
-                <a
-                  key={url}
-                  href={url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`rounded-lg border p-3 text-sm font-bold transition hover:border-brand-amber/60 ${styles.softSurface}`}
-                >
-                  {label}
-                </a>
-              ))}
-            </div>
-          </PaperSection>
+          </Section>
         </div>
       </div>
     </article>
