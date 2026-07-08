@@ -22,6 +22,7 @@ import {
 } from 'lucide-react'
 
 import { BRAND, CONTENT, LANGUAGES, THEME, THEMES } from './siteContent'
+import RankingPaperPage from './RankingPaperPage'
 import darkFeedEn from './assets/screenshots/mur-feed-dark-en.jpeg'
 import darkFeedEs from './assets/screenshots/mur-feed-dark-es.jpeg'
 import lightFeedEn from './assets/screenshots/mur-feed-light-en.jpeg'
@@ -158,6 +159,7 @@ function HeaderMenu({ t, styles, narrow = false }) {
     ...(!narrow
       ? navAnchors.map(({ href, key }) => ({ href, label: t.nav[key] }))
       : []),
+    { href: '/paper-algorithm', label: t.nav.algorithmPaper, icon: FileText },
     { href: '/privacy', label: t.nav.privacy, icon: FileText },
     { href: '/terms', label: t.nav.terms, icon: ShieldCheck },
     { href: '/delete-account', label: t.nav.deleteAccount, icon: Trash2 },
@@ -1368,6 +1370,7 @@ function App() {
   const isDeleteAccount = path === '/delete-account'
   const isResetPassword = path === '/reset-password'
   const isSharedPost = /^\/p\/[^/?#]+/.test(path)
+  const isAlgorithmPaper = path === '/paper-algorithm' || path === '/ranking-paper'
   const t = CONTENT[language]
   const styles = THEME[theme]
   const currentMeta = useMemo(() => {
@@ -1383,6 +1386,14 @@ function App() {
       return { title: `${t.deleteAccount.title} | MUR`, description: t.deleteAccount.intro }
     }
 
+    if (isAlgorithmPaper) {
+      return {
+        title: 'MUR Private Ranking Algorithm | Paper',
+        description:
+          'Documento tecnico sobre el algoritmo privado de ranking interno de MUR.',
+      }
+    }
+
     if (isResetPassword) {
       return { title: `${t.resetPassword.title} | MUR`, description: t.resetPassword.intro }
     }
@@ -1392,7 +1403,7 @@ function App() {
     }
 
     return t.meta
-  }, [isDeleteAccount, isPrivacy, isResetPassword, isSharedPost, isTerms, t])
+  }, [isAlgorithmPaper, isDeleteAccount, isPrivacy, isResetPassword, isSharedPost, isTerms, t])
 
   useEffect(() => {
     window.localStorage.setItem('mur-language', language)
@@ -1413,7 +1424,7 @@ function App() {
     setMetaTag('meta[property="og:type"]', 'content', 'website')
   }, [currentMeta.description, currentMeta.title])
 
-  if (isPrivacy || isTerms || isDeleteAccount || isResetPassword || isSharedPost) {
+  if (isPrivacy || isTerms || isDeleteAccount || isResetPassword || isSharedPost || isAlgorithmPaper) {
     return (
       <LegalShell
         language={language}
@@ -1428,6 +1439,7 @@ function App() {
         {isDeleteAccount ? <DeleteAccountPage t={t} styles={styles} /> : null}
         {isResetPassword ? <ResetPasswordBridgePage t={t} styles={styles} /> : null}
         {isSharedPost ? <SharedPostBridgePage t={t} styles={styles} /> : null}
+        {isAlgorithmPaper ? <RankingPaperPage language={language} styles={styles} /> : null}
       </LegalShell>
     )
   }
